@@ -1,0 +1,131 @@
+@import url("https://fonts.googleapis.com/css2?family=Sixtyfour&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+@layer base {
+  :root {
+    --color1: #f97117;
+    --color2: #fc8c42;
+    --color3: #fba064;
+    --black: #000000;
+    --white: #fff;
+    --logo: #e30613;
+    --background: #ffffff;
+    --foreground: #000000;
+    --card: #ffffff;
+    --card-foreground: #1a1a1a;
+    --popover: #f2f2f2;
+    --popover-foreground: #000000;
+    --primary: var(--color1);
+    --border: var(--black);
+    --input: var(--color1);
+    --ring: var(--color1);
+    --accent-foreground: var(--color2);
+    --primary-foreground: #ffffff;
+    --secondary: #efefef;
+    --secondary-foreground: #000000;
+    --muted: #DDD5D7;
+    --muted-foreground: #595959;
+    --accent: #111111;
+    --destructive: #732626;
+    --destructive-foreground: #e6e6e6;
+    --radius: 1rem;
+  }
+
+  .dark {
+    --color1: #2eb6d4;
+    --color2: #64ddf8;
+    --color3: #8eeaff;
+    --logo: #ffffff;
+    --background: #061113;
+    --foreground: #e4e6e7;
+    --card: #061113;
+    --card-foreground: #e4e6e7;
+    --popover: #061113;
+    --popover-foreground: #e4e6e7;
+    --primary: var(--color1);
+    --border: var(--white);
+    --input: var(--color1);
+    --ring: var(--color1);
+    --accent-foreground: var(--color1);
+    --primary-foreground: #ffffff;
+    --secondary: #282828;
+    --secondary-foreground: #ffffff;
+    --muted: #5c5c5c;
+    --muted-foreground: #949c9e;
+    --accent: #5c5c5c;
+    --destructive: #990000;
+    --destructive-foreground: #e4e6e7;
+  }
+
+  .monocromatic {
+    filter: grayscale(100%) !important;
+  }
+
+  .daltonic {
+    filter: hue-rotate(90deg);
+  }
+
+  [vw] [vw-access-button] {
+    right: 10px !important;
+  }
+}
+
+@layer components {
+  .prose-lg p {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground min-h-screen;
+  }
+}
+
+.bg-color1 {
+  background-color: var(--color1);
+}
+
+.bg-color2 {
+  background-color: var(--color2);
+}
+
+.bg-color3 {
+  background-color: var(--color3);
+}
+
+.bg-color4 {
+  background-color: hsl(var(--muted));
+}
+
+.bg-color5 {
+  background-color: var(--primary);
+}
+
+.destaque {
+  color: var(--color1);
+}
+
+.border-destaque {
+  border-color: var(--color1);
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}

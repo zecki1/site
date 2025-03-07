@@ -3,6 +3,7 @@
 
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useState, useEffect } from "react";
 
 interface LocalizedText {
     ptBR?: React.ReactNode;
@@ -18,17 +19,24 @@ interface TextTranslatorProps {
 
 const TextTranslator: React.FC<TextTranslatorProps> = ({ children, ignoreCheck = false }) => {
     const { i18n } = useTranslation();
-    const selectedLanguage = i18n.language;
+    const [isMounted, setIsMounted] = useState(false);
 
-    // Texto traduzido e fallback
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    const selectedLanguage = isMounted ? i18n.language : "ptBR";
+
     const translatedText = children[selectedLanguage];
     const fallbackText = children.ptBR ?? "[SEM TEXTO PT-BR]";
 
-    // Extrai texto de ReactNode recursivamente
     const extractText = (node: React.ReactNode): string => {
         if (typeof node === "string") return node;
+        if (typeof node === "number") return node.toString();
         if (React.isValidElement(node)) {
-            return React.Children.toArray(node.props.children)
+            // Tipagem explícita: ReactElement com props contendo children
+            const element = node as React.ReactElement<{ children?: React.ReactNode }>;
+            return React.Children.toArray(element.props.children)
                 .map((child) => extractText(child))
                 .join(" ");
         }
@@ -36,22 +44,17 @@ const TextTranslator: React.FC<TextTranslatorProps> = ({ children, ignoreCheck =
         return "";
     };
 
-    // Validação dos problemas na tradução
     const validateTranslation = (text: React.ReactNode): string => {
         const extractedText = extractText(text).trim();
-
-        if (!text || extractedText === "") return "empty"; // Vazio ou só espaços
-        if (text === "#" || extractedText === "#") return "hasHash"; // Contém apenas #
-        if (/lorem ipsum/i.test(extractedText)) return "loremIpsum"; // Contém Lorem Ipsum
-        if (/^\s|\s$/.test(extractedText)) return "hasExtraSpaces"; // Espaços no início ou fim
-
-        return "valid"; // Tradução válida
+        if (!text || extractedText === "") return "empty";
+        if (text === "#" || extractedText === "#") return "hasHash";
+        if (/lorem ipsum/i.test(extractedText)) return "loremIpsum";
+        if (/^\s|\s$/.test(extractedText)) return "hasExtraSpaces";
+        return "valid";
     };
 
-    // Verifica se há traduções repetidas ou iguais ao ptBR
     const hasRepeatedTranslations = (): boolean => {
         if (ignoreCheck) return false;
-
         const texts = Object.entries(children)
             .map(([key, value]) => [key, extractText(value).toLowerCase().trim()])
             .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {} as { [key: string]: string });
@@ -69,11 +72,9 @@ const TextTranslator: React.FC<TextTranslatorProps> = ({ children, ignoreCheck =
             const allSame = textValues.every((value) => value === firstValue);
             if (allSame) return true;
         }
-
         return false;
     };
 
-    // Condição para exibir o aviso de tradução
     const isMissing =
         !ignoreCheck &&
         (translatedText === undefined ||

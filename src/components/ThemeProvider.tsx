@@ -13,36 +13,39 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-    const [theme, setTheme] = useState("light");
+    const [theme, setTheme] = useState<string>("light"); // Tema inicial fixo no servidor
     const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
+        // Só roda no cliente após montagem
         const savedTheme = localStorage.getItem("theme") || "system";
-        const initialTheme =
+        const resolvedTheme =
             savedTheme === "system"
                 ? window.matchMedia("(prefers-color-scheme: dark)").matches
                     ? "dark"
                     : "light"
                 : savedTheme;
-        setTheme(initialTheme);
-        document.documentElement.classList.toggle("dark", initialTheme === "dark");
+        setTheme(resolvedTheme);
+        document.documentElement.classList.toggle("dark", resolvedTheme === "dark");
+
+        // Carrega o idioma salvo
+        const savedLanguage = localStorage.getItem("i18nLng") || "ptBR";
+        i18n.changeLanguage(savedLanguage);
+
         setIsMounted(true);
     }, []);
 
     useEffect(() => {
         if (!isMounted) return;
         const root = document.documentElement;
-        if (theme === "system") {
-            const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-            root.classList.toggle("dark", systemTheme === "dark");
-        } else {
-            root.classList.toggle("dark", theme === "dark");
-        }
-        if (theme !== "system") {
-            localStorage.setItem("theme", theme);
-        } else {
-            localStorage.removeItem("theme");
-        }
+        const resolvedTheme =
+            theme === "system"
+                ? window.matchMedia("(prefers-color-scheme: dark)").matches
+                    ? "dark"
+                    : "light"
+                : theme;
+        root.classList.toggle("dark", resolvedTheme === "dark");
+        localStorage.setItem("theme", theme);
     }, [theme, isMounted]);
 
     useEffect(() => {

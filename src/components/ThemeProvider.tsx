@@ -13,11 +13,10 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-    const [theme, setTheme] = useState<string>("light"); // Tema inicial fixo no servidor
+    const [theme, setTheme] = useState<string>("light");
     const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
-        // Só roda no cliente após montagem
         const savedTheme = localStorage.getItem("theme") || "system";
         const resolvedTheme =
             savedTheme === "system"
@@ -28,7 +27,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         setTheme(resolvedTheme);
         document.documentElement.classList.toggle("dark", resolvedTheme === "dark");
 
-        // Carrega o idioma salvo
         const savedLanguage = localStorage.getItem("i18nLng") || "ptBR";
         i18n.changeLanguage(savedLanguage);
 
@@ -58,6 +56,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         mediaQuery.addEventListener("change", handleChange);
         return () => mediaQuery.removeEventListener("change", handleChange);
     }, [theme, isMounted]);
+
+    if (!isMounted) {
+        return null; // Não renderiza nada até o tema e idioma serem ajustados
+    }
 
     return (
         <ThemeContext.Provider value={{ theme, setTheme }}>

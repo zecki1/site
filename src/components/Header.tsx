@@ -13,6 +13,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { BrazilFlag, USFlag, SpainFlag } from "./Flags";
+import Link from "next/link";
 
 export function Header() {
     const { theme, setTheme } = useTheme();
@@ -33,16 +34,36 @@ export function Header() {
     };
 
     return (
-        <header className="fixed top-0 w-full bg-background border-b border-border p-4 flex justify-between items-center">
-            <h1 className="text-xl font-bold">
-                <TextTranslator>
-                    {{
-                        ptBR: "Meu CMS",
-                        en: "My CMS",
-                        es: "Mi CMS",
-                    }}
-                </TextTranslator>
-            </h1>
+        <header className="fixed top-0 w-full bg-background border-b border-border p-4 flex justify-between items-center z-50">
+            <nav className="flex items-center gap-6">
+                <Link href="/home" className="text-xl font-bold">
+                    <TextTranslator>
+                        {{
+                            ptBR: "Meu CMS",
+                            en: "My CMS",
+                            es: "Mi CMS",
+                        }}
+                    </TextTranslator>
+                </Link>
+                <Link href="/about" className="text-muted-foreground hover:text-foreground">
+                    <TextTranslator>
+                        {{
+                            ptBR: "Sobre",
+                            en: "About",
+                            es: "Sobre",
+                        }}
+                    </TextTranslator>
+                </Link>
+                <Link href="/contact" className="text-muted-foreground hover:text-foreground">
+                    <TextTranslator>
+                        {{
+                            ptBR: "Contato",
+                            en: "Contact",
+                            es: "Contacto",
+                        }}
+                    </TextTranslator>
+                </Link>
+            </nav>
             <div className="flex gap-2">
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>

@@ -3,16 +3,12 @@
 import TextTranslator from "@/components/TextTranslator"
 import { Section, SectionFluid } from "@/components/Sections"
 import { Topic, Topic3 } from "@/components/Topic"
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "@/components/ui/accordion"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import {  Star } from "lucide-react"
 import { Calendar } from "@/components/ui/calendar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -75,20 +71,163 @@ export default function Components() {
             {/* Seção com container */}
             <Section label="interativos" className=" py-8">
                 <Topic label="accordion">
-                    <h2 className="text-2xl font-semibold mb-2">Accordion</h2>
+                    <h2 className="text-2xl font-semibold mb-2">
+                        <TextTranslator>
+                            {{ ptBR: "Accordion", en: "Accordion", es: "Acordeón" }}
+                        </TextTranslator>
+                    </h2>
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O componente <Mark>Accordion</Mark> é usado para agrupar conteúdos expansíveis.</>,
-                                en: <>The <Mark>Accordion</Mark> component is used to group expandable content.</>,
-                                es: <>El componente <Mark>Accordion</Mark> se usa para agrupar contenido expandible.</>,
+                                ptBR: <>O <Mark>Accordion</Mark> é um conjunto de cabeçalhos interativos que revelam conteúdo.</>,
+                                en: <>The <Mark>Accordion</Mark> is a set of interactive headings that reveal content.</>,
+                                es: <>El <Mark>Acordeón</Mark> es un conjunto de encabezados interactivos que revelan contenido.</>,
                             }}
                         </TextTranslator>
                     </p>
-                    <Accordion type="single" collapsible>
+
+                    {/* 1. Accordion com Ícones */}
+                    <h3 className="text-xl font-medium mt-6 mb-2">
+                        <TextTranslator>
+                            {{ ptBR: "Accordion com Ícones", en: "Accordion with Icons", es: "Acordeón con Iconos" }}
+                        </TextTranslator>
+                    </h3>
+                    <Accordion type="single" collapsible className="w-full">
                         <AccordionItem value="item-1">
-                            <AccordionTrigger>Item 1</AccordionTrigger>
-                            <AccordionContent>Conteúdo expansível aqui.</AccordionContent>
+                            <AccordionTrigger className="flex items-center gap-2">
+                                <Star className="h-4 w-4" />
+                                <TextTranslator>
+                                    {{ ptBR: "Item 1", en: "Item 1", es: "Ítem 1" }}
+                                </TextTranslator>
+                            </AccordionTrigger>
+                            <AccordionContent>
+                                <TextTranslator>
+                                    {{ ptBR: "Conteúdo do item 1 com ícone.", en: "Item 1 content with icon.", es: "Contenido del ítem 1 con ícono." }}
+                                </TextTranslator>
+                            </AccordionContent>
+                        </AccordionItem>
+                        <AccordionItem value="item-2">
+                            <AccordionTrigger className="flex items-center gap-2">
+                                <Star className="h-4 w-4" />
+                                <TextTranslator>
+                                    {{ ptBR: "Item 2", en: "Item 2", es: "Ítem 2" }}
+                                </TextTranslator>
+                            </AccordionTrigger>
+                            <AccordionContent>
+                                <TextTranslator>
+                                    {{ ptBR: "Conteúdo do item 2 com ícone.", en: "Item 2 content with icon.", es: "Contenido del ítem 2 con ícono." }}
+                                </TextTranslator>
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
+
+                    {/* 2. Accordion Múltiplo */}
+                    <h3 className="text-xl font-medium mt-6 mb-2">
+                        <TextTranslator>
+                            {{ ptBR: "Accordion Múltiplo", en: "Multiple Accordion", es: "Acordeón Múltiple" }}
+                        </TextTranslator>
+                    </h3>
+                    <Accordion type="multiple" className="w-full">
+                        <AccordionItem value="item-1">
+                            <AccordionTrigger>
+                                <TextTranslator>
+                                    {{ ptBR: "Item 1", en: "Item 1", es: "Ítem 1" }}
+                                </TextTranslator>
+                            </AccordionTrigger>
+                            <AccordionContent>
+                                <TextTranslator>
+                                    {{ ptBR: "Pode abrir vários itens ao mesmo tempo.", en: "Can open multiple items at once.", es: "Puede abrir varios ítems a la vez." }}
+                                </TextTranslator>
+                            </AccordionContent>
+                        </AccordionItem>
+                        <AccordionItem value="item-2">
+                            <AccordionTrigger>
+                                <TextTranslator>
+                                    {{ ptBR: "Item 2", en: "Item 2", es: "Ítem 2" }}
+                                </TextTranslator>
+                            </AccordionTrigger>
+                            <AccordionContent>
+                                <TextTranslator>
+                                    {{ ptBR: "Outro conteúdo aqui.", en: "Another content here.", es: "Otro contenido aquí." }}
+                                </TextTranslator>
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
+
+                    {/* 3. Accordion Padrão */}
+                    <h3 className="text-xl font-medium mt-6 mb-2">
+                        <TextTranslator>
+                            {{ ptBR: "Accordion Padrão", en: "Standard Accordion", es: "Acordeón Estándar" }}
+                        </TextTranslator>
+                    </h3>
+                    <Accordion type="single" collapsible className="w-full">
+                        <AccordionItem value="item-1">
+                            <AccordionTrigger>
+                                <TextTranslator>
+                                    {{ ptBR: "É acessível?", en: "Is it accessible?", es: "¿Es accesible?" }}
+                                </TextTranslator>
+                            </AccordionTrigger>
+                            <AccordionContent>
+                                <TextTranslator>
+                                    {{ ptBR: "Sim, segue o padrão WAI-ARIA.", en: "Yes, it follows the WAI-ARIA pattern.", es: "Sí, sigue el patrón WAI-ARIA." }}
+                                </TextTranslator>
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
+
+                    {/* 4. Accordion Simples */}
+                    <h3 className="text-xl font-medium mt-6 mb-2">
+                        <TextTranslator>
+                            {{ ptBR: "Accordion Simples", en: "Simple Accordion", es: "Acordeón Simple" }}
+                        </TextTranslator>
+                    </h3>
+                    <Accordion type="single" collapsible className="w-full [data-state=open]:animate-none">
+                        <AccordionItem value="item-1" className="border-b">
+                            <AccordionTrigger className="py-2 hover:no-underline">
+                                <TextTranslator>
+                                    {{ ptBR: "Item Simples", en: "Simple Item", es: "Ítem Simple" }}
+                                </TextTranslator>
+                            </AccordionTrigger>
+                            <AccordionContent className="py-2">
+                                <TextTranslator>
+                                    {{ ptBR: "Conteúdo sem animação.", en: "Content without animation.", es: "Contenido sin animación." }}
+                                </TextTranslator>
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
+
+                    {/* 5. Accordion com Conteúdo Rico */}
+                    <h3 className="text-xl font-medium mt-6 mb-2">
+                        <TextTranslator>
+                            {{ ptBR: "Accordion com Conteúdo Rico", en: "Rich Content Accordion", es: "Acordeón con Contenido Rico" }}
+                        </TextTranslator>
+                    </h3>
+                    <Accordion type="single" collapsible className="w-full rounded-md border bg-card">
+                        <AccordionItem value="item-1" className="border-b-0">
+                            <AccordionTrigger className="px-4 py-3">
+                                <TextTranslator>
+                                    {{ ptBR: "Item Rico", en: "Rich Item", es: "Ítem Rico" }}
+                                </TextTranslator>
+                            </AccordionTrigger>
+                            <AccordionContent className="px-4 py-3">
+                                <div className="flex flex-col gap-2">
+                                    <TextTranslator>
+                                        {{ ptBR: "Este é um conteúdo mais elaborado.", en: "This is a more elaborate content.", es: "Este es un contenido más elaborado." }}
+                                    </TextTranslator>
+                                    <div className="flex gap-2">
+                                        <span className="inline-flex items-center rounded-full bg-primary px-2.5 py-0.5 text-xs font-medium text-primary-foreground">
+                                            <TextTranslator>
+                                                {{ ptBR: "Tag 1", en: "Tag 1", es: "Etiqueta 1" }}
+                                            </TextTranslator>
+                                        </span>
+                                        <span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
+                                            <TextTranslator>
+                                                {{ ptBR: "Tag 2", en: "Tag 2", es: "Etiqueta 2" }}
+                                            </TextTranslator>
+                                        </span>
+                                    </div>
+                                </div>
+                            </AccordionContent>
                         </AccordionItem>
                     </Accordion>
                 </Topic>

@@ -26,9 +26,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <ThemeProvider>
+          <Header />
           <div className="min-h-screen bg-background text-foreground py-12">
-            <Header />
-          
             {children}
           </div>
           <Toaster />

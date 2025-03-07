@@ -35,6 +35,8 @@ import { toast } from "@/components/ui/sonner" // Import já está correto
 import { Toggle } from "@/components/ui/toggle"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
+import { Cover } from "@/components/Cover"
+
 const Mark = ({ children }: { children: React.ReactNode }) => (
     <span className="font-semibold text-blue-600">{children}</span>
 )
@@ -42,6 +44,12 @@ const Mark = ({ children }: { children: React.ReactNode }) => (
 export default function Components() {
     return (
         <main>
+            <Cover
+                titlePT="Bem-vindo ao meu site"
+                titleEN="Welcome to my website"
+                titleES="Bienvenido a mi sitio web"
+                backgroundImage=""
+            />
             {/* Introdução em SectionFluid */}
             <SectionFluid label="introducao" className="bg-blue-500 py-16">
                 <Topic label="bem-vindo">

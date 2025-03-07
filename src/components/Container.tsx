@@ -8,8 +8,8 @@ interface ContainerProps {
 }
 
 export default function Container({ children, fluid = false, className = "" }: ContainerProps) {
-    const baseStyles = "pt-16"; // Espaço para o Header
-    const fluidStyles = "w-full px-4 sm:px-6 lg:px-8"; // Largura total com padding responsivo
+    const baseStyles = ""; // Espaço para o Header
+    const fluidStyles = "w-full"; // Largura total com padding responsivo
     const limitedStyles = "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"; // Largura limitada e centralizada
 
     return (

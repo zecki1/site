@@ -20,7 +20,7 @@ export const Section: React.FC<SectionProps> = ({ children, label, className }) 
     }, [label])
 
     return (
-        <section id={label} className={cn(`section-${label} my-8`, className)}>
+        <section id={label} className={cn(`section-${label}`, className)}>
             <div className="container mx-auto">{children}</div>
         </section>
     )
@@ -42,7 +42,7 @@ export const SectionFluid: React.FC<SectionFluidProps> = ({ children, label, cla
     }, [label])
 
     return (
-        <section id={label} className={cn(`section-fluid-${label} w-full my-8`, className)}>
+        <section id={label} className={cn(`section-fluid-${label} w-full`, className)}>
             {children}
         </section>
     )

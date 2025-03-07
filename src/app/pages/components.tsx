@@ -79,7 +79,7 @@ export default function Components() {
             </SectionFluid>
 
             {/* Seção com container */}
-            <Section label="interativos" className=" py-8">
+            <Section label="interativos" className="pt-8">
                 <Topic label="accordion">
                     <h2 className="text-2xl font-semibold mb-2">
                         <TextTranslator>

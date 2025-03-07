@@ -3,15 +3,19 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 
-// Configuração mínima, pois o TextTranslator gerencia as traduções
 i18n
-    .use(LanguageDetector) // Detecta o idioma do navegador
-    .use(initReactI18next) // Integra com React
+    .use(LanguageDetector)
+    .use(initReactI18next)
     .init({
-        fallbackLng: "ptBR", // Idioma padrão
-        supportedLngs: ["ptBR", "en", "es"], // Idiomas suportados
+        fallbackLng: "ptBR",
+        supportedLngs: ["ptBR", "en", "es"],
         interpolation: {
-            escapeValue: false, // React já escapa por padrão
+            escapeValue: false,
+        },
+        detection: {
+            order: ["localStorage", "navigator"], // Prioriza localStorage
+            caches: ["localStorage"], // Salva no localStorage
+            lookupLocalStorage: "i18nLng", // Nome da chave no localStorage
         },
     });
 

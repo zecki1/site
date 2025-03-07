@@ -6,6 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Sun, Moon, Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import TextTranslator from "./TextTranslator";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { BrazilFlag, USFlag, SpainFlag } from "./Flags";
 
 export function Header() {
     const { theme, setTheme } = useTheme();
@@ -21,11 +28,8 @@ export function Header() {
         }
     };
 
-    const toggleLanguage = () => {
-        const languages = ["ptBR", "en", "es"];
-        const currentIndex = languages.indexOf(i18n.language);
-        const nextIndex = (currentIndex + 1) % languages.length;
-        i18n.changeLanguage(languages[nextIndex]);
+    const changeLanguage = (lang: string) => {
+        i18n.changeLanguage(lang);
     };
 
     return (
@@ -40,18 +44,54 @@ export function Header() {
                 </TextTranslator>
             </h1>
             <div className="flex gap-2">
-                <Button variant="outline" size="icon" onClick={toggleLanguage}>
-                    <Globe className="h-5 w-5" />
-                    <span className="sr-only">
-                        <TextTranslator>
-                            {{
-                                ptBR: "Mudar Idioma",
-                                en: "Change Language",
-                                es: "Cambiar Idioma",
-                            }}
-                        </TextTranslator>
-                    </span>
-                </Button>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="outline" size="icon">
+                            <Globe className="h-5 w-5" />
+                            <span className="sr-only">
+                                <TextTranslator>
+                                    {{
+                                        ptBR: "Mudar Idioma",
+                                        en: "Change Language",
+                                        es: "Cambiar Idioma",
+                                    }}
+                                </TextTranslator>
+                            </span>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => changeLanguage("ptBR")}>
+                            <BrazilFlag className="h-5 w-5 mr-2" />
+                            <TextTranslator>
+                                {{
+                                    ptBR: "Português",
+                                    en: "Portuguese",
+                                    es: "Portugués",
+                                }}
+                            </TextTranslator>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => changeLanguage("en")}>
+                            <USFlag className="h-5 w-5 mr-2" />
+                            <TextTranslator>
+                                {{
+                                    ptBR: "Inglês",
+                                    en: "English",
+                                    es: "Inglés",
+                                }}
+                            </TextTranslator>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => changeLanguage("es")}>
+                            <SpainFlag className="h-5 w-5 mr-2" />
+                            <TextTranslator>
+                                {{
+                                    ptBR: "Espanhol",
+                                    en: "Spanish",
+                                    es: "Español",
+                                }}
+                            </TextTranslator>
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
                 <Button variant="outline" size="icon" onClick={toggleTheme}>
                     {theme === "dark" ? (
                         <Sun className="h-5 w-5" />

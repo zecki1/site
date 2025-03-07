@@ -1,6 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
+import { Slot } from "@radix-ui/react-slot" // Adicione este import
 
 const generateId = (label: string): string => {
     return label
@@ -15,19 +16,22 @@ interface TopicProps {
     children: React.ReactNode
     label: string
     className?: string
+    asChild?: boolean // Nova prop
 }
 
-export const Topic: React.FC<TopicProps> = ({ children, label, className }) => {
+export const Topic: React.FC<TopicProps> = ({ children, label, className, asChild }) => {
+    const Comp = asChild ? Slot : "article" // Use Slot se asChild for true
     return (
-        <article
+        <Comp
             id={generateId(label)}
             aria-label={label}
             className={cn("p-4", className)}
         >
             {children}
-        </article>
+        </Comp>
     )
 }
+
 
 interface Topic3Props extends TopicProps {
     svgComponent?: string
@@ -45,6 +49,10 @@ export const Topic3: React.FC<Topic3Props> = ({
 }) => {
     return (
         <>
+       
+
+
+
             <article
                 id={generateId(label)}
                 aria-label={label}

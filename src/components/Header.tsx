@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Sun, Moon, Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import TextTranslator from "./TextTranslator";
+import { Sidebar } from "@/components/Sidebar"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -36,12 +37,16 @@ export function Header() {
     return (
         <header className="fixed top-0 w-full bg-background border-b border-border p-4 flex justify-between items-center z-50">
             <nav className="flex items-center gap-6">
+                {/* Menu fixo no topo esquerdo */}
+
+                <Sidebar />
+
                 <Link href="/home" className="text-xl font-bold">
-                    <TextTranslator>
+                    <TextTranslator ignoreCheck={true}>
                         {{
-                            ptBR: "Meu CMS",
+                            ptBR: "Zecki1",
                             en: "Zecki1",
-                            es: "Mi CMS",
+                            es: "Zecki1",
                         }}
                     </TextTranslator>
                 </Link>
@@ -54,10 +59,10 @@ export function Header() {
                         }}
                     </TextTranslator>
                 </Link>
-                <Link href="/Components" className="text-muted-foreground hover:text-foreground">
+                <Link href="/components" className="text-muted-foreground hover:text-foreground">
                     <TextTranslator>
                         {{
-                            ptBR: "Contato",
+                            ptBR: "Componentes",
                             en: "Components",
                             es: "Componentso",
                         }}

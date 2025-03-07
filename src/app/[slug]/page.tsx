@@ -1,14 +1,13 @@
-// src/app/[slug]/page.tsx
-import DynamicPageClient from "@/components/DynamicPageClient";
-// Define os slugs que serão pré-renderizados
+import DynamicPageClient from "@/components/DynamicPageClient"
+
 export async function generateStaticParams() {
   return [
     { slug: "home" },
     { slug: "about" },
-    { slug: "components" },
-  ];
+    { slug: "Components" },
+  ]
 }
 
 export default function DynamicPage({ params }: { params: { slug: string } }) {
-  return <DynamicPageClient slug={params.slug} />;
+  return <DynamicPageClient slug={params.slug} />
 }

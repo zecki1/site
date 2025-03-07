@@ -42,7 +42,7 @@ export const Cover: React.FC<CoverProps> = ({
             <div className="relative z-20 flex h-full flex-col items-center justify-center">
 
 
-                <div className="mt-2 py-2 px-3 rounded text-white text-sm bg-black/30 border-0">
+                <div className="mt-2  px-3 rounded text-white text-sm bg-black/30 border-0">
                     <h1 className="mt-4 px-16 py-5 text-center text-4xl text-white md:text-6xl">
                         <TextTranslator>
                             {{

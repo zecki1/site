@@ -6,21 +6,26 @@ import Home from "@/app/pages/home"
 import About from "@/app/pages/about"
 import Components from "@/app/pages/components"
 
-const pageComponents: { [key: string]: React.ComponentType } = {
+type PageComponentType = React.ComponentType
+const pageComponents: Record<string, PageComponentType> = {
     home: Home,
     about: About,
-    components: Components, // Corrigido para "components" (minúsculo) para corresponder ao slug
+    components: Components,
+} as const
+
+interface DynamicPageClientProps {
+    slug: string
 }
 
-export default function DynamicPageClient({ slug }: { slug: string }) {
-    const normalizedSlug = slug === "home" ? "home" : slug
+export default function DynamicPageClient({ slug }: DynamicPageClientProps) {
+    const normalizedSlug = slug.toLowerCase()
     const PageComponent = pageComponents[normalizedSlug]
 
     if (!PageComponent) {
         notFound()
     }
 
-    const isFluid = slug === "components" // "components" usa fluid
+    const isFluid = normalizedSlug === "components"
 
     return (
         <Container fluid={isFluid}>

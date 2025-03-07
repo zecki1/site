@@ -35,7 +35,7 @@ import { Switch } from "@/components/ui/switch"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
-import { toast } from "@/components/ui/sonner"
+import { toast } from "@/components/ui/sonner" // Import já está correto
 import { Toggle } from "@/components/ui/toggle"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
@@ -280,7 +280,7 @@ export default function Components() {
                         </TextTranslator>
                     </p>
                     <DropdownMenu>
-                        <DropdownMenuTrigger>
+                        <DropdownMenuTrigger asChild>
                             <Button>Abrir</Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
@@ -288,6 +288,7 @@ export default function Components() {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </Topic>
+
             </SectionFluid>
 
             {/* Seção com container */}
@@ -373,13 +374,12 @@ export default function Components() {
                         </TextTranslator>
                     </p>
                     <Popover>
-                        <PopoverTrigger>
+                        <PopoverTrigger asChild>
                             <Button>Abrir</Button>
                         </PopoverTrigger>
                         <PopoverContent>Conteúdo aqui</PopoverContent>
                     </Popover>
                 </Topic>
-
                 <Topic label="progress">
                     <h2 className="text-2xl font-semibold mb-2">Progress</h2>
                     <p>
@@ -440,7 +440,6 @@ export default function Components() {
                     </p>
                     <Separator />
                 </Topic>
-
                 <Topic label="sheet">
                     <h2 className="text-2xl font-semibold mb-2">Sheet</h2>
                     <p>
@@ -453,7 +452,7 @@ export default function Components() {
                         </TextTranslator>
                     </p>
                     <Sheet>
-                        <SheetTrigger>
+                        <SheetTrigger asChild>
                             <Button>Abrir</Button>
                         </SheetTrigger>
                         <SheetContent>Conteúdo lateral</SheetContent>
@@ -588,8 +587,8 @@ export default function Components() {
                     </p>
                     <TooltipProvider>
                         <Tooltip>
-                            <TooltipTrigger>
-                                <Button>Passe o mouse</Button>
+                            <TooltipTrigger asChild>
+                                <Button><span>Passe o mouse</span></Button>
                             </TooltipTrigger>
                             <TooltipContent>Dica</TooltipContent>
                         </Tooltip>

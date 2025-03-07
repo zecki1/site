@@ -1,7 +1,8 @@
-// src/app/layout.tsx
-import "../app/globals.css";
-import { ThemeProvider } from "@/components/ThemeProvider";
-import { Header } from "@/components/Header";
+import "../app/globals.css"
+import { ThemeProvider } from "@/components/ThemeProvider"
+import { Header } from "@/components/Header"
+import { Sidebar } from "@/components/Sidebar" // Certifique-se de que está importado
+import { Toaster } from "@/components/ui/sonner"
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -10,17 +11,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           dangerouslySetInnerHTML={{
             __html: `
-                            (function() {
-                                var savedTheme = localStorage.getItem('theme') || 'system';
-                                var isDark = savedTheme === 'dark' || 
-                                    (savedTheme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-                                if (isDark) {
-                                    document.documentElement.classList.add('dark');
-                                } else {
-                                    document.documentElement.classList.remove('dark');
-                                }
-                            })();
-                        `,
+              (function() {
+                var savedTheme = localStorage.getItem('theme') || 'system';
+                var isDark = savedTheme === 'dark' || 
+                  (savedTheme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                if (isDark) {
+                  document.documentElement.classList.add('dark');
+                } else {
+                  document.documentElement.classList.remove('dark');
+                }
+              })();
+            `,
           }}
         />
       </head>
@@ -28,10 +29,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider>
           <div className="min-h-screen bg-background text-foreground py-12">
             <Header />
+          
             {children}
           </div>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
-  );
+  )
 }

@@ -128,39 +128,65 @@
 }
 
 @layer utilities {
+
+  /* Animação da bolinha */
   .animate-scroll {
     animation: scroll 1.5s infinite;
   }
 
   @keyframes scroll {
     0% {
-      transform: translateY(0);
+      transform: translateY(-4px);
       opacity: 1;
     }
 
     100% {
-      transform: translateY(16px);
+      transform: translateY(4px);
       opacity: 0;
     }
   }
-}
 
-.mouse {
-  width: 40px;
-  height: 40px;
-  border: 3px solid white;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  animation: bounce 2s infinite;
-  /* Animação de "pulo" */
-}
+  /* Animação da borda */
+  .animate-border-color {
+    animation: borderColor 3s infinite alternate;
+  }
 
-.scroll-wheel {
-  width: 10px;
-  height: 10px;
-  background-color: white;
-  border-radius: 50%;
+  @keyframes borderColor {
+    0% {
+      border-color: #1f2937;
+      /* gray-900 no tema claro */
+    }
+
+    50% {
+      border-color: #3b82f6;
+      /* blue-500 */
+    }
+
+    100% {
+      border-color: #10b981;
+      /* green-500 */
+    }
+  }
+
+  /* Sobrescrever no tema escuro */
+  .dark .animate-border-color {
+    animation: borderColorDark 3s infinite alternate;
+  }
+
+  @keyframes borderColorDark {
+    0% {
+      border-color: #ffffff;
+      /* branco no tema escuro */
+    }
+
+    50% {
+      border-color: #60a5fa;
+      /* blue-400 */
+    }
+
+    100% {
+      border-color: #34d399;
+      /* green-400 */
+    }
+  }
 }

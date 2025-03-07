@@ -34,6 +34,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/sonner" // Import já está correto
 import { Toggle } from "@/components/ui/toggle"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { images } from "@/components/ImageContainer"
 
 import { Cover } from "@/components/Cover"
 
@@ -45,11 +46,12 @@ export default function Components() {
     return (
         <main>
             <Cover
-                titlePT="Bem-vindo ao meu site"
-                titleEN="Welcome to my website"
-                titleES="Bienvenido a mi sitio web"
-                backgroundImage=""
+                titlePT="Nossos componentes"
+                titleEN="Our components"
+                titleES="Nuestros componentes"
+                backgroundImage={images.capa}
             />
+      
             {/* Introdução em SectionFluid */}
             <SectionFluid label="introducao" className="bg-blue-500 py-16">
                 <Topic label="bem-vindo">

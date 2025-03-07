@@ -1,6 +1,6 @@
-"use client" // Necessário para componentes interativos no Next.js
+"use client"
 
-import Mouse from "./Mouse";
+import ScrollIndicator from "@/components/ScrollIndicator"
 import { cn } from "@/lib/utils"
 import TextTranslator from '@/components/TextTranslator';
 
@@ -9,7 +9,7 @@ interface CoverProps {
     titleES?: string
     titleEN?: string
     backgroundImage: string
-    className?: string // Adicionei para personalização extra
+    className?: string
 }
 
 export const Cover: React.FC<CoverProps> = ({
@@ -22,32 +22,39 @@ export const Cover: React.FC<CoverProps> = ({
     return (
         <div
             className={cn(
-                "w-full h-screen overflow-hidden relative bg-background", // Adicionei bg-background para temas
+                "w-full h-screen overflow-hidden relative bg-background",
                 className
             )}
-            style={{
-                backgroundImage: `url(${backgroundImage})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-            }}
         >
-            {/* Camada escura sobre a imagem */}
-            <div className="absolute inset-0 z-10 bg-black bg-opacity-50 pointer-events-none" />
+            {/* Imagem de fundo */}
+            <div
+                className="absolute inset-0 z-0"
+                style={{
+                    backgroundImage: `url(${backgroundImage})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                }}
+            />
 
-            {/* Conteúdo acima do fundo */}
+            {/* Camada escura (reduzida para teste) */}
+
+            {/* Conteúdo centralizado */}
             <div className="relative z-20 flex h-full flex-col items-center justify-center">
-                <h1 className="px-16 py-5 text-center text-4xl text-white md:text-6xl">
-                    <TextTranslator>
-                        {{
-                            ptBR: titlePT,
-                            en: titleEN,
-                            es: titleES,
-                        }}
-                    </TextTranslator>
-                </h1>
-            </div>
 
-            <Mouse />
+
+                <div className="mt-2 py-2 px-3 rounded text-white text-sm bg-black/30 border-0">
+                    <h1 className="mt-4 px-16 py-5 text-center text-4xl text-white md:text-6xl">
+                        <TextTranslator>
+                            {{
+                                ptBR: titlePT,
+                                en: titleEN,
+                                es: titleES,
+                            }}
+                        </TextTranslator>
+                    </h1>
+                </div>
+            </div>
+            <ScrollIndicator />
         </div>
     )
 }

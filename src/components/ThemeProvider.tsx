@@ -2,6 +2,8 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect } from "react";
+import { I18nextProvider } from "react-i18next";
+import i18n from "@/lib/i18n";
 
 interface ThemeContextType {
     theme: string;
@@ -11,49 +13,52 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-    const [theme, setTheme] = useState(() => {
-        if (typeof window !== "undefined") {
-            const savedTheme = localStorage.getItem("theme");
-            console.log("Tema inicial carregado:", savedTheme || "system");
-            return savedTheme || "system";
-        }
-        return "system";
-    });
+    const [theme, setTheme] = useState("light");
+    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
+        const savedTheme = localStorage.getItem("theme") || "system";
+        const initialTheme =
+            savedTheme === "system"
+                ? window.matchMedia("(prefers-color-scheme: dark)").matches
+                    ? "dark"
+                    : "light"
+                : savedTheme;
+        setTheme(initialTheme);
+        document.documentElement.classList.toggle("dark", initialTheme === "dark");
+        setIsMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (!isMounted) return;
         const root = document.documentElement;
-        console.log("Aplicando tema:", theme);
         if (theme === "system") {
             const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
             root.classList.toggle("dark", systemTheme === "dark");
-            console.log("Tema do sistema aplicado:", systemTheme);
         } else {
             root.classList.toggle("dark", theme === "dark");
-            console.log("Tema fixo aplicado:", theme);
         }
         if (theme !== "system") {
             localStorage.setItem("theme", theme);
         } else {
             localStorage.removeItem("theme");
         }
-    }, [theme]);
+    }, [theme, isMounted]);
 
     useEffect(() => {
-        if (theme !== "system") return;
-
+        if (!isMounted || theme !== "system") return;
         const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
         const handleChange = () => {
             const systemTheme = mediaQuery.matches ? "dark" : "light";
             document.documentElement.classList.toggle("dark", systemTheme === "dark");
-            console.log("Tema do sistema mudou para:", systemTheme);
         };
         mediaQuery.addEventListener("change", handleChange);
         return () => mediaQuery.removeEventListener("change", handleChange);
-    }, [theme]);
+    }, [theme, isMounted]);
 
     return (
         <ThemeContext.Provider value={{ theme, setTheme }}>
-            {children}
+            <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
         </ThemeContext.Provider>
     );
 }

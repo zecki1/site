@@ -1,92 +1,97 @@
 // src/components/TextTranslator.tsx
 "use client";
 
-import React, { useMemo } from "react";
-import { useLanguage } from "@/hooks/useLanguage";
+import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface LocalizedText {
-  ptBR?: React.ReactNode;
-  en?: React.ReactNode;
-  es?: React.ReactNode;
-  [key: string]: React.ReactNode | undefined;
+    ptBR?: React.ReactNode;
+    en?: React.ReactNode;
+    es?: React.ReactNode;
+    [key: string]: React.ReactNode | undefined;
 }
 
 interface TextTranslatorProps {
-  children: LocalizedText;
-  ignoreCheck?: boolean;
+    children: LocalizedText;
+    ignoreCheck?: boolean;
 }
 
 const TextTranslator: React.FC<TextTranslatorProps> = ({ children, ignoreCheck = false }) => {
-  const { selectedLanguage } = useLanguage();
+    const { i18n } = useTranslation();
+    const selectedLanguage = i18n.language;
 
-  const translatedText = children[selectedLanguage];
-  const fallbackText = children.ptBR ?? "[SEM TEXTO PT-BR]";
+    // Texto traduzido e fallback
+    const translatedText = children[selectedLanguage];
+    const fallbackText = children.ptBR ?? "[SEM TEXTO PT-BR]";
 
-  const extractText = (node: React.ReactNode): string => {
-    if (typeof node === "string") return node;
-    if (React.isValidElement(node)) {
-      return React.Children.toArray(node.props.children)
-        .map((child) => extractText(child))
-        .join(" ");
-    }
-    if (Array.isArray(node)) return node.map(extractText).join(" ");
-    return "";
-  };
+    // Extrai texto de ReactNode recursivamente
+    const extractText = (node: React.ReactNode): string => {
+        if (typeof node === "string") return node;
+        if (React.isValidElement(node)) {
+            return React.Children.toArray(node.props.children)
+                .map((child) => extractText(child))
+                .join(" ");
+        }
+        if (Array.isArray(node)) return node.map(extractText).join(" ");
+        return "";
+    };
 
-  const validateTranslation = useMemo(() => {
-    const extractedText = extractText(translatedText).trim();
-    if (!translatedText || extractedText === "") return "empty";
-    if (translatedText === "#" || extractedText === "#") return "hasHash";
-    if (/lorem ipsum/i.test(extractedText)) return "loremIpsum";
-    if (/^\s|\s$/.test(extractedText)) return "hasExtraSpaces";
-    return "valid";
-  }, [translatedText]);
+    // Validação dos problemas na tradução
+    const validateTranslation = (text: React.ReactNode): string => {
+        const extractedText = extractText(text).trim();
 
-  const hasRepeatedTranslations = useMemo(() => {
-    if (ignoreCheck) return false;
+        if (!text || extractedText === "") return "empty"; // Vazio ou só espaços
+        if (text === "#" || extractedText === "#") return "hasHash"; // Contém apenas #
+        if (/lorem ipsum/i.test(extractedText)) return "loremIpsum"; // Contém Lorem Ipsum
+        if (/^\s|\s$/.test(extractedText)) return "hasExtraSpaces"; // Espaços no início ou fim
 
-    const texts = Object.entries(children)
-      .map(([key, value]) => [key, extractText(value).toLowerCase().trim()])
-      .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {} as { [key: string]: string });
+        return "valid"; // Tradução válida
+    };
 
-    const ptBRText = texts["ptBR"] || "";
-    const currentText = texts[selectedLanguage] || "";
+    // Verifica se há traduções repetidas ou iguais ao ptBR
+    const hasRepeatedTranslations = (): boolean => {
+        if (ignoreCheck) return false;
 
-    if (selectedLanguage !== "ptBR" && currentText === ptBRText && currentText !== "") {
-      return true;
-    }
+        const texts = Object.entries(children)
+            .map(([key, value]) => [key, extractText(value).toLowerCase().trim()])
+            .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {} as { [key: string]: string });
 
-    const textValues = Object.values(texts).filter((v) => v !== "");
-    if (textValues.length > 1) {
-      const firstValue = textValues[0];
-      return textValues.every((value) => value === firstValue);
-    }
+        const ptBRText = texts["ptBR"] || "";
+        const currentText = texts[selectedLanguage] || "";
 
-    return false;
-  }, [children, selectedLanguage, ignoreCheck]);
+        if (selectedLanguage !== "ptBR" && currentText === ptBRText && currentText !== "") {
+            return true;
+        }
 
-  const isMissing =
-    !ignoreCheck &&
-    (translatedText === undefined ||
-      translatedText === null ||
-      validateTranslation !== "valid" ||
-      hasRepeatedTranslations);
+        const textValues = Object.values(texts).filter((v) => v !== "");
+        if (textValues.length > 1) {
+            const firstValue = textValues[0];
+            const allSame = textValues.every((value) => value === firstValue);
+            if (allSame) return true;
+        }
 
-  return (
-    <span
-      className={isMissing ? "text-red-500 font-bold bg-red-100 px-2 py-1 rounded" : ""}
-      aria-live="polite"
-    >
-      {isMissing ? (
-        <>
-          <span className="text-red-600 mr-1">[TRADUZIR]</span>
-          {fallbackText}
-        </>
-      ) : (
-        translatedText
-      )}
-    </span>
-  );
+        return false;
+    };
+
+    // Condição para exibir o aviso de tradução
+    const isMissing =
+        !ignoreCheck &&
+        (translatedText === undefined ||
+            translatedText === null ||
+            validateTranslation(translatedText) !== "valid" ||
+            hasRepeatedTranslations());
+
+    return (
+        <span className={isMissing ? "text-red-500 font-bold bg-red-200 px-2 rounded" : ""}>
+            {isMissing ? (
+                <>
+                    <span className="text-red-600">[TRADUZIR]</span> {fallbackText}
+                </>
+            ) : (
+                translatedText
+            )}
+        </span>
+    );
 };
 
 export default TextTranslator;

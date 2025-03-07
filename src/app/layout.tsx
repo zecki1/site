@@ -1,16 +1,12 @@
 // src/app/layout.tsx
+import "../app/globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { LanguageProvider } from "@/contexts/LanguageProvider";
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <body>
-        <ThemeProvider>
-          <LanguageProvider>
-            {children}
-          </LanguageProvider>
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

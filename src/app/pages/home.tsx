@@ -10,36 +10,38 @@ const Mark: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 export default function Home() {
     return (
         <>
-            <h1 className="text-3xl font-bold text-primary mb-4">
-                <TextTranslator>
-                    {{
-                        ptBR: "Bem-vindo ao Meu CMS",
-                        en: "Welcome to Zecki1",
-                        es: "Bienvenido a Mi CMS",
-                    }}
-                </TextTranslator>
-            </h1>
-            <p>
-                <TextTranslator>
-                    {{
-                        ptBR: (
-                            <>
-                                Este é um <Mark>CMS</Mark> simples construído com Next.js.
-                            </>
-                        ),
-                        en: (
-                            <>
-                                This is a simple <Mark>CMS</Mark> built with Next.js.
-                            </>
-                        ),
-                        es: (
-                            <>
-                                Este es un <Mark>CMS</Mark> simple construido con Next.js.
-                            </>
-                        ),
-                    }}
-                </TextTranslator>
-            </p>
+            <div className="pt-16">
+                <h1 className="text-3xl font-bold text-primary mb-4">
+                    <TextTranslator>
+                        {{
+                            ptBR: "Bem-vindo ao Meu CMS",
+                            en: "Welcome to Zecki1",
+                            es: "Bienvenido a Mi CMS",
+                        }}
+                    </TextTranslator>
+                </h1>
+                <p>
+                    <TextTranslator>
+                        {{
+                            ptBR: (
+                                <>
+                                    Este é um <Mark>CMS</Mark> simples construído com Next.js.
+                                </>
+                            ),
+                            en: (
+                                <>
+                                    This is a simple <Mark>CMS</Mark> built with Next.js.
+                                </>
+                            ),
+                            es: (
+                                <>
+                                    Este es un <Mark>CMS</Mark> simple construido con Next.js.
+                                </>
+                            ),
+                        }}
+                    </TextTranslator>
+                </p>
+            </div>
         </>
     );
 }

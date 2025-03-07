@@ -1,31 +1,31 @@
 // src/components/DynamicPageClient.tsx
 "use client";
 
-import { Header } from "@/components/Header";
 import { notFound } from "next/navigation";
+import Container from "@/components/Container";
 import Home from "@/app/pages/home";
 import About from "@/app/pages/about";
-import Contact from "@/app/pages/contact";
+import Components from "@/app/pages/components";
 
-// Mapeamento de slugs para componentes de página
 const pageComponents: { [key: string]: React.ComponentType } = {
     home: Home,
     about: About,
-    contact: Contact,
+    Components: Components,
 };
 
 export default function DynamicPageClient({ slug }: { slug: string }) {
-    const normalizedSlug = slug === "home" ? "home" : slug; // "home" como padrão
+    const normalizedSlug = slug === "home" ? "home" : slug;
     const PageComponent = pageComponents[normalizedSlug];
 
     if (!PageComponent) {
-        notFound(); // Retorna 404 se a página não existir
+        notFound();
     }
 
+    const isFluid = slug === "Components"; // Exemplo: Components usa fluid
+
     return (
-        <>
-            <Header />
+        <Container fluid={isFluid}>
             <PageComponent />
-        </>
+        </Container>
     );
 }

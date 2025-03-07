@@ -1,6 +1,7 @@
 // src/app/layout.tsx
 import "../app/globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { Header } from "@/components/Header";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -25,7 +26,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <ThemeProvider>
-          <div className="min-h-screen bg-background text-foreground pt-20">
+          <div className="min-h-screen bg-background text-foreground py-12">
+            <Header />
             {children}
           </div>
         </ThemeProvider>

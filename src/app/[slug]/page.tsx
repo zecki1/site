@@ -5,7 +5,7 @@ export async function generateStaticParams() {
   return [
     { slug: "home" },
     { slug: "about" },
-    { slug: "contact" },
+    { slug: "components" },
   ];
 }
 

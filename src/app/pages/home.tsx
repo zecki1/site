@@ -14,7 +14,7 @@ export default function Home() {
                 <TextTranslator>
                     {{
                         ptBR: "Bem-vindo ao Meu CMS",
-                        en: "Welcome to My CMS",
+                        en: "Welcome to Zecki1",
                         es: "Bienvenido a Mi CMS",
                     }}
                 </TextTranslator>

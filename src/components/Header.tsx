@@ -40,7 +40,7 @@ export function Header() {
                     <TextTranslator>
                         {{
                             ptBR: "Meu CMS",
-                            en: "My CMS",
+                            en: "Zecki1",
                             es: "Mi CMS",
                         }}
                     </TextTranslator>
@@ -54,12 +54,12 @@ export function Header() {
                         }}
                     </TextTranslator>
                 </Link>
-                <Link href="/contact" className="text-muted-foreground hover:text-foreground">
+                <Link href="/Components" className="text-muted-foreground hover:text-foreground">
                     <TextTranslator>
                         {{
                             ptBR: "Contato",
-                            en: "Contact",
-                            es: "Contacto",
+                            en: "Components",
+                            es: "Componentso",
                         }}
                     </TextTranslator>
                 </Link>

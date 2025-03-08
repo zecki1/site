@@ -2,7 +2,7 @@
 
 import TextTranslator from "@/components/layout/TextTranslator"
 import { Section, SectionFluid } from "@/components/layout/Sections"
-import { Topic, Topic3 } from "@/components/layout/Topic"
+import { Topic, Topic2 } from "@/components/layout/Topic"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -271,9 +271,9 @@ export default function Components() {
                 </Topic>
             </Section>
 
-            {/* Seção fluida com Topic3 */}
+            {/* Seção fluida com Topic2 */}
             <SectionFluid label="visualizacoes" className=" py-12">
-                <Topic3 label="alert" bgColor="">
+                <Topic2 label="alert" bgColor="">
                     <h2 className="text-2xl font-semibold mb-2">Alert</h2>
                     <p>
                         <TextTranslator>
@@ -288,9 +288,9 @@ export default function Components() {
                         <AlertTitle>Atenção</AlertTitle>
                         <AlertDescription>Este é um alerta.</AlertDescription>
                     </Alert>
-                </Topic3>
+                </Topic2>
 
-                <Topic3 label="avatar" bgColor="">
+                <Topic2 label="avatar" bgColor="">
                     <h2 className="text-2xl font-semibold mb-2">Avatar</h2>
                     <p>
                         <TextTranslator>
@@ -305,9 +305,9 @@ export default function Components() {
                         <AvatarImage src="https://github.com/shadcn.png" />
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
-                </Topic3>
+                </Topic2>
 
-                <Topic3 label="badge" bgColor="">
+                <Topic2 label="badge" bgColor="">
                     <h2 className="text-2xl font-semibold mb-2">Badge</h2>
                     <p>
                         <TextTranslator>
@@ -319,7 +319,7 @@ export default function Components() {
                         </TextTranslator>
                     </p>
                     <Badge>Novo</Badge>
-                </Topic3>
+                </Topic2>
             </SectionFluid>
 
             {/* Seção com container */}

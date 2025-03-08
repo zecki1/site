@@ -14,7 +14,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { BrazilFlag, USFlag, SpainFlag } from "./Flags";
-import Link from "next/link";
+// import Link from "next/link";
 
 export function Header() {
     const { theme, setTheme } = useTheme();

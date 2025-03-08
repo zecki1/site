@@ -1,7 +1,5 @@
-import capaImage from "@/img/capa.png"
-import parallaxImage from "@/img/parallax-bg.png" // Exemplo
+import capaImage from "@/assets/img/capa.png"
 
 export const images = {
     capa: capaImage.src,
-    parallax: parallaxImage.src,
 } as const

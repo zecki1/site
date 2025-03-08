@@ -1,12 +1,11 @@
-# Estrutura Atual:# Meu Projeto Next.js
+# Meu Projeto Next.js
 
 Este é um projeto Next.js que utiliza TypeScript, Tailwind CSS, shadcn/ui e componentes personalizados para criar uma interface moderna e responsiva.
 
 ## Estrutura de Pastas
 
 ```plaintext
-
-meu-projeto/
+Site/
 ├── public/
 │   └── (vazio por enquanto, pode conter imagens estáticas em img/)
 ├── src/
@@ -21,6 +20,17 @@ meu-projeto/
 │   │   └── [slug]/                     # (Opcional, pode ser removido)
 │   │       └── page.tsx                # Página dinâmica antiga
 │   ├── components/
+│   │   ├── gsap/
+│   │   │   ├── 1ImageParallax.tsx            # Componente de parallax com fundo ou vídeo
+│   │   │   ├── 2ScrollTriggerClamp.tsx  # Recurso GSAP (futuro)
+│   │   │   ├── 3ScrollSmootherThree.tsx # Recurso GSAP (futuro)
+│   │   │   ├── 4ScrollTriggerHorizontalGallery.tsx # Recurso GSAP (futuro)
+│   │   │   ├── 5ScrollSmoother.tsx      # Recurso GSAP (futuro)
+│   │   │   ├── 6GsapImageParallax.tsx   # Recurso GSAP (futuro)
+│   │   │   ├── 7SmoothScrollyImages.tsx # Recurso GSAP (futuro)
+│   │   │   ├── 8ScrollSmootherHeader.tsx # Recurso GSAP (futuro)
+│   │   │   ├── 9StaggeredText.tsx       # Recurso GSAP (futuro)
+│   │   │   └── 10NavigationScrollTrigger.tsx # Recurso GSAP (futuro)
 │   │   ├── layout/
 │   │   │   ├── Container.tsx           # Ajusta margens e responsividade
 │   │   │   ├── Cover.tsx               # Componente de capa com imagem de fundo
@@ -33,8 +43,7 @@ meu-projeto/
 │   │   │   ├── Sidebar.tsx             # Menu lateral com títulos dinâmicos
 │   │   │   ├── TextTranslator.tsx      # Gerencia tradução com i18n
 │   │   │   ├── ThemeProvider.tsx       # Provedor de tema claro/escuro
-│   │   │   ├── Topic.tsx               # Define tópicos dentro de seções
-│   │   │   └── Topic3.tsx              # Variante de Topic (extraído de components.tsx)
+│   │   │   └── Topic.tsx               # Define tópicos dentro de seções (inclui Topic e Topic2)
 │   │   ├── ui/
 │   │   │   ├── accordion.tsx           # shadcn/ui Accordion
 │   │   │   ├── alert.tsx              # shadcn/ui Alert
@@ -74,8 +83,15 @@ meu-projeto/
 │   │   │   ├── toggle.tsx             # shadcn/ui Toggle
 │   │   │   ├── tooltip.tsx            # shadcn/ui Tooltip
 │   │   │   └── sonner.tsx             # shadcn/ui Toaster
-│   ├── img/
-│   │   └── capa.png                    # Imagem para import
+│   ├── assets/
+│   │   ├── img/
+│   │   │    └── capa.png            # Imagem da capa
+│   │   ├── doc/
+│   │   │   └── null            # Ainda sem recurso
+│   │   ├── audio/
+│   │   │   └── null            # Ainda sem recurso
+│   │   └── video/
+│   │       └── null            # Ainda sem recurso
 │   └── lib/
 │       ├── i18n.ts                     # Configuração de idiomas
 │       ├── utils.ts                    # Função cn() para Tailwind

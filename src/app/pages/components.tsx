@@ -31,13 +31,23 @@ import { Switch } from "@/components/ui/switch"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
-import { toast } from "@/components/ui/sonner" // Import já está correto
+import { toast } from "@/components/ui/sonner"
 import { Toggle } from "@/components/ui/toggle"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { images } from "@/components/layout/ImageContainer"
 import Parallax from "@/components/layout/Parallax"
-
+import { ScrollTriggerClamp } from "@/components/gsap/ScrollTriggerClamp"
+import { ScrollSmootherThree } from "@/components/gsap/ScrollSmootherThree"
+import { GsapParallax } from "@/components/gsap/GsapParallax"
+import { GsapImageParallax } from "@/components/gsap/GsapImageParallax"
+import { SmoothScrollyImages } from "@/components/gsap/SmoothScrollyImages"
+import { ScrollSmootherHeader } from "@/components/gsap/ScrollSmootherHeader"
+import { StaggeredText } from "@/components/gsap/StaggeredText"
+import { NavigationScrollTrigger } from "@/components/gsap/NavigationScrollTrigger"
+// import { CanvasParticles } from "@/components/gsap/CanvasParticles"
 import { Cover } from "@/components/layout/Cover"
+import { navSections } from "@/lib/navSections"
+import { parallaxImages } from "@/lib/parallaxImages"
 
 const Mark = ({ children }: { children: React.ReactNode }) => (
     <span className="font-semibold text-blue-600">{children}</span>
@@ -53,7 +63,51 @@ export default function Components() {
                 backgroundImage={images.capa}
             />
 
-            {/* Introdução em SectionFluid */}
+            {/* <section id="header">
+                <ScrollSmootherHeader />
+                <div className="h-[200vh] bg-gray-200" />
+            </section> */}
+            {/* <NavigationScrollTrigger sections={navSections} /> */}
+
+            {/* <section id="parallax">
+                <GsapParallax videoSrc="https://www.dropbox.com/scl/fi/qejf5dgqiv6m77d71r2ec/abstract-background-ink-water.mp4?rlkey=cf5xf73grwr5olszcyjghc5pt&st=ycgfiqec&raw=1">
+                    <div className="text-white text-center">
+                        <h1 className="text-4xl">Parallax Video</h1>
+                    </div>
+                </GsapParallax>
+            </section> */}
+
+            {/* <section id="header">
+                <ScrollSmootherHeader />
+                <div className="h-[200vh] bg-gray-200" />
+            </section> */}
+
+
+            {/* <section id="three">
+                <ScrollSmootherThree />
+            </section> */}
+
+            {/* 
+           
+                  <section id="clamp">
+                <ScrollTriggerClamp />
+            </section>
+
+                      <section id="scrolly">
+                <SmoothScrollyImages images={parallaxImages} />
+            </section>
+            <section id="image-parallax">
+                <GsapImageParallax images={parallaxImages} />
+            </section>
+        
+            
+
+           */}
+
+            <section id="text" className="h-screen flex items-center justify-center">
+                <StaggeredText text="Staggered Text Animation" />
+            </section>
+
             <SectionFluid label="introducao" className="bg-blue-500 py-16">
                 <Topic label="bem-vindo">
                     <div className="text-center">
@@ -79,25 +133,33 @@ export default function Components() {
                 </Topic>
             </SectionFluid>
 
-            {/* Seção com container */}
             <Section label="interativos" className="pt-8">
                 <Topic label="accordion">
                     <h2 className="text-2xl font-semibold mb-2">
-                        <TextTranslator>
-                            {{ ptBR: "Accordion", en: "Accordion", es: "Acordeón" }}
-                        </TextTranslator>
+                        <TextTranslator>{{ ptBR: "Accordion", en: "Accordion", es: "Acordeón" }}</TextTranslator>
                     </h2>
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Accordion</Mark> é um conjunto de cabeçalhos interativos que revelam conteúdo.</>,
-                                en: <>The <Mark>Accordion</Mark> is a set of interactive headings that reveal content.</>,
-                                es: <>El <Mark>Acordeón</Mark> es un conjunto de encabezados interactivos que revelan contenido.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Accordion</Mark> é um conjunto de cabeçalhos interativos que revelam conteúdo.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Accordion</Mark> is a set of interactive headings that reveal content.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Acordeón</Mark> es un conjunto de encabezados interactivos que revelan contenido.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
 
-                    {/* 1. Accordion com Ícones */}
                     <h3 className="text-xl font-medium mt-6 mb-2">
                         <TextTranslator>
                             {{ ptBR: "Accordion com Ícones", en: "Accordion with Icons", es: "Acordeón con Iconos" }}
@@ -107,9 +169,7 @@ export default function Components() {
                         <AccordionItem value="item-1">
                             <AccordionTrigger className="flex items-center gap-2">
                                 <Star className="h-4 w-4" />
-                                <TextTranslator>
-                                    {{ ptBR: "Item 1", en: "Item 1", es: "Ítem 1" }}
-                                </TextTranslator>
+                                <TextTranslator>{{ ptBR: "Item 1", en: "Item 1", es: "Ítem 1" }}</TextTranslator>
                             </AccordionTrigger>
                             <AccordionContent>
                                 <TextTranslator>
@@ -120,9 +180,7 @@ export default function Components() {
                         <AccordionItem value="item-2">
                             <AccordionTrigger className="flex items-center gap-2">
                                 <Star className="h-4 w-4" />
-                                <TextTranslator>
-                                    {{ ptBR: "Item 2", en: "Item 2", es: "Ítem 2" }}
-                                </TextTranslator>
+                                <TextTranslator>{{ ptBR: "Item 2", en: "Item 2", es: "Ítem 2" }}</TextTranslator>
                             </AccordionTrigger>
                             <AccordionContent>
                                 <TextTranslator>
@@ -132,7 +190,6 @@ export default function Components() {
                         </AccordionItem>
                     </Accordion>
 
-                    {/* 2. Accordion Múltiplo */}
                     <h3 className="text-xl font-medium mt-6 mb-2">
                         <TextTranslator>
                             {{ ptBR: "Accordion Múltiplo", en: "Multiple Accordion", es: "Acordeón Múltiple" }}
@@ -141,9 +198,7 @@ export default function Components() {
                     <Accordion type="multiple" className="w-full">
                         <AccordionItem value="item-1">
                             <AccordionTrigger>
-                                <TextTranslator>
-                                    {{ ptBR: "Item 1", en: "Item 1", es: "Ítem 1" }}
-                                </TextTranslator>
+                                <TextTranslator>{{ ptBR: "Item 1", en: "Item 1", es: "Ítem 1" }}</TextTranslator>
                             </AccordionTrigger>
                             <AccordionContent>
                                 <TextTranslator>
@@ -153,9 +208,7 @@ export default function Components() {
                         </AccordionItem>
                         <AccordionItem value="item-2">
                             <AccordionTrigger>
-                                <TextTranslator>
-                                    {{ ptBR: "Item 2", en: "Item 2", es: "Ítem 2" }}
-                                </TextTranslator>
+                                <TextTranslator>{{ ptBR: "Item 2", en: "Item 2", es: "Ítem 2" }}</TextTranslator>
                             </AccordionTrigger>
                             <AccordionContent>
                                 <TextTranslator>
@@ -165,7 +218,6 @@ export default function Components() {
                         </AccordionItem>
                     </Accordion>
 
-                    {/* 3. Accordion Padrão */}
                     <h3 className="text-xl font-medium mt-6 mb-2">
                         <TextTranslator>
                             {{ ptBR: "Accordion Padrão", en: "Standard Accordion", es: "Acordeón Estándar" }}
@@ -174,9 +226,7 @@ export default function Components() {
                     <Accordion type="single" collapsible className="w-full">
                         <AccordionItem value="item-1">
                             <AccordionTrigger>
-                                <TextTranslator>
-                                    {{ ptBR: "É acessível?", en: "Is it accessible?", es: "¿Es accesible?" }}
-                                </TextTranslator>
+                                <TextTranslator>{{ ptBR: "É acessível?", en: "Is it accessible?", es: "¿Es accesible?" }}</TextTranslator>
                             </AccordionTrigger>
                             <AccordionContent>
                                 <TextTranslator>
@@ -186,7 +236,6 @@ export default function Components() {
                         </AccordionItem>
                     </Accordion>
 
-                    {/* 4. Accordion Simples */}
                     <h3 className="text-xl font-medium mt-6 mb-2">
                         <TextTranslator>
                             {{ ptBR: "Accordion Simples", en: "Simple Accordion", es: "Acordeón Simple" }}
@@ -195,9 +244,7 @@ export default function Components() {
                     <Accordion type="single" collapsible className="w-full [data-state=open]:animate-none">
                         <AccordionItem value="item-1" className="border-b">
                             <AccordionTrigger className="py-2 hover:no-underline">
-                                <TextTranslator>
-                                    {{ ptBR: "Item Simples", en: "Simple Item", es: "Ítem Simple" }}
-                                </TextTranslator>
+                                <TextTranslator>{{ ptBR: "Item Simples", en: "Simple Item", es: "Ítem Simple" }}</TextTranslator>
                             </AccordionTrigger>
                             <AccordionContent className="py-2">
                                 <TextTranslator>
@@ -207,7 +254,6 @@ export default function Components() {
                         </AccordionItem>
                     </Accordion>
 
-                    {/* 5. Accordion com Conteúdo Rico */}
                     <h3 className="text-xl font-medium mt-6 mb-2">
                         <TextTranslator>
                             {{ ptBR: "Accordion com Conteúdo Rico", en: "Rich Content Accordion", es: "Acordeón con Contenido Rico" }}
@@ -216,9 +262,7 @@ export default function Components() {
                     <Accordion type="single" collapsible className="w-full rounded-md border bg-card">
                         <AccordionItem value="item-1" className="border-b-0">
                             <AccordionTrigger className="px-4 py-3">
-                                <TextTranslator>
-                                    {{ ptBR: "Item Rico", en: "Rich Item", es: "Ítem Rico" }}
-                                </TextTranslator>
+                                <TextTranslator>{{ ptBR: "Item Rico", en: "Rich Item", es: "Ítem Rico" }}</TextTranslator>
                             </AccordionTrigger>
                             <AccordionContent className="px-4 py-3">
                                 <div className="flex flex-col gap-2">
@@ -227,14 +271,10 @@ export default function Components() {
                                     </TextTranslator>
                                     <div className="flex gap-2">
                                         <span className="inline-flex items-center rounded-full bg-primary px-2.5 py-0.5 text-xs font-medium text-primary-foreground">
-                                            <TextTranslator>
-                                                {{ ptBR: "Tag 1", en: "Tag 1", es: "Etiqueta 1" }}
-                                            </TextTranslator>
+                                            <TextTranslator>{{ ptBR: "Tag 1", en: "Tag 1", es: "Etiqueta 1" }}</TextTranslator>
                                         </span>
                                         <span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
-                                            <TextTranslator>
-                                                {{ ptBR: "Tag 2", en: "Tag 2", es: "Etiqueta 2" }}
-                                            </TextTranslator>
+                                            <TextTranslator>{{ ptBR: "Tag 2", en: "Tag 2", es: "Etiqueta 2" }}</TextTranslator>
                                         </span>
                                     </div>
                                 </div>
@@ -248,9 +288,21 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Button</Mark> é usado para ações clicáveis.</>,
-                                en: <>The <Mark>Button</Mark> is used for clickable actions.</>,
-                                es: <>El <Mark>Button</Mark> se usa para acciones clicables.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Button</Mark> é usado para ações clicáveis.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Button</Mark> is used for clickable actions.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Button</Mark> se usa para acciones clicables.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -262,9 +314,21 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Checkbox</Mark> permite seleções múltiplas.</>,
-                                en: <>The <Mark>Checkbox</Mark> allows multiple selections.</>,
-                                es: <>El <Mark>Checkbox</Mark> permite selecciones múltiples.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Checkbox</Mark> permite seleções múltiplas.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Checkbox</Mark> allows multiple selections.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Checkbox</Mark> permite selecciones múltiples.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -272,16 +336,27 @@ export default function Components() {
                 </Topic>
             </Section>
 
-            {/* Seção fluida com Topic2 */}
-            <SectionFluid label="visualizacoes" className=" py-12">
+            <SectionFluid label="visualizacoes" className="py-12">
                 <Topic2 label="alert" bgColor="">
                     <h2 className="text-2xl font-semibold mb-2">Alert</h2>
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Alert</Mark> exibe mensagens de notificação ou aviso.</>,
-                                en: <>The <Mark>Alert</Mark> displays notification or warning messages.</>,
-                                es: <>El <Mark>Alert</Mark> muestra mensajes de notificación o advertencia.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Alert</Mark> exibe mensagens de notificação ou aviso.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Alert</Mark> displays notification or warning messages.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Alert</Mark> muestra mensajes de notificación o advertencia.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -296,9 +371,21 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Avatar</Mark> representa usuários com imagens ou iniciais.</>,
-                                en: <>The <Mark>Avatar</Mark> represents users with images or initials.</>,
-                                es: <>El <Mark>Avatar</Mark> representa a usuarios con imágenes o iniciales.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Avatar</Mark> representa usuários com imagens ou iniciais.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Avatar</Mark> represents users with images or initials.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Avatar</Mark> representa a usuarios con imágenes o iniciales.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -313,9 +400,21 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Badge</Mark> é um pequeno rótulo para destacar informações.</>,
-                                en: <>The <Mark>Badge</Mark> is a small label to highlight information.</>,
-                                es: <>El <Mark>Badge</Mark> es una pequeña etiqueta para resaltar información.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Badge</Mark> é um pequeno rótulo para destacar informações.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Badge</Mark> is a small label to highlight information.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Badge</Mark> es una pequeña etiqueta para resaltar información.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -323,16 +422,27 @@ export default function Components() {
                 </Topic2>
             </SectionFluid>
 
-            {/* Seção com container */}
-            <Section label="formularios" className=" py-8">
+            <Section label="formularios" className="py-8">
                 <Topic label="input">
                     <h2 className="text-2xl font-semibold mb-2">Input</h2>
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Input</Mark> permite entrada de texto.</>,
-                                en: <>The <Mark>Input</Mark> allows text input.</>,
-                                es: <>El <Mark>Input</Mark> permite la entrada de texto.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Input</Mark> permite entrada de texto.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Input</Mark> allows text input.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Input</Mark> permite la entrada de texto.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -344,9 +454,21 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Textarea</Mark> permite entrada de texto multilinha.</>,
-                                en: <>The <Mark>Textarea</Mark> allows multiline text input.</>,
-                                es: <>El <Mark>Textarea</Mark> permite la entrada de texto multilínea.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Textarea</Mark> permite entrada de texto multilinha.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Textarea</Mark> allows multiline text input.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Textarea</Mark> permite la entrada de texto multilínea.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -358,9 +480,21 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Select</Mark> é um menu suspenso para escolhas.</>,
-                                en: <>The <Mark>Select</Mark> is a dropdown for choices.</>,
-                                es: <>El <Mark>Select</Mark> es un menú desplegable para elecciones.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Select</Mark> é um menu suspenso para escolhas.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Select</Mark> is a dropdown for choices.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Select</Mark> es un menú desplegable para elecciones.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -374,15 +508,28 @@ export default function Components() {
                     </Select>
                 </Topic>
             </Section>
-            <Section label="navegacao" className=" py-12">
+
+            <Section label="navegacao" className="py-12">
                 <Topic label="menubar">
                     <h2 className="text-2xl font-semibold mb-2">Menubar</h2>
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Menubar</Mark> cria barras de menu horizontais.</>,
-                                en: <>The <Mark>Menubar</Mark> creates horizontal menu bars.</>,
-                                es: <>El <Mark>Menubar</Mark> crea barras de menú horizontales.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Menubar</Mark> cria barras de menu horizontais.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Menubar</Mark> creates horizontal menu bars.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Menubar</Mark> crea barras de menú horizontales.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -401,9 +548,21 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Navigation Menu</Mark> organiza links de navegação.</>,
-                                en: <>The <Mark>Navigation Menu</Mark> organizes navigation links.</>,
-                                es: <>El <Mark>Navigation Menu</Mark> organiza enlaces de navegación.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Navigation Menu</Mark> organiza links de navegação.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Navigation Menu</Mark> organizes navigation links.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Navigation Menu</Mark> organiza enlaces de navegación.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -421,9 +580,21 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Dropdown Menu</Mark> exibe opções em um menu suspenso.</>,
-                                en: <>The <Mark>Dropdown Menu</Mark> displays options in a dropdown.</>,
-                                es: <>El <Mark>Dropdown Menu</Mark> muestra opciones en un menú desplegable.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Dropdown Menu</Mark> exibe opções em um menu suspenso.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Dropdown Menu</Mark> displays options in a dropdown.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Dropdown Menu</Mark> muestra opciones en un menú desplegable.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -436,19 +607,29 @@ export default function Components() {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </Topic>
-
             </Section>
 
-            {/* Seção com container */}
-            <Section label="outros" className=" py-8">
+            <Section label="outros" className="py-8">
                 <Topic label="calendar">
                     <h2 className="text-2xl font-semibold mb-2">Calendar</h2>
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Calendar</Mark> permite selecionar datas.</>,
-                                en: <>The <Mark>Calendar</Mark> allows date selection.</>,
-                                es: <>El <Mark>Calendar</Mark> permite seleccionar fechas.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Calendar</Mark> permite selecionar datas.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Calendar</Mark> allows date selection.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Calendar</Mark> permite seleccionar fechas.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -460,9 +641,21 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Card</Mark> organiza conteúdo em um contêiner.</>,
-                                en: <>The <Mark>Card</Mark> organizes content in a container.</>,
-                                es: <>El <Mark>Card</Mark> organiza contenido en un contenedor.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Card</Mark> organiza conteúdo em um contêiner.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Card</Mark> organizes content in a container.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Card</Mark> organiza contenido en un contenedor.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -479,9 +672,21 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Collapsible</Mark> esconde ou mostra conteúdo.</>,
-                                en: <>The <Mark>Collapsible</Mark> hides or shows content.</>,
-                                es: <>El <Mark>Collapsible</Mark> oculta o muestra contenido.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Collapsible</Mark> esconde ou mostra conteúdo.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Collapsible</Mark> hides or shows content.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Collapsible</Mark> oculta o muestra contenido.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -496,9 +701,21 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Command</Mark> cria menus de comando interativos.</>,
-                                en: <>The <Mark>Command</Mark> creates interactive command menus.</>,
-                                es: <>El <Mark>Command</Mark> crea menús de comandos interactivos.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Command</Mark> cria menus de comando interativos.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Command</Mark> creates interactive command menus.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Command</Mark> crea menús de comandos interactivos.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -510,16 +727,13 @@ export default function Components() {
                     </Command>
                 </Topic>
             </Section>
-            <SectionFluid label="outros" className=" py-8">
+
+            <SectionFluid label="outros" className="py-8">
                 <Topic label="parallax">
                     <div className="container mx-auto py-8">
                         <h2 className="text-2xl font-semibold mb-2">
                             <TextTranslator ignoreCheck={true}>
-                                {{
-                                    ptBR: "Parallax",
-                                    en: "Parallax",
-                                    es: "Parallax",
-                                }}
+                                {{ ptBR: "Parallax", en: "Parallax", es: "Parallax" }}
                             </TextTranslator>
                         </h2>
                         <p>
@@ -542,52 +756,32 @@ export default function Components() {
                         </p>
                     </div>
                     <Parallax backgroundImage={images.parallax || images.capa}>
-
-                        <div className="mt-2  px-3 rounded text-white text-sm bg-black/50 border-0">
-
+                        <div className="mt-2 px-3 rounded text-white text-sm bg-black/50 border-0">
                             <div className="text-white text-center">
                                 <h1 className="text-4xl md:text-6xl font-bold">
                                     <TextTranslator>
-                                        {{
-                                            ptBR: "Bem-vindo ao Parallax",
-                                            en: "Welcome to Parallax",
-                                            es: "Bienvenido a Parallax",
-                                        }}
+                                        {{ ptBR: "Bem-vindo ao Parallax", en: "Welcome to Parallax", es: "Bienvenido a Parallax" }}
                                     </TextTranslator>
                                 </h1>
                                 <p className="mt-4 text-lg">
                                     <TextTranslator>
-                                        {{
-                                            ptBR: "Um efeito visual incrível",
-                                            en: "An amazing visual effect",
-                                            es: "Un efecto visual increíble",
-                                        }}
+                                        {{ ptBR: "Um efeito visual incrível", en: "An amazing visual effect", es: "Un efecto visual increíble" }}
                                     </TextTranslator>
                                 </p>
                             </div>
-
                         </div>
-
                     </Parallax>
                     <Parallax videoSrc="https://www.dropbox.com/scl/fi/qejf5dgqiv6m77d71r2ec/abstract-background-ink-water.mp4?rlkey=cf5xf73grwr5olszcyjghc5pt&st=ycgfiqec&raw=1">
-                        <div className="mt-2  px-3 rounded text-white text-sm bg-black/50 border-0">
+                        <div className="mt-2 px-3 rounded text-white text-sm bg-black/50 border-0">
                             <div className="text-white text-center">
                                 <h1 className="text-4xl md:text-6xl font-bold">
                                     <TextTranslator>
-                                        {{
-                                            ptBR: "Vídeo Parallax",
-                                            en: "Video Parallax",
-                                            es: "Parallax de Video",
-                                        }}
+                                        {{ ptBR: "Vídeo Parallax", en: "Video Parallax", es: "Parallax de Video" }}
                                     </TextTranslator>
                                 </h1>
                                 <p className="mt-4 text-lg">
                                     <TextTranslator>
-                                        {{
-                                            ptBR: "Um efeito dinâmico com vídeo",
-                                            en: "A dynamic effect with video",
-                                            es: "Un efecto dinámico con video",
-                                        }}
+                                        {{ ptBR: "Um efeito dinâmico com vídeo", en: "A dynamic effect with video", es: "Un efecto dinámico con video" }}
                                     </TextTranslator>
                                 </p>
                             </div>
@@ -600,9 +794,21 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Popover</Mark> exibe conteúdo flutuante ao clicar.</>,
-                                en: <>The <Mark>Popover</Mark> displays floating content on click.</>,
-                                es: <>El <Mark>Popover</Mark> muestra contenido flotante al hacer clic.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Popover</Mark> exibe conteúdo flutuante ao clicar.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Popover</Mark> displays floating content on click.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Popover</Mark> muestra contenido flotante al hacer clic.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -613,14 +819,27 @@ export default function Components() {
                         <PopoverContent>Conteúdo aqui</PopoverContent>
                     </Popover>
                 </Topic2>
+
                 <Topic2 label="progress">
                     <h2 className="text-2xl font-semibold mb-2">Progress</h2>
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Progress</Mark> mostra o progresso de uma tarefa.</>,
-                                en: <>The <Mark>Progress</Mark> shows task progress.</>,
-                                es: <>El <Mark>Progress</Mark> muestra el progreso de una tarea.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Progress</Mark> mostra o progresso de uma tarefa.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Progress</Mark> shows task progress.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Progress</Mark> muestra el progreso de una tarea.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -632,9 +851,21 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Radio Group</Mark> permite uma única seleção entre opções.</>,
-                                en: <>The <Mark>Radio Group</Mark> allows single selection among options.</>,
-                                es: <>El <Mark>Radio Group</Mark> permite una sola selección entre opciones.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Radio Group</Mark> permite uma única seleção entre opções.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Radio Group</Mark> allows single selection among options.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Radio Group</Mark> permite una sola selección entre opciones.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -649,14 +880,26 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Scroll Area</Mark> adiciona barras de rolagem personalizadas.</>,
-                                en: <>The <Mark>Scroll Area</Mark> adds custom scrollbars.</>,
-                                es: <>El <Mark>Scroll Area</Mark> agrega barras de desplazamiento personalizadas.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Scroll Area</Mark> adiciona barras de rolagem personalizadas.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Scroll Area</Mark> adds custom scrollbars.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Scroll Area</Mark> agrega barras de desplazamiento personalizadas.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
                     <ScrollArea className="h-20 w-48">
-                        <div className="p-4">Conteúdo longo aqui...</div>
+                        <div>Conteúdo longo aqui...</div>
                     </ScrollArea>
                 </Topic2>
 
@@ -665,22 +908,47 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Separator</Mark> divide conteúdos visualmente.</>,
-                                en: <>The <Mark>Separator</Mark> visually divides content.</>,
-                                es: <>El <Mark>Separator</Mark> divide visualmente el contenido.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Separator</Mark> divide conteúdos visualmente.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Separator</Mark> visually divides content.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Separator</Mark> divide visualmente el contenido.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
                     <Separator />
                 </Topic2>
+
                 <Topic2 label="sheet">
                     <h2 className="text-2xl font-semibold mb-2">Sheet</h2>
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Sheet</Mark> é um painel lateral deslizante.</>,
-                                en: <>The <Mark>Sheet</Mark> is a sliding side panel.</>,
-                                es: <>El <Mark>Sheet</Mark> es un panel lateral deslizante.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Sheet</Mark> é um painel lateral deslizante.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Sheet</Mark> is a sliding side panel.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Sheet</Mark> es un panel lateral deslizante.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -697,9 +965,21 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Skeleton</Mark> mostra placeholders durante o carregamento.</>,
-                                en: <>The <Mark>Skeleton</Mark> shows placeholders during loading.</>,
-                                es: <>El <Mark>Skeleton</Mark> muestra marcadores durante la carga.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Skeleton</Mark> mostra placeholders durante o carregamento.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Skeleton</Mark> shows placeholders during loading.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Skeleton</Mark> muestra marcadores durante la carga.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -711,9 +991,21 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Slider</Mark> permite ajustar valores em um intervalo.</>,
-                                en: <>The <Mark>Slider</Mark> allows adjusting values in a range.</>,
-                                es: <>El <Mark>Slider</Mark> permite ajustar valores en un rango.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Slider</Mark> permite ajustar valores em um intervalo.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Slider</Mark> allows adjusting values in a range.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Slider</Mark> permite ajustar valores en un rango.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -725,9 +1017,21 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Switch</Mark> alterna entre dois estados.</>,
-                                en: <>The <Mark>Switch</Mark> toggles between two states.</>,
-                                es: <>El <Mark>Switch</Mark> alterna entre dos estados.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Switch</Mark> alterna entre dois estados.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Switch</Mark> toggles between two states.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Switch</Mark> alterna entre dos estados.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -739,9 +1043,21 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Table</Mark> organiza dados em linhas e colunas.</>,
-                                en: <>The <Mark>Table</Mark> organizes data in rows and columns.</>,
-                                es: <>El <Mark>Table</Mark> organiza datos en filas y columnas.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Table</Mark> organiza dados em linhas e colunas.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Table</Mark> organizes data in rows and columns.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Table</Mark> organiza datos en filas y columnas.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -764,9 +1080,21 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Tabs</Mark> organiza conteúdo em abas.</>,
-                                en: <>The <Mark>Tabs</Mark> organizes content in tabs.</>,
-                                es: <>El <Mark>Tabs</Mark> organiza contenido en pestañas.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Tabs</Mark> organiza conteúdo em abas.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Tabs</Mark> organizes content in tabs.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Tabs</Mark> organiza contenido en pestañas.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -784,9 +1112,21 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Toast</Mark> exibe notificações temporárias.</>,
-                                en: <>The <Mark>Toast</Mark> displays temporary notifications.</>,
-                                es: <>El <Mark>Toast</Mark> muestra notificaciones temporales.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Toast</Mark> exibe notificações temporárias.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Toast</Mark> displays temporary notifications.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Toast</Mark> muestra notificaciones temporales.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -798,9 +1138,21 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Toggle</Mark> alterna estados como um botão.</>,
-                                en: <>The <Mark>Toggle</Mark> toggles states like a button.</>,
-                                es: <>El <Mark>Toggle</Mark> alterna estados como un botón.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Toggle</Mark> alterna estados como um botão.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Toggle</Mark> toggles states like a button.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Toggle</Mark> alterna estados como un botón.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
@@ -812,16 +1164,30 @@ export default function Components() {
                     <p>
                         <TextTranslator>
                             {{
-                                ptBR: <>O <Mark>Tooltip</Mark> mostra dicas ao passar o mouse.</>,
-                                en: <>The <Mark>Tooltip</Mark> shows tips on hover.</>,
-                                es: <>El <Mark>Tooltip</Mark> muestra consejos al pasar el ratón.</>,
+                                ptBR: (
+                                    <>
+                                        O <Mark>Tooltip</Mark> mostra dicas ao passar o mouse.
+                                    </>
+                                ),
+                                en: (
+                                    <>
+                                        The <Mark>Tooltip</Mark> shows tips on hover.
+                                    </>
+                                ),
+                                es: (
+                                    <>
+                                        El <Mark>Tooltip</Mark> muestra consejos al pasar el ratón.
+                                    </>
+                                ),
                             }}
                         </TextTranslator>
                     </p>
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <Button><span>Passe o mouse</span></Button>
+                                <Button>
+                                    <span>Passe o mouse</span>
+                                </Button>
                             </TooltipTrigger>
                             <TooltipContent>Dica</TooltipContent>
                         </Tooltip>
@@ -829,31 +1195,20 @@ export default function Components() {
                 </Topic2>
             </SectionFluid>
 
-            {/* Rodapé fluido */}
-            <SectionFluid label="rodape" className=" py-16">
+            <SectionFluid label="rodape" className="py-16">
                 <Topic label="final">
                     <div className="text-center">
                         <h2 className="text-3xl font-bold mb-4">
-                            <TextTranslator>
-                                {{
-                                    ptBR: "Rodapé",
-                                    en: "Footer",
-                                    es: "Pie de página",
-                                }}
-                            </TextTranslator>
+                            <TextTranslator>{{ ptBR: "Rodapé", en: "Footer", es: "Pie de página" }}</TextTranslator>
                         </h2>
                         <p>
                             <TextTranslator>
-                                {{
-                                    ptBR: "Seção fluida no final da página.",
-                                    en: "Fluid section at the end of the page.",
-                                    es: "Sección fluida al final de la página.",
-                                }}
+                                {{ ptBR: "Seção fluida no final da página.", en: "Fluid section at the end of the page.", es: "Sección fluida al final de la página." }}
                             </TextTranslator>
                         </p>
                     </div>
                 </Topic>
             </SectionFluid>
-        </main >
+        </main>
     )
 }

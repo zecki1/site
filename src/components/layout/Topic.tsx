@@ -25,7 +25,7 @@ export const Topic: React.FC<TopicProps> = ({ children, label, className, asChil
         <Comp
             id={generateId(label)}
             aria-label={label}
-            className={cn("p-4", className)}
+            className={cn("", className)}
         >
             {children}
         </Comp>

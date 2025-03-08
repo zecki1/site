@@ -190,3 +190,10 @@
     }
   }
 }
+
+/*HEADER */
+
+main {
+  position: relative;
+  z-index: 0;
+}

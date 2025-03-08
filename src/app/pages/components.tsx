@@ -105,7 +105,7 @@ export default function Components() {
            */}
 
             <section id="text" className="h-screen flex items-center justify-center">
-                <StaggeredText text="Staggered Text Animation" />
+                <StaggeredText text="Design Gráfico" />
             </section>
 
             <SectionFluid label="introducao" className="bg-blue-500 py-16">

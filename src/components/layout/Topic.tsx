@@ -33,13 +33,13 @@ export const Topic: React.FC<TopicProps> = ({ children, label, className, asChil
 }
 
 
-interface Topic3Props extends TopicProps {
+interface Topic2Props extends TopicProps {
     svgComponent?: string
     showSvg?: boolean
     bgColor?: string
 }
 
-export const Topic3: React.FC<Topic3Props> = ({
+export const Topic2: React.FC<Topic2Props> = ({
     children,
     label,
     className,

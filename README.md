@@ -1,8 +1,10 @@
-## Estrutura Atual:# Meu Projeto Next.js
+# Estrutura Atual:# Meu Projeto Next.js
 
 Este é um projeto Next.js que utiliza TypeScript, Tailwind CSS, shadcn/ui e componentes personalizados para criar uma interface moderna e responsiva.
 
 ## Estrutura de Pastas
+
+```plaintext
 
 meu-projeto/
 ├── public/
@@ -90,16 +92,18 @@ meu-projeto/
 ├── tailwind.config.js                  # Configuração Tailwind CSS
 └── tsconfig.json                       # Configuração TypeScript com alias @
 
+```
 
 ## Componentes Personalizados
 
 Aqui estão os componentes personalizados extraídos de `src/app/pages/components.tsx`. Cada um vem com uma explicação sobre como funciona e para que serve, seguida do código em TypeScript.
 
+### Cover
 
-### Cover.tsx
 **Como funciona:** O Cover exibe uma imagem de fundo em tela cheia com uma camada escura opcional (removida no seu código atual) para contraste. Ele usa o TextTranslator para exibir títulos multilíngues e inclui um ScrollIndicator para incentivar a rolagem. A estilização é feita com Tailwind e a função cn para classes dinâmicas.
 
 **Para que serve:** É usado como uma seção de destaque no topo da página, geralmente para apresentar um título principal com um fundo visual impactante.
+
 ```typescript"
 "use client"
 
@@ -163,8 +167,9 @@ export const Cover: React.FC<CoverProps> = ({
 export default Cover
 ```
 
-DynamicPageClient.tsx
-**Como funciona:** O DynamicPageClient é um componente cliente que gerencia rotas dinâmicas baseadas em slugs. Ele mapeia slugs para páginas específicas (Home, About, Components) e usa o Container para envolver o conteúdo, ajustando o layout (fluido ou limitado) conforme o slug. Se o slug não for encontrado, retorna uma página 404 com notFound().
+### DynamicPageClient.tsx
+
+**Como funciona:** O `DynamicPageClient` é um componente cliente que gerencia rotas dinâmicas baseadas em slugs. Ele mapeia slugs para páginas específicas (`Home`, `About`, `Components`) e usa o Container para envolver o conteúdo, ajustando o layout (fluido ou limitado) conforme o slug. Se o slug não for encontrado, retorna uma página 404 com `notFound()`.
 
 **Para que serve:** Facilita a renderização dinâmica de páginas no lado cliente, permitindo navegação fluida entre diferentes seções do site.
 
@@ -204,16 +209,17 @@ export default function DynamicPageClient({ slug }: DynamicPageClientProps) {
         </Container>
     )
 }
-
 ```
-Flags.tsx
-**Como funciona:** O Flags.tsx exporta três componentes SVG (BrazilFlag, USFlag, SpainFlag) que representam bandeiras de países. Cada bandeira é desenhada com elementos SVG e aceita uma className para estilização personalizada.
 
-**Para que serve:** É usado para exibir ícones de bandeiras em interfaces de seleção de idioma, como no Header.
+### Flags.tsx
+
+**Como funciona:** O `Flags.tsx` exporta três componentes SVG (`BrazilFlag`, `USFlag`, `SpainFlag`) que representam bandeiras de países. Cada bandeira é desenhada com elementos SVG e aceita uma `className` para estilização personalizada.
+
+**Para que serve:** É usado para exibir ícones de bandeiras em interfaces de seleção de idioma, como no `Header`.
 
 ```typescript"
-import React from "react";
 
+import React from "react";
 export const BrazilFlag: React.FC<{ className?: string }> = ({ className }) => (
     <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect width="24" height="24" fill="#009B3A" />
@@ -263,12 +269,14 @@ export const SpainFlag: React.FC<{ className?: string }> = ({ className }) => (
 );
 ```
 
-Header.tsx
-**Como funciona:** O Header é um cabeçalho fixo que agora contém apenas o Sidebar e controles para alternar tema (claro/escuro) e idioma (usando DropdownMenu e Flags), após a remoção dos links diretos para melhorar o design mobile. Ele utiliza o ThemeProvider para gerenciar o tema e react-i18next para tradução.
+### Header.tsx
 
-**Para que serve:** Fornece uma barra de navegação minimalista no topo da página, delegando a navegação principal ao Sidebar e mantendo configurações de tema/idioma acessíveis.
+**Como funciona:** O `Header` é um cabeçalho fixo que agora contém apenas o `Sidebar` e controles para alternar tema (claro/escuro) e idioma (usando `DropdownMenu` e `Flags`), após a remoção dos links diretos para melhorar o design mobile. Ele utiliza o `ThemeProvider` para gerenciar o tema e `react-i18next` para tradução.
+
+**Para que serve:** Fornece uma barra de navegação minimalista no topo da página, delegando a navegação principal ao `Sidebar` e mantendo configurações de tema/idioma acessíveis.
 
 ```typescript"
+
 "use client";
 
 import { useTheme } from "@/components/layout/ThemeProvider";
@@ -378,13 +386,17 @@ export function Header() {
         </header>
     );
 }
+
 ```
-ImageContainer.tsx
-**Como funciona:** O ImageContainer importa imagens estáticas de src/img/ e as exporta como um objeto com URLs geradas pelo Next.js, prontas para uso em outros componentes como o Cover.
+
+### ImageContainer.tsx
+
+**Como funciona:** O `ImageContainer` importa imagens estáticas de `src/img/` e as exporta como um objeto com URLs geradas pelo Next.js, prontas para uso em outros componentes como o `Cover`.
 
 **Para que serve:** Centraliza o gerenciamento de imagens estáticas no projeto, facilitando seu uso em diferentes partes da aplicação.
 
 ```typescript"
+
 import capaImage from "@/img/capa.png"
 // import componentesImage from "@/img/componentes.png"
 
@@ -392,13 +404,14 @@ export const images = {
     capa: capaImage.src,
     // componentes: componentesImage.src,
 } as const
+
 ```
 
-ScrollIndicator.tsx
-**Como funciona:** O ScrollIndicator exibe um ícone animado (uma seta para baixo) e um texto multilíngue (via TextTranslator) na parte inferior de uma seção, como o Cover. Ele usa Tailwind para estilização e animação (animate-bounce).
+### ScrollIndicator.tsx
+
+**Como funciona:** O `ScrollIndicator` exibe um ícone animado (uma seta para baixo) e um texto multilíngue (via `TextTranslator`) na parte inferior de uma seção, como o `Cover`. Ele usa Tailwind para estilização e animação (`animate-bounce`).
 
 **Para que serve:** Incentiva os usuários a rolar para baixo, melhorando a experiência de navegação em seções longas.
-
 
 ```typescript"
 "use client"
@@ -430,12 +443,13 @@ const ScrollIndicator: React.FC = () => {
 }
 
 export default ScrollIndicator
-
 ```
-Sections.tsx
-**Como funciona:** O Sections.tsx exporta dois componentes: Section e SectionFluid. O Section cria uma seção centralizada com um container e animações GSAP para entrada suave. O SectionFluid cria uma seção de largura total com animações semelhantes. Ambos usam um label para definir IDs.
 
-**Para que serve:** Organiza o conteúdo em blocos estruturados, com Section para layouts contidos e SectionFluid para seções expansivas, como introduções ou rodapés.
+### Sections.tsx
+
+**Como funciona:** O `Sections.tsx` exporta dois componentes: `Section` e `SectionFluid`. O `Section` cria uma seção centralizada com um container e animações GSAP para entrada suave. O `SectionFluid` cria uma seção de largura total com animações semelhantes. Ambos usam um `label` para definir IDs.
+
+**Para que serve:** Organiza o conteúdo em blocos estruturados, com `Section` para layouts contidos e `SectionFluid` para seções expansivas, como introduções ou rodapés.
 
 ```typescript"
 "use client"
@@ -487,10 +501,11 @@ export const SectionFluid: React.FC<SectionFluidProps> = ({ children, label, cla
         </section>
     )
 }
-
 ```
-Sidebar.tsx
-**Como funciona:** O Sidebar é um menu lateral deslizante (usando Sheet do shadcn/ui) que lista páginas principais e, na página components, exibe seções e subseções com ícones dinâmicos (BsCircle ou BsCheckCircle) para indicar itens visitados. Ele usa IntersectionObserver para rastrear seções visíveis e animações suaves para navegação.
+
+### Sidebar.tsx
+
+**Como funciona:** O `Sidebar` é um menu lateral deslizante (usando `Sheet` do shadcn/ui) que lista páginas principais e, na página `components`, exibe seções e subseções com ícones dinâmicos (`BsCircle` ou `BsCheckCircle`) para indicar itens visitados. Ele usa `IntersectionObserver` para rastrear seções visíveis e animações suaves para navegação.
 
 **Para que serve:** Oferece uma navegação secundária interativa, ideal para acessar rapidamente páginas ou seções específicas, especialmente em páginas longas como components.
 
@@ -727,10 +742,11 @@ export const Sidebar = () => {
         </Sheet>
     )
 }
-
 ```
-TextTranslator.tsx
-**Como funciona:** O TextTranslator gerencia a tradução de texto com base no idioma atual (via react-i18next). Ele valida traduções, detecta erros como textos repetidos ou ausentes, e exibe um aviso [TRADUZIR] em vermelho quando necessário. Usa estados para evitar problemas de hidratação no lado cliente.
+
+### TextTranslator.tsx
+
+**Como funciona:** O `TextTranslator` gerencia a tradução de texto com base no idioma atual (via `react-i18next`). Ele valida traduções, detecta erros como textos repetidos ou ausentes, e exibe um aviso `[TRADUZIR]` em vermelho quando necessário. Usa estados para evitar problemas de hidratação no lado cliente.
 
 **Para que serve:** Permite a internacionalização de conteúdo, garantindo que textos sejam exibidos no idioma correto e destacando problemas de tradução.
 
@@ -832,8 +848,10 @@ const TextTranslator: React.FC<TextTranslatorProps> = ({ children, ignoreCheck =
 
 export default TextTranslator;
 ```
-ThemeProvider.tsx
-**Como funciona:** O ThemeProvider gerencia o tema da aplicação (claro, escuro ou sistema) usando contexto React e localStorage. Ele também integra o I18nextProvider para tradução, ajustando o idioma inicial com base em localStorage. Usa media queries para sincronizar o tema com as preferências do sistema.
+
+### ThemeProvider.tsx
+
+**Como funciona:** O `ThemeProvider` gerencia o tema da aplicação (claro, escuro ou sistema) usando contexto React e `localStorage`. Ele também integra o `I18nextProvider` para tradução, ajustando o idioma inicial com base em `localStorage`. Usa media queries para sincronizar o tema com as preferências do sistema.
 
 **Para que serve:** Fornece um sistema de temas e tradução global para a aplicação, permitindo alternância dinâmica e persistência de configurações.
 
@@ -916,8 +934,10 @@ export function useTheme() {
 }
 
 ```
-Topic.tsx
-**Como funciona:** O Topic.tsx exporta dois componentes: Topic e Topic3. O Topic é um contêiner simples para tópicos com um ID gerado a partir do label e suporta renderização como Slot (via asChild). O Topic3 adiciona opções de fundo (bgColor) e SVG divisores, com um layout mais estruturado.
+
+### Topic.tsx
+
+**Como funciona:** O `Topic.tsx` exporta dois componentes: `Topic` e `Topic2`. O `Topic` é um contêiner simples para tópicos com um ID gerado a partir do `label` e suporta renderização como Slot (via asChild). O `Topic2` adiciona opções de fundo (`bgColor`) e SVG divisores, com um layout mais estruturado.
 
 **Para que serve:** Divide seções em tópicos menores, permitindo organização e estilização personalizada de conteúdo.
 
@@ -956,13 +976,14 @@ export const Topic: React.FC<TopicProps> = ({ children, label, className, asChil
     )
 }
 
-interface Topic3Props extends TopicProps {
+interface Topic2Props extends TopicProp
+s {
     svgComponent?: string
     showSvg?: boolean
     bgColor?: string
 }
 
-export const Topic3: React.FC<Topic3Props> = ({
+export const Topic2: React.FC<Topic2Props> = ({
     children,
     label,
     className,
@@ -987,3 +1008,5 @@ export const Topic3: React.FC<Topic3Props> = ({
         </>
     )
 }
+
+```

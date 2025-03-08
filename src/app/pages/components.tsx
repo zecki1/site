@@ -8,7 +8,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {  Star } from "lucide-react"
+import { Star } from "lucide-react"
 import { Calendar } from "@/components/ui/calendar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -35,6 +35,7 @@ import { toast } from "@/components/ui/sonner" // Import já está correto
 import { Toggle } from "@/components/ui/toggle"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { images } from "@/components/layout/ImageContainer"
+import Parallax from "@/components/layout/Parallax"
 
 import { Cover } from "@/components/layout/Cover"
 
@@ -51,7 +52,7 @@ export default function Components() {
                 titleES="Nuestros componentes"
                 backgroundImage={images.capa}
             />
-      
+
             {/* Introdução em SectionFluid */}
             <SectionFluid label="introducao" className="bg-blue-500 py-16">
                 <Topic label="bem-vindo">
@@ -373,9 +374,7 @@ export default function Components() {
                     </Select>
                 </Topic>
             </Section>
-
-            {/* Seção fluida */}
-            <SectionFluid label="navegacao" className=" py-12">
+            <Section label="navegacao" className=" py-12">
                 <Topic label="menubar">
                     <h2 className="text-2xl font-semibold mb-2">Menubar</h2>
                     <p>
@@ -438,7 +437,7 @@ export default function Components() {
                     </DropdownMenu>
                 </Topic>
 
-            </SectionFluid>
+            </Section>
 
             {/* Seção com container */}
             <Section label="outros" className=" py-8">
@@ -510,8 +509,93 @@ export default function Components() {
                         </CommandList>
                     </Command>
                 </Topic>
+            </Section>
+            <SectionFluid label="outros" className=" py-8">
+                <Topic label="parallax">
+                    <div className="container mx-auto py-8">
+                        <h2 className="text-2xl font-semibold mb-2">
+                            <TextTranslator ignoreCheck={true}>
+                                {{
+                                    ptBR: "Parallax",
+                                    en: "Parallax",
+                                    es: "Parallax",
+                                }}
+                            </TextTranslator>
+                        </h2>
+                        <p>
+                            <TextTranslator>
+                                {{
+                                    ptBR: "Como funciona: O Parallax cria um efeito de parallax ao mover uma imagem de fundo em uma velocidade diferente do conteúdo em primeiro plano enquanto o usuário rola. Ele usa o GSAP com o plugin ScrollTrigger para animar a posição do fundo com base na rolagem, garantindo um desempenho suave. O componente aceita uma imagem de fundo, conteúdo (como texto ou outros elementos) e uma altura personalizável.",
+                                    en: "How it works: The Parallax creates a parallax effect by moving a background image at a different speed from the foreground content as the user scrolls. It uses GSAP with the ScrollTrigger plugin to animate the background position based on scrolling, ensuring smooth performance. The component accepts a background image, content (such as text or other elements), and a customizable height.",
+                                    es: "Cómo funciona: El Parallax crea un efecto de parallax al mover una imagen de fondo a una velocidad diferente del contenido en primer plano mientras el usuario desplaza. Utiliza GSAP con el plugin ScrollTrigger para animar la posición del fondo según el desplazamiento, garantizando un rendimiento suave. El componente acepta una imagen de fondo, contenido (como texto u otros elementos) y una altura personalizable.",
+                                }}
+                            </TextTranslator>
+                        </p>
+                        <p>
+                            <TextTranslator>
+                                {{
+                                    ptBR: "Para que serve: Adiciona um efeito visual dinâmico a seções da página, como cabeçalhos ou áreas de destaque, criando profundidade e engajamento visual.",
+                                    en: "What it’s for: Adds a dynamic visual effect to page sections, such as headers or highlighted areas, creating depth and visual engagement.",
+                                    es: "Para qué sirve: Agrega un efecto visual dinámico a secciones de la página, como encabezados o áreas destacadas, creando profundidad y compromiso visual.",
+                                }}
+                            </TextTranslator>
+                        </p>
+                    </div>
+                    <Parallax backgroundImage={images.parallax || images.capa}>
 
-                <Topic label="popover">
+                        <div className="mt-2  px-3 rounded text-white text-sm bg-black/50 border-0">
+
+                            <div className="text-white text-center">
+                                <h1 className="text-4xl md:text-6xl font-bold">
+                                    <TextTranslator>
+                                        {{
+                                            ptBR: "Bem-vindo ao Parallax",
+                                            en: "Welcome to Parallax",
+                                            es: "Bienvenido a Parallax",
+                                        }}
+                                    </TextTranslator>
+                                </h1>
+                                <p className="mt-4 text-lg">
+                                    <TextTranslator>
+                                        {{
+                                            ptBR: "Um efeito visual incrível",
+                                            en: "An amazing visual effect",
+                                            es: "Un efecto visual increíble",
+                                        }}
+                                    </TextTranslator>
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </Parallax>
+                    <Parallax videoSrc="https://www.dropbox.com/scl/fi/qejf5dgqiv6m77d71r2ec/abstract-background-ink-water.mp4?rlkey=cf5xf73grwr5olszcyjghc5pt&st=ycgfiqec&raw=1">
+                        <div className="mt-2  px-3 rounded text-white text-sm bg-black/50 border-0">
+                            <div className="text-white text-center">
+                                <h1 className="text-4xl md:text-6xl font-bold">
+                                    <TextTranslator>
+                                        {{
+                                            ptBR: "Vídeo Parallax",
+                                            en: "Video Parallax",
+                                            es: "Parallax de Video",
+                                        }}
+                                    </TextTranslator>
+                                </h1>
+                                <p className="mt-4 text-lg">
+                                    <TextTranslator>
+                                        {{
+                                            ptBR: "Um efeito dinâmico com vídeo",
+                                            en: "A dynamic effect with video",
+                                            es: "Un efecto dinámico con video",
+                                        }}
+                                    </TextTranslator>
+                                </p>
+                            </div>
+                        </div>
+                    </Parallax>
+                </Topic>
+
+                <Topic2 label="popover">
                     <h2 className="text-2xl font-semibold mb-2">Popover</h2>
                     <p>
                         <TextTranslator>
@@ -528,8 +612,8 @@ export default function Components() {
                         </PopoverTrigger>
                         <PopoverContent>Conteúdo aqui</PopoverContent>
                     </Popover>
-                </Topic>
-                <Topic label="progress">
+                </Topic2>
+                <Topic2 label="progress">
                     <h2 className="text-2xl font-semibold mb-2">Progress</h2>
                     <p>
                         <TextTranslator>
@@ -541,9 +625,9 @@ export default function Components() {
                         </TextTranslator>
                     </p>
                     <Progress value={50} />
-                </Topic>
+                </Topic2>
 
-                <Topic label="radio-group">
+                <Topic2 label="radio-group">
                     <h2 className="text-2xl font-semibold mb-2">Radio Group</h2>
                     <p>
                         <TextTranslator>
@@ -558,9 +642,9 @@ export default function Components() {
                         <RadioGroupItem value="option1">Opção 1</RadioGroupItem>
                         <RadioGroupItem value="option2">Opção 2</RadioGroupItem>
                     </RadioGroup>
-                </Topic>
+                </Topic2>
 
-                <Topic label="scroll-area">
+                <Topic2 label="scroll-area">
                     <h2 className="text-2xl font-semibold mb-2">Scroll Area</h2>
                     <p>
                         <TextTranslator>
@@ -574,9 +658,9 @@ export default function Components() {
                     <ScrollArea className="h-20 w-48">
                         <div className="p-4">Conteúdo longo aqui...</div>
                     </ScrollArea>
-                </Topic>
+                </Topic2>
 
-                <Topic label="separator">
+                <Topic2 label="separator">
                     <h2 className="text-2xl font-semibold mb-2">Separator</h2>
                     <p>
                         <TextTranslator>
@@ -588,8 +672,8 @@ export default function Components() {
                         </TextTranslator>
                     </p>
                     <Separator />
-                </Topic>
-                <Topic label="sheet">
+                </Topic2>
+                <Topic2 label="sheet">
                     <h2 className="text-2xl font-semibold mb-2">Sheet</h2>
                     <p>
                         <TextTranslator>
@@ -606,9 +690,9 @@ export default function Components() {
                         </SheetTrigger>
                         <SheetContent>Conteúdo lateral</SheetContent>
                     </Sheet>
-                </Topic>
+                </Topic2>
 
-                <Topic label="skeleton">
+                <Topic2 label="skeleton">
                     <h2 className="text-2xl font-semibold mb-2">Skeleton</h2>
                     <p>
                         <TextTranslator>
@@ -620,9 +704,9 @@ export default function Components() {
                         </TextTranslator>
                     </p>
                     <Skeleton className="w-32 h-4" />
-                </Topic>
+                </Topic2>
 
-                <Topic label="slider">
+                <Topic2 label="slider">
                     <h2 className="text-2xl font-semibold mb-2">Slider</h2>
                     <p>
                         <TextTranslator>
@@ -634,9 +718,9 @@ export default function Components() {
                         </TextTranslator>
                     </p>
                     <Slider defaultValue={[50]} max={100} step={1} />
-                </Topic>
+                </Topic2>
 
-                <Topic label="switch">
+                <Topic2 label="switch">
                     <h2 className="text-2xl font-semibold mb-2">Switch</h2>
                     <p>
                         <TextTranslator>
@@ -648,9 +732,9 @@ export default function Components() {
                         </TextTranslator>
                     </p>
                     <Switch />
-                </Topic>
+                </Topic2>
 
-                <Topic label="table">
+                <Topic2 label="table">
                     <h2 className="text-2xl font-semibold mb-2">Table</h2>
                     <p>
                         <TextTranslator>
@@ -673,9 +757,9 @@ export default function Components() {
                             </TableRow>
                         </TableBody>
                     </Table>
-                </Topic>
+                </Topic2>
 
-                <Topic label="tabs">
+                <Topic2 label="tabs">
                     <h2 className="text-2xl font-semibold mb-2">Tabs</h2>
                     <p>
                         <TextTranslator>
@@ -693,9 +777,9 @@ export default function Components() {
                         </TabsList>
                         <TabsContent value="tab1">Conteúdo 1</TabsContent>
                     </Tabs>
-                </Topic>
+                </Topic2>
 
-                <Topic label="toast">
+                <Topic2 label="toast">
                     <h2 className="text-2xl font-semibold mb-2">Toast</h2>
                     <p>
                         <TextTranslator>
@@ -707,9 +791,9 @@ export default function Components() {
                         </TextTranslator>
                     </p>
                     <Button onClick={() => toast("Notificação!")}>Mostrar Toast</Button>
-                </Topic>
+                </Topic2>
 
-                <Topic label="toggle">
+                <Topic2 label="toggle">
                     <h2 className="text-2xl font-semibold mb-2">Toggle</h2>
                     <p>
                         <TextTranslator>
@@ -721,9 +805,9 @@ export default function Components() {
                         </TextTranslator>
                     </p>
                     <Toggle>Toggle</Toggle>
-                </Topic>
+                </Topic2>
 
-                <Topic label="tooltip">
+                <Topic2 label="tooltip">
                     <h2 className="text-2xl font-semibold mb-2">Tooltip</h2>
                     <p>
                         <TextTranslator>
@@ -742,8 +826,8 @@ export default function Components() {
                             <TooltipContent>Dica</TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
-                </Topic>
-            </Section>
+                </Topic2>
+            </SectionFluid>
 
             {/* Rodapé fluido */}
             <SectionFluid label="rodape" className=" py-16">
@@ -770,6 +854,6 @@ export default function Components() {
                     </div>
                 </Topic>
             </SectionFluid>
-        </main>
+        </main >
     )
 }

@@ -1,8 +1,8 @@
 "use client"
 
-import TextTranslator from "@/components/TextTranslator"
-import { Section, SectionFluid } from "@/components/Sections"
-import { Topic, Topic3 } from "@/components/Topic"
+import TextTranslator from "@/components/layout/TextTranslator"
+import { Section, SectionFluid } from "@/components/layout/Sections"
+import { Topic, Topic3 } from "@/components/layout/Topic"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -34,9 +34,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/sonner" // Import já está correto
 import { Toggle } from "@/components/ui/toggle"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { images } from "@/components/ImageContainer"
+import { images } from "@/components/layout/ImageContainer"
 
-import { Cover } from "@/components/Cover"
+import { Cover } from "@/components/layout/Cover"
 
 const Mark = ({ children }: { children: React.ReactNode }) => (
     <span className="font-semibold text-blue-600">{children}</span>

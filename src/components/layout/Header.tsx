@@ -1,12 +1,12 @@
 // src/components/Header.tsx
 "use client";
 
-import { useTheme } from "@/components/ThemeProvider";
+import { useTheme } from "@/components/layout/ThemeProvider";
 import { Button } from "@/components/ui/button";
 import { Sun, Moon, Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import TextTranslator from "./TextTranslator";
-import { Sidebar } from "@/components/Sidebar"
+import { Sidebar } from "@/components/layout/Sidebar"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -41,33 +41,6 @@ export function Header() {
 
                 <Sidebar />
 
-                <Link href="/home" className="text-xl font-bold">
-                    <TextTranslator ignoreCheck={true}>
-                        {{
-                            ptBR: "Zecki1",
-                            en: "Zecki1",
-                            es: "Zecki1",
-                        }}
-                    </TextTranslator>
-                </Link>
-                <Link href="/about" className="text-muted-foreground hover:text-foreground">
-                    <TextTranslator>
-                        {{
-                            ptBR: "Sobre",
-                            en: "About",
-                            es: "Sobre",
-                        }}
-                    </TextTranslator>
-                </Link>
-                <Link href="/components" className="text-muted-foreground hover:text-foreground">
-                    <TextTranslator>
-                        {{
-                            ptBR: "Componentes",
-                            en: "Components",
-                            es: "Componentso",
-                        }}
-                    </TextTranslator>
-                </Link>
             </nav>
             <div className="flex gap-2">
                 <DropdownMenu>

@@ -1,8 +1,8 @@
 "use client"
 
-import ScrollIndicator from "@/components/ScrollIndicator"
+import ScrollIndicator from "@/components/layout/ScrollIndicator"
 import { cn } from "@/lib/utils"
-import TextTranslator from '@/components/TextTranslator';
+import TextTranslator from '@/components/layout/TextTranslator';
 
 interface CoverProps {
     titlePT?: string

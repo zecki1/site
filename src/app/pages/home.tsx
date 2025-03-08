@@ -1,7 +1,7 @@
 // src/pages/home.tsx
 "use client";
 
-import TextTranslator from "@/components/TextTranslator";
+import TextTranslator from "@/components/layout/TextTranslator";
 
 const Mark: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <span className="font-bold text-primary">{children}</span>

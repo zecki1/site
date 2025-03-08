@@ -1,4 +1,4 @@
-import DynamicPageClient from "@/components/DynamicPageClient"
+import DynamicPageClient from "@/components/layout/DynamicPageClient"
 
 // Definir tipo para os parâmetros estáticos
 type StaticParams = { slug: string }[]

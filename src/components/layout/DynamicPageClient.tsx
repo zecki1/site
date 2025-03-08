@@ -1,7 +1,7 @@
 "use client"
 
 import { notFound } from "next/navigation"
-import Container from "@/components/Container"
+import Container from "@/components/layout/Container"
 import Home from "@/app/pages/home"
 import About from "@/app/pages/about"
 import Components from "@/app/pages/components"

@@ -11,7 +11,7 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import { AlignJustify } from "lucide-react"
-import TextTranslator from "@/components/TextTranslator"
+import TextTranslator from "@/components/layout/TextTranslator"
 import { BsCircle, BsCheckCircle } from "react-icons/bs"
 import { cn } from "@/lib/utils"
 

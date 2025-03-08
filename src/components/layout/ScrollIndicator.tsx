@@ -3,7 +3,7 @@
 import React from "react"
 
 import { ChevronDown } from "lucide-react"
-import TextTranslator from '@/components/TextTranslator';
+import TextTranslator from '@/components/layout/TextTranslator';
 
 const ScrollIndicator: React.FC = () => {
     return (

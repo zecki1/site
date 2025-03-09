@@ -10,7 +10,7 @@ const Mark: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 export default function About() {
     return (
         <>
-            <div className="pt-16"> 
+            <main className="pt-[100vh]">
                 <h1 className="text-3xl font-bold text-primary mb-4">
                     <TextTranslator>
                         {{
@@ -41,7 +41,7 @@ export default function About() {
                         }}
                     </TextTranslator>
                 </p>
-          </div>
+            </main>
         </>
     );
 }

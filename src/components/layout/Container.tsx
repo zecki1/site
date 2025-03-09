@@ -13,8 +13,8 @@ export default function Container({ children, fluid = false, className = "" }: C
     const limitedStyles = "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"; // Largura limitada e centralizada
 
     return (
-        <div className={`${baseStyles} ${fluid ? fluidStyles : limitedStyles} ${className}`}>
+        <section className={`${baseStyles} ${fluid ? fluidStyles : limitedStyles} ${className}`}>
             {children}
-        </div>
+        </section>
     );
 }

@@ -1,7 +1,6 @@
 "use client"
 
 import { notFound } from "next/navigation"
-import Container from "@/components/layout/Container"
 import Home from "@/app/pages/home"
 import About from "@/app/pages/about"
 import Components from "@/app/pages/components"
@@ -25,11 +24,10 @@ export default function DynamicPageClient({ slug }: DynamicPageClientProps) {
         notFound()
     }
 
-    const isFluid = normalizedSlug === "components"
+    // const isFluid = normalizedSlug === "components"
 
     return (
-        <Container fluid={isFluid}>
-            <PageComponent />
-        </Container>
+
+        <PageComponent />
     )
 }

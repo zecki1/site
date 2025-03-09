@@ -20,108 +20,83 @@ import { BrazilFlag, USFlag, SpainFlag } from "./Flags"
 export function Header() {
     const headerRef = useRef<HTMLDivElement>(null)
     const logoRef = useRef<HTMLHeadingElement>(null)
-    const menuRef = useRef<HTMLButtonElement>(null)
     const [isScrolled, setIsScrolled] = useState(false)
     const { theme, setTheme } = useTheme()
     const { i18n } = useTranslation()
 
     useEffect(() => {
+        if (!gsap || !ScrollTrigger) {
+            console.error("GSAP ou ScrollTrigger não carregados!")
+            return
+        }
+
         gsap.registerPlugin(ScrollTrigger)
 
         const header = headerRef.current
         const logo = logoRef.current
-        const menu = menuRef.current
-        const main = document.querySelector("main") // Pega o <main> do RootLayout
 
-        if (!header || !logo || !menu || !main) return
+        if (!header || !logo) {
+            console.error("Referências não encontradas:", { header, logo })
+            return
+        }
 
-        // Define o estado inicial do logo no meio do viewport
+        // Define o estado inicial do logo (centralizado)
         gsap.set(logo, {
-            position: "fixed",
-            top: "50vh",
+            position: "absolute",
+            top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
             scale: 4,
-            textShadow: "0 0 2px rgba(0,0,0,0.3)",
+            fontSize: "6vw",
             opacity: 0,
+            textShadow: "0 0 2px rgba(0,0,0,0.3)",
             zIndex: 60,
         })
 
-        // Fade in inicial do logo
-        gsap.fromTo(
-            logo,
-            { opacity: 0, yPercent: 50 },
-            { yPercent: -50, opacity: 1, duration: 1, ease: "power3.out", immediateRender: true }
-        )
+        // Fade-in inicial
+        gsap.to(logo, {
+            opacity: 1,
+            duration: 1,
+            ease: "power3.out",
+        })
 
-        // Animação do logo para o header ao rolar
+        // Animação ao rolar (mantém centralizado horizontalmente)
         const logoTl = gsap.timeline({
             scrollTrigger: {
-                trigger: main, // Usa o <main> como trigger, não o document.body
+                trigger: header,
                 start: "top top",
-                end: () => window.innerHeight * 1.2,
+                end: "bottom top+=100vh",
                 scrub: 0.6,
                 onUpdate: (self) => {
-                    if (self.progress >= 1) {
-                        setIsScrolled(true)
-                    } else {
-                        setIsScrolled(false)
-                    }
+                    setIsScrolled(self.progress > 0.8)
                 },
             },
         })
 
-        logoTl.fromTo(
-            logo,
-            {
-                top: "50vh",
-                yPercent: -50,
-                scale: 4,
-                textShadow: "0 0 2px rgba(0,0,0,0.3)",
-            },
-            {
-                position: "relative",
-                top: "0%",
-                left: "0%",
-                transform: "none",
-                scale: 1,
-                textShadow: "0 0 2px rgba(0,0,0,0)",
-                duration: 0.8,
-            }
-        )
-
-        logoTl.fromTo(
-            menu,
-            { opacity: 0 },
-            { opacity: 1, duration: 0.1 },
-            0.9
-        )
-
-        logoTl.fromTo(
-            header,
-            { boxShadow: "0px 0px 10px rgba(0,0,0,0)" },
-            { boxShadow: "0px 0px 10px rgba(0,0,0,0.15)", duration: 0.2 },
-            0.8
-        )
-
-        menu.addEventListener("click", () => {
-            ScrollTrigger.refresh()
+        logoTl.to(logo, {
+            top: "20%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            scale: 1,
+            fontSize: "2rem",
+            textShadow: "0 0 0 rgba(0,0,0,0)",
+            duration: 0.8,
         })
+
+        logoTl.to(header, {
+            boxShadow: "0px 0px 10px rgba(0,0,0,0.15)",
+            duration: 0.2,
+        }, 0.8)
 
         return () => {
             ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
-            menu.removeEventListener("click", () => ScrollTrigger.refresh())
         }
     }, [])
 
     const toggleTheme = () => {
-        if (theme === "light") {
-            setTheme("dark")
-        } else if (theme === "dark") {
-            setTheme("light")
-        } else {
-            setTheme(window.matchMedia("(prefers-color-scheme: dark)").matches ? "light" : "dark")
-        }
+        if (theme === "light") setTheme("dark")
+        else if (theme === "dark") setTheme("light")
+        else setTheme(window.matchMedia("(prefers-color-scheme: dark)").matches ? "light" : "dark")
     }
 
     const changeLanguage = (lang: string) => {
@@ -133,17 +108,20 @@ export function Header() {
             ref={headerRef}
             className={`fixed top-0 left-0 w-full z-[50] transition-all duration-300 ${isScrolled
                     ? "border-b border-border p-4 flex justify-between items-center bg-background"
-                    : ""
+                    : "h-screen flex items-center justify-center"
                 }`}
         >
-            {isScrolled ? (
+            <h1
+                ref={logoRef}
+                className="text-center uppercase text-[#F47340] font-bold font-['Luckiest_Guy']"
+            >
+                zecki1
+            </h1>
+            {isScrolled && (
                 <>
                     <nav className="flex items-center gap-6">
                         <Sidebar />
                     </nav>
-                    <h1 className="text-center text-[2rem] uppercase text-[#F47340] font-bold font-['Luckiest_Guy']">
-                        zecki1
-                    </h1>
                     <div className="flex gap-2">
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -151,11 +129,7 @@ export function Header() {
                                     <Globe className="h-5 w-5" />
                                     <span className="sr-only">
                                         <TextTranslator>
-                                            {{
-                                                ptBR: "Mudar Idioma",
-                                                en: "Change Language",
-                                                es: "Cambiar Idioma",
-                                            }}
+                                            {{ ptBR: "Mudar Idioma", en: "Change Language", es: "Cambiar Idioma" }}
                                         </TextTranslator>
                                     </span>
                                 </Button>
@@ -164,31 +138,19 @@ export function Header() {
                                 <DropdownMenuItem onClick={() => changeLanguage("ptBR")}>
                                     <BrazilFlag className="h-5 w-5 mr-2" />
                                     <TextTranslator>
-                                        {{
-                                            ptBR: "Português",
-                                            en: "Portuguese",
-                                            es: "Portugués",
-                                        }}
+                                        {{ ptBR: "Português", en: "Portuguese", es: "Portugués" }}
                                     </TextTranslator>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => changeLanguage("en")}>
                                     <USFlag className="h-5 w-5 mr-2" />
                                     <TextTranslator>
-                                        {{
-                                            ptBR: "Inglês",
-                                            en: "English",
-                                            es: "Inglés",
-                                        }}
+                                        {{ ptBR: "Inglês", en: "English", es: "Inglés" }}
                                     </TextTranslator>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => changeLanguage("es")}>
                                     <SpainFlag className="h-5 w-5 mr-2" />
                                     <TextTranslator>
-                                        {{
-                                            ptBR: "Espanhol",
-                                            en: "Spanish",
-                                            es: "Español",
-                                        }}
+                                        {{ ptBR: "Espanhol", en: "Spanish", es: "Español" }}
                                     </TextTranslator>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
@@ -197,30 +159,11 @@ export function Header() {
                             {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
                             <span className="sr-only">
                                 <TextTranslator>
-                                    {{
-                                        ptBR: "Alternar Tema",
-                                        en: "Toggle Theme",
-                                        es: "Cambiar Tema",
-                                    }}
+                                    {{ ptBR: "Alternar Tema", en: "Toggle Theme", es: "Cambiar Tema" }}
                                 </TextTranslator>
                             </span>
                         </Button>
                     </div>
-                </>
-            ) : (
-                <>
-                    <h1
-                        ref={logoRef}
-                        className="text-center text-[6vw] uppercase text-[#F47340] font-bold font-['Luckiest_Guy']"
-                    >
-                        zecki1
-                    </h1>
-                    <button
-                        ref={menuRef}
-                        className="absolute top-1/2 right-8 transform -translate-y-1/2 w-12 h-8 bg-transparent cursor-pointer border-none p-0 opacity-0 md:right-[10%]"
-                    >
-                        <span className="block w-full h-[2px] bg-black relative before:content-[''] before:absolute before:w-full before:h-[2px] before:left-0 before:top-0 before:bg-black after:content-[''] after:absolute after:w-full after:h-[2px] after:left-0 after:bottom-0 after:bg-black" />
-                    </button>
                 </>
             )}
         </header>

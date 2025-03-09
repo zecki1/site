@@ -55,7 +55,7 @@ const Mark = ({ children }: { children: React.ReactNode }) => (
 
 export default function Components() {
     return (
-        <main>
+        <main className="pt-[100vh]"> 
             <Cover
                 titlePT="Nossos componentes"
                 titleEN="Our components"

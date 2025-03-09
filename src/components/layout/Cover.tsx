@@ -20,7 +20,7 @@ export const Cover: React.FC<CoverProps> = ({
     className,
 }) => {
     return (
-        <div
+        <section
             className={cn(
                 "w-full h-screen overflow-hidden relative bg-background",
                 className
@@ -55,7 +55,7 @@ export const Cover: React.FC<CoverProps> = ({
                 </div>
             </div>
             <ScrollIndicator />
-        </div>
+        </section>
     )
 }
 

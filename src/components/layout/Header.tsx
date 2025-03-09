@@ -31,25 +31,37 @@ export function Header() {
         const header = headerRef.current
         const logo = logoRef.current
         const menu = menuRef.current
+        const main = document.querySelector("main") // Pega o <main> do RootLayout
 
-        if (!header || !logo || !menu) return
+        if (!header || !logo || !menu || !main) return
+
+        // Define o estado inicial do logo no meio do viewport
+        gsap.set(logo, {
+            position: "fixed",
+            top: "50vh",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            scale: 4,
+            textShadow: "0 0 2px rgba(0,0,0,0.3)",
+            opacity: 0,
+            zIndex: 60,
+        })
 
         // Fade in inicial do logo
         gsap.fromTo(
             logo,
             { opacity: 0, yPercent: 50 },
-            { yPercent: -50, opacity: 1, duration: 1, ease: "power3.out" }
+            { yPercent: -50, opacity: 1, duration: 1, ease: "power3.out", immediateRender: true }
         )
 
-        // Animação do logo para o header
+        // Animação do logo para o header ao rolar
         const logoTl = gsap.timeline({
             scrollTrigger: {
-                trigger: document.body,
+                trigger: main, // Usa o <main> como trigger, não o document.body
                 start: "top top",
                 end: () => window.innerHeight * 1.2,
                 scrub: 0.6,
                 onUpdate: (self) => {
-                    // Quando a animação termina (progresso = 1), ativa o novo design
                     if (self.progress >= 1) {
                         setIsScrolled(true)
                     } else {
@@ -68,8 +80,10 @@ export function Header() {
                 textShadow: "0 0 2px rgba(0,0,0,0.3)",
             },
             {
+                position: "relative",
                 top: "0%",
-                yPercent: 0,
+                left: "0%",
+                transform: "none",
                 scale: 1,
                 textShadow: "0 0 2px rgba(0,0,0,0)",
                 duration: 0.8,
@@ -96,6 +110,7 @@ export function Header() {
 
         return () => {
             ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+            menu.removeEventListener("click", () => ScrollTrigger.refresh())
         }
     }, [])
 
@@ -118,7 +133,7 @@ export function Header() {
             ref={headerRef}
             className={`fixed top-0 left-0 w-full z-[50] transition-all duration-300 ${isScrolled
                     ? "border-b border-border p-4 flex justify-between items-center bg-background"
-                    : "h-[94px]flex items-center justify-center"
+                    : ""
                 }`}
         >
             {isScrolled ? (
@@ -126,10 +141,7 @@ export function Header() {
                     <nav className="flex items-center gap-6">
                         <Sidebar />
                     </nav>
-                    <h1
-                        ref={logoRef}
-                        className="text-center text-[2rem] uppercase text-[#F47340] font-bold font-['Luckiest_Guy']"
-                    >
+                    <h1 className="text-center text-[2rem] uppercase text-[#F47340] font-bold font-['Luckiest_Guy']">
                         zecki1
                     </h1>
                     <div className="flex gap-2">
@@ -199,7 +211,7 @@ export function Header() {
                 <>
                     <h1
                         ref={logoRef}
-                            className="text-center text-[6vw] uppercase opacity-0 relative w-full  font-bold font-['Luckiest_Guy']"
+                        className="text-center text-[6vw] uppercase text-[#F47340] font-bold font-['Luckiest_Guy']"
                     >
                         zecki1
                     </h1>

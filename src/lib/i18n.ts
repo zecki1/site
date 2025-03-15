@@ -1,4 +1,3 @@
-// src/lib/i18n.ts
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
@@ -13,10 +12,13 @@ i18n
             escapeValue: false,
         },
         detection: {
-            order: ["localStorage", "navigator"], // Prioriza localStorage
-            caches: ["localStorage"], // Salva no localStorage
-            lookupLocalStorage: "i18nLng", // Nome da chave no localStorage
+            order: ["localStorage", "navigator"],
+            caches: ["localStorage"],
+            lookupLocalStorage: "i18nLng",
         },
+    })
+    .then(() => {
+        console.log("i18next inicializado. Idioma inicial:", i18n.language);
     });
 
 export default i18n;

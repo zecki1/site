@@ -1,20 +1,40 @@
-"use client"
+"use client";
 
-import React from "react"
-
-import { ChevronDown } from "lucide-react"
-import TextTranslator from '@/components/layout/TextTranslator';
+import React, { useEffect } from "react";
+import { ChevronDown } from "lucide-react";
+import TextTranslator from "@/components/layout/TextTranslator";
+import { useTheme } from "@/components/layout/ThemeProvider";
+import { useTranslation } from "react-i18next";
+import { cn } from "@/lib/utils";
 
 const ScrollIndicator: React.FC = () => {
+    const { theme } = useTheme();
+    const { i18n } = useTranslation();
+
+    useEffect(() => {
+        console.log("Idioma atual no ScrollIndicator:", i18n.language);
+    }, [i18n.language]);
+
     return (
-        <div className="flex flex-col items-center absolute bottom-16 left-1/2 transform -translate-x-1/2 z-30">
-            {/* Opção 1: Seta para baixo */}
-            <ChevronDown className="w-8 h-8 text-white animate-bounce" />
-
-            {/* Opção 2: Círculo (comente a seta acima e descomente esta se preferir) */}
-            {/* <div className="w-8 h-8 border-2 border-white rounded-full animate-bounce" /> */}
-
-            <span className="mt-2 py-2 px-3 rounded text-white text-sm bg-black/30 border-0">
+        <div
+            className={cn(
+                "flex flex-col items-center gap-2 absolute bottom-2 left-1/2 transform -translate-x-1/2 z-30"
+            )}
+        >
+            <ChevronDown
+                className={cn(
+                    "w-8 h-8 animate-bounce",
+                    theme === "dark" ? "text-white" : "text-gray-800",
+                    "drop-shadow-md"
+                )}
+            />
+            <span
+                className={cn(
+                    "py-1 px-3 rounded text-sm bg-black/30 border-0 whitespace-nowrap",
+                    theme === "dark" ? "text-white" : "text-gray-800",
+                    "drop-shadow-md"
+                )}
+            >
                 <TextTranslator>
                     {{
                         ptBR: <>Role para baixo</>,
@@ -24,7 +44,7 @@ const ScrollIndicator: React.FC = () => {
                 </TextTranslator>
             </span>
         </div>
-    )
-}
+    );
+};
 
-export default ScrollIndicator
+export default ScrollIndicator;

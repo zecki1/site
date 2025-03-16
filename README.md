@@ -5,108 +5,78 @@ Este é um projeto Next.js que utiliza TypeScript, Tailwind CSS, shadcn/ui e com
 ## Estrutura de Pastas
 
 ```plaintext
+
 Site/
-├── public/
-│   └── (vazio por enquanto, pode conter imagens estáticas em img/)
-├── src/
-│   ├── app/
-│   │   ├── globals.css                 # Estilos globais com Tailwind e animações
-│   │   ├── layout.tsx                  # Layout raiz com ThemeProvider e Header
-│   │   ├── page.tsx                    # Página raiz que redireciona para /home
-│   │   ├── pages/
-│   │   │   ├── home.tsx                # Página Home (vazia por enquanto)
-│   │   │   ├── about.tsx               # Página Sobre (vazia por enquanto)
-│   │   │   └── components.tsx          # Página com todos os componentes
-│   │   └── [slug]/                     # (Opcional, pode ser removido)
-│   │       └── page.tsx                # Página dinâmica antiga
-│   ├── components/
-│   │   ├── gsap/
-│   │   │   ├── 1ImageParallax.tsx            # Componente de parallax com fundo ou vídeo
-│   │   │   ├── 2ScrollTriggerClamp.tsx  # Recurso GSAP (futuro)
-│   │   │   ├── 3ScrollSmootherThree.tsx # Recurso GSAP (futuro)
-│   │   │   ├── 4ScrollTriggerHorizontalGallery.tsx # Recurso GSAP (futuro)
-│   │   │   ├── 5ScrollSmoother.tsx      # Recurso GSAP (futuro)
-│   │   │   ├── 6GsapImageParallax.tsx   # Recurso GSAP (futuro)
-│   │   │   ├── 7SmoothScrollyImages.tsx # Recurso GSAP (futuro)
-│   │   │   ├── 8ScrollSmootherHeader.tsx # Recurso GSAP (futuro)
-│   │   │   ├── 9StaggeredText.tsx       # Recurso GSAP (futuro)
-│   │   │   └── 10NavigationScrollTrigger.tsx # Recurso GSAP (futuro)
-│   │   ├── layout/
-│   │   │   ├── Container.tsx           # Ajusta margens e responsividade
-│   │   │   ├── Cover.tsx               # Componente de capa com imagem de fundo
-│   │   │   ├── DynamicPageClient.tsx   # Gerencia rotas dinâmicas no lado cliente
-│   │   │   ├── Flags.tsx               # Exibe bandeiras de idiomas
-│   │   │   ├── Header.tsx              # Cabeçalho com navegação
-│   │   │   ├── ImageContainer.tsx      # Exporta imagens importadas
-│   │   │   ├── ScrollIndicator.tsx     # Indicador de rolagem (seta ou círculo)
-│   │   │   ├── Sections.tsx            # Cria seções com SVG, background ou fluid
-│   │   │   ├── Sidebar.tsx             # Menu lateral com títulos dinâmicos
-│   │   │   ├── TextTranslator.tsx      # Gerencia tradução com i18n
-│   │   │   ├── ThemeProvider.tsx       # Provedor de tema claro/escuro
-│   │   │   └── Topic.tsx               # Define tópicos dentro de seções (inclui Topic e Topic2)
-│   │   ├── ui/
-│   │   │   ├── accordion.tsx           # shadcn/ui Accordion
-│   │   │   ├── alert.tsx              # shadcn/ui Alert
-│   │   │   ├── alert-dialog.tsx       # shadcn/ui Alert Dialog
-│   │   │   ├── aspect-ratio.tsx       # shadcn/ui Aspect Ratio
-│   │   │   ├── avatar.tsx             # shadcn/ui Avatar
-│   │   │   ├── badge.tsx              # shadcn/ui Badge
-│   │   │   ├── button.tsx             # shadcn/ui Button
-│   │   │   ├── calendar.tsx           # shadcn/ui Calendar
-│   │   │   ├── card.tsx               # shadcn/ui Card
-│   │   │   ├── checkbox.tsx           # shadcn/ui Checkbox
-│   │   │   ├── collapsible.tsx        # shadcn/ui Collapsible
-│   │   │   ├── command.tsx            # shadcn/ui Command
-│   │   │   ├── context-menu.tsx       # shadcn/ui Context Menu
-│   │   │   ├── dialog.tsx             # shadcn/ui Dialog
-│   │   │   ├── dropdown-menu.tsx      # shadcn/ui Dropdown Menu
-│   │   │   ├── form.tsx               # shadcn/ui Form
-│   │   │   ├── hover-card.tsx         # shadcn/ui Hover Card
-│   │   │   ├── input.tsx              # shadcn/ui Input
-│   │   │   ├── label.tsx              # shadcn/ui Label
-│   │   │   ├── menubar.tsx            # shadcn/ui Menubar
-│   │   │   ├── navigation-menu.tsx    # shadcn/ui Navigation Menu
-│   │   │   ├── popover.tsx            # shadcn/ui Popover
-│   │   │   ├── progress.tsx           # shadcn/ui Progress
-│   │   │   ├── radio-group.tsx        # shadcn/ui Radio Group
-│   │   │   ├── scroll-area.tsx        # shadcn/ui Scroll Area
-│   │   │   ├── select.tsx             # shadcn/ui Select
-│   │   │   ├── separator.tsx          # shadcn/ui Separator
-│   │   │   ├── sheet.tsx              # shadcn/ui Sheet
-│   │   │   ├── skeleton.tsx           # shadcn/ui Skeleton
-│   │   │   ├── slider.tsx             # shadcn/ui Slider
-│   │   │   ├── switch.tsx             # shadcn/ui Switch
-│   │   │   ├── table.tsx              # shadcn/ui Table
-│   │   │   ├── tabs.tsx               # shadcn/ui Tabs
-│   │   │   ├── textarea.tsx           # shadcn/ui Textarea
-│   │   │   ├── toast.tsx              # shadcn/ui Toast
-│   │   │   ├── toggle.tsx             # shadcn/ui Toggle
-│   │   │   ├── tooltip.tsx            # shadcn/ui Tooltip
-│   │   │   └── sonner.tsx             # shadcn/ui Toaster
-│   ├── assets/
-│   │   ├── img/
-│   │   │    └── capa.png            # Imagem da capa
-│   │   ├── doc/
-│   │   │   └── null            # Ainda sem recurso
-│   │   ├── audio/
-│   │   │   └── null            # Ainda sem recurso
-│   │   └── video/
-│   │       └── null            # Ainda sem recurso
-│   └── lib/
-│       ├── i18n.ts                     # Configuração de idiomas
-│       ├── utils.ts                    # Função cn() para Tailwind
-│       └── hooks/
-│           └── use-mobile.ts           # Hook para detectar dispositivo móvel
-├── .components.json                    # Configuração do tema shadcn/ui
-├── .eslint.config.mjs                  # Configuração ESLint
-├── next.env.d.ts                       # Declarações de tipos para variáveis de ambiente
-├── next.config.js                      # Configuração Next.js
-├── package-lock.json                   # Lockfile de dependências
-├── package.json                        # Dependências do projeto
-├── postcss.config.mjs                  # Configuração PostCSS (usado com Tailwind)
-├── README.md                           # Este arquivo
-├── tailwind.config.js                  # Configuração Tailwind CSS
-└── tsconfig.json                       # Configuração TypeScript com alias @
+├── public/                       # Arquivos estáticos
+│   └── img/                      # Imagens públicas
+│       └── capa.png              # Imagem padrão para capas
+├── src/                          # Código-fonte
+│   ├── app/                      # App Router do Next.js
+│   │   ├── globals.css           # Estilos globais com Tailwind
+│   │   ├── layout.tsx            # Layout raiz com ThemeProvider e Header
+│   │   ├── page.tsx              # Página inicial (redireciona para /home)
+│   │   ├── [slug]/               # Rota dinâmica para sites dos clientes
+│   │   │   └── page.tsx          # Renderiza o site baseado no slug
+│   │   ├── admin/                # Área de edição do cliente
+│   │   │   └── page.tsx          # Página de admin para editar o site
+│   │   ├── login/                # Página de login
+│   │   │   └── page.tsx          # Formulário de login
+│   │   ├── api/                  # Rotas de API
+│   │   │   └── auth/             # Autenticação com NextAuth
+│   │   │       └── [...nextauth]/
+│   │   │           └── route.ts  # Configuração do NextAuth
+│   │   └── pages/                # Páginas estáticas existentes
+│   │       ├── home.tsx          # Página Home
+│   │       ├── about.tsx         # Página Sobre
+│   │       └── components.tsx    # Página de componentes
+│   ├── components/               # Componentes reutilizáveis
+│   │   ├── gsap/                 # Componentes GSAP existentes
+│   │   │   ├── ImageParallax.tsx
+│   │   │   ├── ScrollTriggerClamp.tsx
+│   │   │   ├── ScrollSmootherThree.tsx
+│   │   │   ├── ScrollTriggerHorizontalGallery.tsx
+│   │   │   ├── ScrollSmoother.tsx
+│   │   │   ├── GsapImageParallax.tsx
+│   │   │   ├── SmoothScrollyImages.tsx
+│   │   │   ├── ScrollSmootherHeader.tsx
+│   │   │   ├── StaggeredText.tsx
+│   │   │   └── NavigationScrollTrigger.tsx
+│   │   ├── layout/               # Componentes de layout
+│   │   │   ├── Container.tsx     # Ajusta margens e responsividade
+│   │   │   ├── Cover.tsx         # Componente de capa editável
+│   │   │   ├── DynamicPageClient.tsx # Renderiza sites dinamicamente
+│   │   │   ├── Flags.tsx         # Bandeiras de idiomas
+│   │   │   ├── Header.tsx        # Cabeçalho com navegação
+│   │   │   ├── ImageContainer.tsx # Exporta imagens
+│   │   │   ├── ScrollIndicator.tsx # Indicador de rolagem
+│   │   │   ├── Sections.tsx      # Seções com SVG ou fluid
+│   │   │   ├── Sidebar.tsx       # Menu lateral
+│   │   │   ├── TextTranslator.tsx # Tradução com i18n
+│   │   │   ├── ThemeProvider.tsx # Provedor de tema claro/escuro
+│   │   │   └── Topic.tsx         # Tópicos dentro de seções
+│   │   └── ui/                   # Componentes shadcn/ui
+│   │       ├── input.tsx         # Input do shadcn/ui
+│   │       ├── button.tsx        # Button do shadcn/ui
+│   │       └── (outros componentes shadcn/ui conforme necessário)
+│   ├── lib/                      # Funções utilitárias
+│   │   ├── firebase.ts           # Configuração do Firebase
+│   │   ├── i18n.ts               # Configuração de idiomas
+│   │   ├── utils.ts              # Função cn() para Tailwind
+│   │   └── hooks/                # Hooks personalizados
+│   │       └── use-mobile.ts     # Detecta dispositivo móvel
+│   └── assets/                   # Recursos estáticos
+│       ├── img/
+│       │   └── capa.png          # Imagem de capa (cópia para desenvolvimento)
+│       ├── doc/
+│       ├── audio/
+│       └── video/
+├── .env.local                    # Variáveis de ambiente
+├── .eslintrc.json                # Configuração ESLint
+├── next.config.js                # Configuração Next.js
+├── package.json                  # Dependências
+├── tailwind.config.js            # Configuração Tailwind CSS
+├── tsconfig.json                 # Configuração TypeScript
+└── README.md                     # Documentação
 
 ```
 

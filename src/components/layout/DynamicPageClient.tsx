@@ -1,37 +1,30 @@
-// src/components/layout/DynamicPageClient.tsx
 "use client";
 import { notFound } from "next/navigation";
-import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
 import Cover from "./Cover";
+
+interface Section {
+    type: string;
+    text: string;
+    image: string;
+}
+
+interface SiteData {
+    sections: Section[];
+    domain?: string;
+    ownerId?: string;
+}
 
 interface DynamicPageClientProps {
     slug: string;
+    initialData: SiteData | null;
 }
 
-export default function DynamicPageClient({ slug }: DynamicPageClientProps) {
-    const [siteData, setSiteData] = useState(null);
-    const normalizedSlug = slug.toLowerCase();
-
-    useEffect(() => {
-        const fetchSiteData = async () => {
-            const docRef = doc(db, "sites", normalizedSlug);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                setSiteData(docSnap.data());
-            } else {
-                notFound();
-            }
-        };
-        fetchSiteData();
-    }, [normalizedSlug]);
-
-    if (!siteData) return <div>Carregando...</div>;
+export default function DynamicPageClient({ slug, initialData }: DynamicPageClientProps) {
+    if (!initialData) notFound();
 
     return (
-        <div>
-            {siteData.sections.map((section: any, index: number) => (
+        <div className="p-4">
+            {initialData.sections.map((section, index) => (
                 <Cover key={index} image={section.image} text={section.text} />
             ))}
         </div>

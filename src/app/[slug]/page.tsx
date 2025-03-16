@@ -1,22 +1,12 @@
-import DynamicPageClient from "@/components/layout/DynamicPageClient"
+// app/[slug]/page.tsx
+import DynamicPageClient from "@/components/layout/DynamicPageClient";
 
-// Definir tipo para os parâmetros estáticos
-type StaticParams = { slug: string }[]
-
-export async function generateStaticParams(): Promise<StaticParams> {
-  return [
-    { slug: "home" },
-    { slug: "about" },
-    { slug: "components" },
-  ]
-}
-
-// Interface para os props do DynamicPage
 interface DynamicPageProps {
-  params: Promise<{ slug: string }>
+  params: { slug: string };
 }
 
-export default async function DynamicPage({ params }: DynamicPageProps) {
-  const { slug } = await params // Desestruturar diretamente
-  return <DynamicPageClient slug={slug} />
+// Não usamos generateStaticParams porque os slugs são dinâmicos no SaaS
+export default function DynamicPage({ params }: DynamicPageProps) {
+  const { slug } = params;
+  return <DynamicPageClient slug={slug} />;
 }

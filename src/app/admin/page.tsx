@@ -1,43 +1,53 @@
-// app/admin/page.tsx
 "use client";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { db, auth } from "@/lib/firebase";
-import { onAuthStateChanged } from "firebase/auth";
+import { db } from "@/lib/firebase";
 import Cover from "@/components/layout/Cover";
 import { useRouter } from "next/navigation";
 
+interface Section {
+    type: string;
+    text: string;
+    image: string;
+}
+
+interface SiteData {
+    sections: Section[];
+    domain?: string;
+    ownerId?: string;
+}
+
 export default function AdminPage() {
-    const [siteData, setSiteData] = useState(null);
+    const { data: session, status } = useSession();
+    const [siteData, setSiteData] = useState<SiteData | null>(null);
     const router = useRouter();
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                router.push("/login");
-            } else {
-                const docRef = doc(db, "sites", user.uid);
+        if (status === "unauthenticated") {
+            router.push("/login");
+        } else if (session) {
+            const fetchSiteData = async () => {
+                const docRef = doc(db, "sites", session.user.id);
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
-                    setSiteData(docSnap.data());
+                    setSiteData(docSnap.data() as SiteData);
                 } else {
-                    // Dados padrão iniciais
-                    setSiteData({ sections: [{ type: "cover", text: "Bem-vindo", image: "/default.png" }] });
+                    setSiteData({ sections: [{ type: "cover", text: "Bem-vindo", image: "/img/capa.png" }] });
                 }
-            }
-        });
-        return () => unsubscribe();
-    }, [router]);
+            };
+            fetchSiteData();
+        }
+    }, [session, status, router]);
 
     const handleSave = async (newText: string, newImage: string) => {
-        const user = auth.currentUser;
-        if (user) {
-            const updatedData = { sections: [{ type: "cover", text: newText, image: newImage }] };
-            await setDoc(doc(db, "sites", user.uid), {
-                ...updatedData,
-                domain: `${user.uid}.zecki1.com.br`,
-                ownerId: user.uid,
-            });
+        if (session) {
+            const updatedData: SiteData = {
+                sections: [{ type: "cover", text: newText, image: newImage }],
+                ownerId: session.user.id,
+                domain: `${session.user.id}.zecki1.com.br`,
+            };
+            await setDoc(doc(db, "sites", session.user.id), updatedData);
             setSiteData(updatedData);
         }
     };
@@ -45,8 +55,8 @@ export default function AdminPage() {
     if (!siteData) return <div>Carregando...</div>;
 
     return (
-        <div>
-            <h1>Editar seu site</h1>
+        <div className="p-4">
+            <h1 className="text-2xl mb-4">Editar seu site</h1>
             <Cover
                 image={siteData.sections[0].image}
                 text={siteData.sections[0].text}

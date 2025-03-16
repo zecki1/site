@@ -1,11 +1,9 @@
-// app/login/page.tsx
 "use client";
+import { signIn } from "next-auth/react";
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -13,12 +11,12 @@ export default function Login() {
     const router = useRouter();
 
     const handleLogin = async () => {
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-            router.push("/admin");
-        } catch (error) {
-            console.error("Erro ao logar:", error);
-        }
+        const res = await signIn("credentials", {
+            email,
+            password,
+            redirect: false,
+        });
+        if (res?.ok) router.push("/admin");
     };
 
     return (
@@ -29,8 +27,9 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Senha"
+                className="mt-2"
             />
-            <Button onClick={handleLogin}>Entrar</Button>
+            <Button onClick={handleLogin} className="mt-2">Entrar</Button>
         </div>
     );
 }

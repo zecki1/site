@@ -1,4 +1,3 @@
-// app/api/auth/[...nextauth]/route.ts
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -13,9 +12,18 @@ export const authOptions = {
                 password: { label: "Senha", type: "password" },
             },
             async authorize(credentials) {
-                const userCredential = await signInWithEmailAndPassword(auth, credentials.email, credentials.password);
-                const user = userCredential.user;
-                return { id: user.uid, email: user.email };
+                try {
+                    const userCredential = await signInWithEmailAndPassword(
+                        auth,
+                        credentials.email,
+                        credentials.password
+                    );
+                    const user = userCredential.user;
+                    return { id: user.uid, email: user.email };
+                } catch (error) {
+                    console.error("Erro ao autenticar:", error);
+                    return null;
+                }
             },
         }),
     ],
@@ -30,6 +38,7 @@ export const authOptions = {
             return session;
         },
     },
+    secret: process.env.NEXTAUTH_SECRET,
 };
 
 export default NextAuth(authOptions);

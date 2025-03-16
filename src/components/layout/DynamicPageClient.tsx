@@ -1,33 +1,32 @@
-"use client"
+"use client";
+import { notFound } from "next/navigation";
+import Cover from "./Cover";
 
-import { notFound } from "next/navigation"
-import Home from "@/app/pages/home"
-import About from "@/app/pages/about"
-import Components from "@/app/pages/components"
-
-type PageComponentType = React.ComponentType
-const pageComponents: Record<string, PageComponentType> = {
-    home: Home,
-    about: About,
-    components: Components,
-} as const
-
-interface DynamicPageClientProps {
-    slug: string
+interface Section {
+    type: string;
+    text: string;
+    image: string;
 }
 
-export default function DynamicPageClient({ slug }: DynamicPageClientProps) {
-    const normalizedSlug = slug.toLowerCase()
-    const PageComponent = pageComponents[normalizedSlug]
+interface SiteData {
+    sections: Section[];
+    domain?: string;
+    ownerId?: string;
+}
 
-    if (!PageComponent) {
-        notFound()
-    }
+interface DynamicPageClientProps {
+    slug: string;
+    initialData: SiteData | null;
+}
 
-    // const isFluid = normalizedSlug === "components"
+export default function DynamicPageClient({ slug, initialData }: DynamicPageClientProps) {
+    if (!initialData) notFound();
 
     return (
-
-        <PageComponent />
-    )
+        <div className="p-4">
+            {initialData.sections.map((section, index) => (
+                <Cover key={index} image={section.image} text={section.text} />
+            ))}
+        </div>
+    );
 }

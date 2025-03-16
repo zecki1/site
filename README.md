@@ -8,27 +8,25 @@ Este é um projeto Next.js que utiliza TypeScript, Tailwind CSS, shadcn/ui e com
 
 Site/
 ├── public/                       # Arquivos estáticos
-│   └── img/                      # Imagens públicas
-│       └── capa.png              # Imagem padrão para capas
+│   └── img/
+│       └── capa.png
 ├── src/                          # Código-fonte
 │   ├── app/                      # App Router do Next.js
 │   │   ├── globals.css           # Estilos globais com Tailwind
 │   │   ├── layout.tsx            # Layout raiz com ThemeProvider e Header
 │   │   ├── page.tsx              # Página inicial (redireciona para /home)
+│   │   ├── home/                 # Nova página estática para /home
+│   │   │   └── page.tsx          # Conteúdo da Home (Cover, Sobre, etc.)
 │   │   ├── [slug]/               # Rota dinâmica para sites dos clientes
-│   │   │   └── page.tsx          # Renderiza o site baseado no slug
+│   │   │   └── page.tsx          # Renderiza o site baseado no slug (exclui "home")
 │   │   ├── admin/                # Área de edição do cliente
 │   │   │   └── page.tsx          # Página de admin para editar o site
 │   │   ├── login/                # Página de login
 │   │   │   └── page.tsx          # Formulário de login
-│   │   ├── api/                  # Rotas de API
-│   │   │   └── auth/             # Autenticação com NextAuth
-│   │   │       └── [...nextauth]/
-│   │   │           └── route.ts  # Configuração do NextAuth
-│   │   └── pages/                # Páginas estáticas existentes
-│   │       ├── home.tsx          # Página Home
-│   │       ├── about.tsx         # Página Sobre
-│   │       └── components.tsx    # Página de componentes
+│   │   └── api/                  # Rotas de API
+│   │       └── auth/             # Autenticação com NextAuth
+│   │           └── [...nextauth]/
+│   │               └── route.ts  # Configuração do NextAuth
 │   ├── components/               # Componentes reutilizáveis
 │   │   ├── gsap/                 # Componentes GSAP existentes
 │   │   │   ├── ImageParallax.tsx
@@ -42,41 +40,41 @@ Site/
 │   │   │   ├── StaggeredText.tsx
 │   │   │   └── NavigationScrollTrigger.tsx
 │   │   ├── layout/               # Componentes de layout
-│   │   │   ├── Container.tsx     # Ajusta margens e responsividade
-│   │   │   ├── Cover.tsx         # Componente de capa editável
-│   │   │   ├── DynamicPageClient.tsx # Renderiza sites dinamicamente
-│   │   │   ├── Flags.tsx         # Bandeiras de idiomas
-│   │   │   ├── Header.tsx        # Cabeçalho com navegação
-│   │   │   ├── ImageContainer.tsx # Exporta imagens
-│   │   │   ├── ScrollIndicator.tsx # Indicador de rolagem
-│   │   │   ├── Sections.tsx      # Seções com SVG ou fluid
-│   │   │   ├── Sidebar.tsx       # Menu lateral
-│   │   │   ├── TextTranslator.tsx # Tradução com i18n
-│   │   │   ├── ThemeProvider.tsx # Provedor de tema claro/escuro
-│   │   │   └── Topic.tsx         # Tópicos dentro de seções
+│   │   │   ├── Container.tsx
+│   │   │   ├── Cover.tsx
+│   │   │   ├── DynamicPageClient.tsx
+│   │   │   ├── Flags.tsx
+│   │   │   ├── Header.tsx
+│   │   │   ├── ImageContainer.tsx
+│   │   │   ├── ScrollIndicator.tsx
+│   │   │   ├── Sections.tsx
+│   │   │   ├── Sidebar.tsx
+│   │   │   ├── TextTranslator.tsx
+│   │   │   ├── ThemeProvider.tsx
+│   │   │   └── Topic.tsx
 │   │   └── ui/                   # Componentes shadcn/ui
-│   │       ├── input.tsx         # Input do shadcn/ui
-│   │       ├── button.tsx        # Button do shadcn/ui
-│   │       └── (outros componentes shadcn/ui conforme necessário)
+│   │       ├── input.tsx
+│   │       ├── button.tsx
+│   │       └── (outros componentes shadcn/ui)
 │   ├── lib/                      # Funções utilitárias
-│   │   ├── firebase.ts           # Configuração do Firebase
-│   │   ├── i18n.ts               # Configuração de idiomas
-│   │   ├── utils.ts              # Função cn() para Tailwind
-│   │   └── hooks/                # Hooks personalizados
-│   │       └── use-mobile.ts     # Detecta dispositivo móvel
+│   │   ├── firebase.ts
+│   │   ├── i18n.ts
+│   │   ├── utils.ts
+│   │   └── hooks/
+│   │       └── use-mobile.ts
 │   └── assets/                   # Recursos estáticos
 │       ├── img/
-│       │   └── capa.png          # Imagem de capa (cópia para desenvolvimento)
+│       │   └── capa.png
 │       ├── doc/
 │       ├── audio/
 │       └── video/
-├── .env.local                    # Variáveis de ambiente
-├── .eslintrc.json                # Configuração ESLint
-├── next.config.js                # Configuração Next.js
-├── package.json                  # Dependências
-├── tailwind.config.js            # Configuração Tailwind CSS
-├── tsconfig.json                 # Configuração TypeScript
-└── README.md                     # Documentação
+├── .env.local
+├── .eslintrc.json
+├── next.config.js
+├── package.json
+├── tailwind.config.js
+├── tsconfig.json
+└── README.md
 
 ```
 

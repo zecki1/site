@@ -1,14 +1,28 @@
-export async function generateStaticParams() {
-  // Substitua isso pela lógica que retorna os slugs válidos
-  const slugs = ["pagina1", "pagina2", "pagina3"]; // Exemplo estático
+// src/app/[slug]/page.tsx
+import DynamicPageClient from "@/components/layout/DynamicPageClient";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { notFound } from "next/navigation";
 
-  // Retorne um array de objetos com os parâmetros
-  return slugs.map((slug) => ({
-    slug, // O nome do parâmetro deve corresponder ao nome do arquivo: [slug]
-  }));
+interface DynamicPageProps {
+  params: Promise<{ slug: string }>;
 }
 
-export default function Page({ params }) {
-  const { slug } = params;
-  return <h1>Página: {slug}</h1>;
+export default async function DynamicPage({ params }: DynamicPageProps) {
+  const { slug } = await params;
+
+  // Ignora o slug "home" para evitar conflito com a página estática
+  if (slug === "home") {
+    notFound(); // Ou redirecione, se preferir
+  }
+
+  const docRef = doc(db, "sites", slug);
+  const docSnap = await getDoc(docRef);
+  const siteData = docSnap.exists() ? docSnap.data() : null;
+
+  if (!siteData) {
+    notFound(); // Retorna 404 se o slug não existir no Firestore
+  }
+
+  return <DynamicPageClient slug={slug} initialData={siteData} />;
 }

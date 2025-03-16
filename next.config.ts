@@ -1,8 +1,7 @@
-// next.config.ts
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  output: "export", // Gera build estática para Firebase Hosting
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // Remova ou comente esta linha
+  // output: "export",
 };
 
-export default nextConfig;
+module.exports = nextConfig;

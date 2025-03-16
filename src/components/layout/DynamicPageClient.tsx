@@ -1,6 +1,7 @@
+// src/components/layout/DynamicPageClient.tsx
 "use client";
+
 import { notFound } from "next/navigation";
-import Cover from "./Cover";
 
 interface Section {
     type: string;
@@ -24,8 +25,12 @@ export default function DynamicPageClient({ slug, initialData }: DynamicPageClie
 
     return (
         <div className="p-4">
+            <h1>Site: {slug}</h1>
             {initialData.sections.map((section, index) => (
-                <Cover key={index} image={section.image} text={section.text} />
+                <div key={index}>
+                    <h2>{section.text}</h2>
+                    <img src={section.image} alt={section.text} />
+                </div>
             ))}
         </div>
     );

@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Remova ou comente esta linha
-  // output: "export",
+  output: "export", // Gera HTML estático
 };
 
 module.exports = nextConfig;

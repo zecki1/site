@@ -1,68 +1,67 @@
-"use client";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { db, auth } from "@/lib/firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
-import Cover from "@/components/layout/Cover";
-import { useRouter } from "next/navigation";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { redirect } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
-interface Section {
-    type: string;
-    text: string;
-    image: string;
-}
+export default async function AdminPage() {
+    const session = await getServerSession(authOptions);
+    if (!session) redirect("/login");
 
-interface SiteData {
-    sections: Section[];
-    domain?: string;
-    ownerId?: string;
-}
+    const userId = session.user.id;
+    const slug = session.user.email?.split("@")[0] || "default"; // Ex.: "cleristonribeiro"
+    const siteRef = doc(db, "sites", slug);
+    const siteSnap = await getDoc(siteRef);
+    const siteData = siteSnap.exists() ? siteSnap.data() : {};
 
-export default function AdminPage() {
-    const { data: session, status } = useSession();
-    const [siteData, setSiteData] = useState<SiteData | null>(null);
-    const router = useRouter();
+    async function saveSite(formData: FormData) {
+        "use server";
+        const title = formData.get("title") as string;
+        const description = formData.get("description") as string;
+        const text = formData.get("text") as string;
+        const imageFile = formData.get("image") as File;
 
-    useEffect(() => {
-        if (status === "unauthenticated") {
-            router.push("/login");
-        } else if (session) {
-            const fetchSiteData = async () => {
-                const docRef = doc(db, "sites", session.user.id);
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    setSiteData(docSnap.data() as SiteData);
-                } else {
-                    setSiteData({ sections: [{ type: "cover", text: "Bem-vindo", image: "/img/capa.png" }] });
-                }
-            };
-            fetchSiteData();
+        let imageData = siteData.images || [];
+        if (imageFile) {
+            const storage = getStorage();
+            const imageRef = ref(storage, `sites/${slug}/${imageFile.name}`);
+            await uploadBytes(imageRef, imageFile);
+            const imageUrl = await getDownloadURL(imageRef);
+            imageData.push({
+                url: imageUrl,
+                alt: formData.get("imageAlt") as string,
+                meta: {
+                    title: formData.get("imageMetaTitle") as string,
+                    description: formData.get("imageMetaDescription") as string,
+                },
+            });
         }
-    }, [session, status, router]);
 
-    const handleSave = async (newText: string, newImage: string) => {
-        if (session) {
-            const updatedData: SiteData = {
-                sections: [{ type: "cover", text: newText, image: newImage }],
-                ownerId: session.user.id,
-                domain: `${session.user.id}.zecki1.com.br`,
-            };
-            await setDoc(doc(db, "sites", session.user.id), updatedData);
-            setSiteData(updatedData);
-        }
-    };
-
-    if (!siteData) return <div>Carregando...</div>;
+        await setDoc(siteRef, {
+            slug,
+            domain: `${slug}.com.br`, // Ajuste conforme o domínio real
+            userId,
+            title,
+            description,
+            text,
+            images: imageData,
+        }, { merge: true });
+        return redirect(`/admin`);
+    }
 
     return (
-        <div className="p-4">
-            <h1 className="text-2xl mb-4">Editar seu site</h1>
-            <Cover
-                image={siteData.sections[0].image}
-                text={siteData.sections[0].text}
-                isEditable={true}
-                onSave={handleSave}
-            />
-        </div>
+        <form action={saveSite} className="flex flex-col gap-4 p-4">
+            <Input name="title" defaultValue={siteData.title} placeholder="Título" />
+            <Input name="description" defaultValue={siteData.description} placeholder="Descrição" />
+            <Input name="text" defaultValue={siteData.text} placeholder="Texto principal" />
+            <Input name="image" type="file" />
+            <Input name="imageAlt" placeholder="Descrição da imagem" />
+            <Input name="imageMetaTitle" placeholder="Título SEO da imagem" />
+            <Input name="imageMetaDescription" placeholder="Descrição SEO da imagem" />
+            <Button type="submit">Salvar</Button>
+        </form>
     );
 }

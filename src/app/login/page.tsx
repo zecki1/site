@@ -1,35 +1,25 @@
-"use client";
 import { signIn } from "next-auth/react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
-export default function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const router = useRouter();
-
-    const handleLogin = async () => {
-        const res = await signIn("credentials", {
-            email,
-            password,
-            redirect: false,
-        });
-        if (res?.ok) router.push("/admin");
-    };
+export default function LoginPage() {
+    async function handleEmailLogin(formData: FormData) {
+        "use client";
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
+        await signIn("email", { email, password, callbackUrl: "/admin" });
+    }
 
     return (
-        <div className="flex flex-col items-center p-4">
-            <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-            <Input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Senha"
-                className="mt-2"
-            />
-            <Button onClick={handleLogin} className="mt-2">Entrar</Button>
+        <div className="flex flex-col gap-4 p-4">
+            <form action={handleEmailLogin}>
+                <Input name="email" type="email" placeholder="Email" />
+                <Input name="password" type="password" placeholder="Senha" />
+                <Button type="submit">Login com Email</Button>
+            </form>
+            <Button onClick={() => signIn("google", { callbackUrl: "/admin" })}>
+                Login com Google
+            </Button>
         </div>
     );
 }

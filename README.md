@@ -1,6 +1,8 @@
 # Meu Projeto Next.js
 
-Este é um projeto Next.js que utiliza TypeScript, Tailwind CSS, shadcn/ui e componentes personalizados para criar uma interface moderna e responsiva.
+> Objetivo Geral
+
+Transformar zecki1.com.br em um portfólio pessoal e um CMS SaaS gratuito para mini sites de clientes, usando Next.js, Firebase, Tailwind CSS e shadcn/ui. O cliente deve gerenciar seu site de forma autônoma via /admin, com edição de conteúdo, gestão de contatos (email/WhatsApp), relatórios, rollback e notificações de novidades (inicialmente manuais, futuramente automáticas via WhatsApp/Telegram). O projeto começa no Firebase Spark Plan (gratuito) e planeja escalabilidade para o Blaze ou Vercel quando houver demanda.
 
 ## Estrutura de Pastas
 
@@ -8,15 +10,18 @@ Este é um projeto Next.js que utiliza TypeScript, Tailwind CSS, shadcn/ui e com
 
 Site/
 ├── public/                       # Arquivos estáticos
-│   └── img/
-│       └── capa.png
+│   ├── 404.html
+│   └── index.html
 ├── src/                          # Código-fonte
 │   ├── app/                      # App Router do Next.js
+│   │   ├── favicon.ico           # Icone
 │   │   ├── globals.css           # Estilos globais com Tailwind
 │   │   ├── layout.tsx            # Layout raiz com ThemeProvider e Header
 │   │   ├── page.tsx              # Página inicial (redireciona para /home)
 │   │   ├── home/                 # Nova página estática para /home
 │   │   │   └── page.tsx          # Conteúdo da Home (Cover, Sobre, etc.)
+│   │   ├── components/           # Nova página estática com todos os meus componentes
+│   │   │   └── page.tsx          # Conteúdo com todos os meus componentes
 │   │   ├── [slug]/               # Rota dinâmica para sites dos clientes
 │   │   │   └── page.tsx          # Renderiza o site baseado no slug (exclui "home")
 │   │   ├── admin/                # Área de edição do cliente
@@ -46,6 +51,9 @@ Site/
 │   │   │   ├── Flags.tsx
 │   │   │   ├── Header.tsx
 │   │   │   ├── ImageContainer.tsx
+│   │   │   ├── Login.tsx
+│   │   │   ├── Parallax.tsx
+│   │   │   ├── ImageContainer.tsx
 │   │   │   ├── ScrollIndicator.tsx
 │   │   │   ├── Sections.tsx
 │   │   │   ├── Sidebar.tsx
@@ -60,6 +68,8 @@ Site/
 │   │   ├── firebase.ts
 │   │   ├── i18n.ts
 │   │   ├── utils.ts
+│   │   ├── navSections.ts
+│   │   ├── parallaxImages.ts
 │   │   └── hooks/
 │   │       └── use-mobile.ts
 │   └── assets/                   # Recursos estáticos
@@ -69,9 +79,16 @@ Site/
 │       ├── audio/
 │       └── video/
 ├── .env.local
-├── .eslintrc.json
+├── .firebaserc
+├── .gitignore
+├── componentes.json
+├── eslint.config.mjs
+├── firebase.json
+├── next.env.d.ts
 ├── next.config.js
+├── package-lock.json
 ├── package.json
+├── postcss.config.mjs
 ├── tailwind.config.js
 ├── tsconfig.json
 └── README.md

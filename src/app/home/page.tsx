@@ -5,7 +5,6 @@ export default function Home() {
     return <HomeContent />;
 }
 
-// Metadata para SEO
 export async function generateMetadata() {
     return {
         title: "Zecki1 - Desenvolvedor e Designer Full-Stack",

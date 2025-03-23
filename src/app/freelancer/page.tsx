@@ -7,7 +7,7 @@ export default function Freelancer() {
 
 export async function generateMetadata() {
     return {
-        title: "Zecki1 - Meus Trabalhos como Freelancer",
-        description: "Veja meus projetos como desenvolvedor e designer freelancer, com foco em React, Next.js e design gráfico.",
+        title: "Zecki1 - Portfólio de Freelancer",
+        description: "Conheça meus projetos como desenvolvedor freelancer, com React, Next.js e design gráfico.",
     };
 }

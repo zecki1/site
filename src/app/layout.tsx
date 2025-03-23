@@ -1,18 +1,18 @@
+// src/app/layout.tsx
 "use client";
 
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import "../app/globals.css";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
-import { Header } from "@/components/layout/Header";
+import { ScrollSmootherHeader } from "@/components/gsap/ScrollSmootherHeader";
 import { Toaster } from "@/components/ui/sonner";
-import "../lib/i18n"; // Importa a configuração do i18next
+import "../lib/i18n";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const { i18n } = useTranslation();
 
   useEffect(() => {
-    // Forçar ptBR como idioma padrão na primeira carga ou se o localStorage estiver vazio
     const savedLang = localStorage.getItem("i18nLng");
     if (!savedLang || savedLang !== "ptBR") {
       i18n.changeLanguage("ptBR");
@@ -38,11 +38,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             `,
           }}
         />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" />
       </head>
       <body className="min-h-screen">
         <ThemeProvider>
-          <Header />
-          {children}
+          <ScrollSmootherHeader />
+          <div id="main-content" className="pt-[100vh] min-h-screen" style={{ opacity: 0, pointerEvents: "none" }}>
+            {children}
+          </div>
           <Toaster />
         </ThemeProvider>
       </body>

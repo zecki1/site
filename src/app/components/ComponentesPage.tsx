@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Container } from "lucide-react";
 import GsapParallax from "@/components/gsap/GsapParallax";
 import { Section } from "@/components/layout/Sections";
-// import Flags from "@/components/layout/Flags";
+import Flags from "@/components/layout/Flags";
 import ScrollIndicator from "@/components/layout/ScrollIndicator";
 import { Sidebar } from "@/components/layout/Sidebar";
 import TextTranslator from "@/components/layout/TextTranslator";
@@ -117,7 +117,7 @@ function ComponentsPage() {
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
                                 {[
                                     { title: "Container", content: <Container className="border p-4"><p>Exemplo</p></Container> },
-                                    // { title: "Flags", content: <Flags /> },
+                                    { title: "Flags", content: <Flags /> },
                                     { title: "ScrollIndicator", content: <ScrollIndicator /> },
                                     { title: "Sidebar", content: <Sidebar /> },
                                     { title: "TextTranslator", content: <TextTranslator>{{ ptBR: "Texto em português", en: "Text in English", es: "Texto en español" }}</TextTranslator> },
@@ -236,3 +236,16 @@ function ComponentsPage() {
 
 // Exportação padrão
 export default ComponentsPage;
+
+// Reexportação explícita dos componentes shadcn/ui usados
+export {
+    Button,
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+    Input,
+    toast as Sonner,
+};

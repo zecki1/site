@@ -2,11 +2,14 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "encrypt-config": "tsx src/scripts/encryptConfig.ts",
+    "add-test-doc": "tsx src/scripts/addTestDoc.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.3",
@@ -42,6 +45,7 @@
     "cmdk": "^1.0.4",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.5.2",
+    "firebase-admin": "^13.2.0",
     "framer-motion": "^12.5.0",
     "gsap": "^3.12.7",
     "i18next": "^24.2.2",
@@ -73,11 +77,14 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv": "^16.4.7",
     "eslint": "^9",
     "eslint-config-next": "15.2.1",
     "firebase": "^11.4.0",
     "next-auth": "^4.24.11",
     "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.3",
     "typescript": "^5"
   }
 }

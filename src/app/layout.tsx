@@ -1,7 +1,7 @@
-// src/app/layout.tsx
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "../app/globals.css";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
@@ -11,6 +11,7 @@ import "../lib/i18n";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const { i18n } = useTranslation();
+  const pathname = usePathname();
 
   useEffect(() => {
     const savedLang = localStorage.getItem("i18nLng");
@@ -18,6 +19,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       i18n.changeLanguage("ptBR");
     }
   }, [i18n]);
+
+  // Mostra o ScrollSmootherHeader em todas as rotas, exceto /sites e /admin
+  const isClientRoute = pathname?.startsWith("/sites") || pathname?.startsWith("/admin");
+  const showHeader = !isClientRoute;
 
   return (
     <html lang="pt-BR" suppressHydrationWarning>
@@ -38,11 +43,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             `,
           }}
         />
-         </head>
+      </head>
       <body className="min-h-screen">
         <ThemeProvider>
-          <ScrollSmootherHeader />
-          <div id="main-content" className="min-h-screen pt-[10]" style={{ opacity: 0, pointerEvents: "none" }}>
+          {showHeader && <ScrollSmootherHeader />}
+          <div
+            id="main-content"
+            className={showHeader ? "pt-[100vh] min-h-screen" : "min-h-screen"}
+            style={{ opacity: showHeader ? 0 : 1, pointerEvents: showHeader ? "none" : "auto" }}
+          >
             {children}
           </div>
           <Toaster />

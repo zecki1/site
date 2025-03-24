@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollSmootherHeader } from "@/components/gsap/ScrollSmootherHeader";
 import Link from "next/link";
+import "../../../lib/i18n"; // Ajuste o caminho relativo
 
 export default function DynamicPageClient({ slug }: { slug: string }) {
     const { i18n } = useTranslation();

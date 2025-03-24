@@ -22,7 +22,7 @@ export default function DynamicPageClient({
     }, []);
 
     return (
-        <div className="font-sans text-gray-900">
+        <div className=" text-gray-900">
             <Header /> {/* Este deve ser o sidebar do Cleriston */}
             <Hero data={initialData.hero} />
             <main id="main">

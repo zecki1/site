@@ -53,7 +53,7 @@ function ComponentsPage() {
     };
 
     return (
-        <div className="min-h-screen font-sans">
+        <div className="min-h-screen ">
             <main className="relative z-10">
                 <motion.div initial="hidden" animate="visible" variants={coverVariants}>
                     <GsapParallax

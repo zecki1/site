@@ -10,31 +10,46 @@ Transformar zecki1.com.br em um portfólio pessoal e um CMS SaaS gratuito para m
 
 Site/
 ├── public/                       # Arquivos estáticos
-│   ├── 404.html
-│   └── index.html
+│   ├── 404.html                  # Página de erro 404 personalizada
+│   └── index.html                # HTML inicial (padrão Next.js)
 ├── src/                          # Código-fonte
 │   ├── app/                      # App Router do Next.js
-│   │   ├── favicon.ico           # Ícone
+│   │   ├── favicon.ico           # Ícone do site
 │   │   ├── globals.css           # Estilos globais com Tailwind
-│   │   ├── layout.tsx            # Layout raiz com ThemeProvider e Header
+│   │   ├── layout.tsx            # Layout raiz com ThemeProvider e ScrollSmootherHeader condicional
 │   │   ├── page.tsx              # Página inicial (redireciona para /home)
-│   │   ├── home/                 # Nova página estática para /home
+│   │   ├── home/                 # Página estática para /home
 │   │   │   └── page.tsx          # Conteúdo da Home (Cover, Sobre, etc.)
 │   │   ├── components/           # Página estática com todos os componentes
-│   │   │   └── page.tsx          # Conteúdo com todos os componentes
-│   │   ├── [slug]/               # Rota dinâmica para sites dos clientes
+│   │   │   └── page.tsx          # Lista/exibe todos os componentes
+│   │   ├── [slug]/               # Rota dinâmica para o seu site (zecki1.com.br)
 │   │   │   ├── page.tsx          # Renderiza o site baseado no slug (exclui "home")
-│   │   │   └── DynamicPageClient.tsx  # Componente cliente para renderizar os dados (adicionado hoje)
-│   │   ├── admin/                # Área de edição do cliente
-│   │   │   └── page.tsx          # Página de admin para editar o site
-│   │   ├── login/                # Página de login
-│   │   │   └── page.tsx          # Formulário de login
+│   │   │   └── DynamicPageClient.tsx  # Componente cliente para renderizar os dados
+│   │   ├── sites/                # Rota para sites dos clientes
+│   │   │   ├── [siteId]/         # Ex.: cleristonribeiro.com.br/
+│   │   │   │   ├── page.tsx      # Renderiza o site do cliente
+│   │   │   │   ├── DynamicPageClient.tsx  # Componente cliente para sites dos clientes
+│   │   │   │   └── components/   # Componentes específicos do cliente
+│   │   │   │       ├── Header.tsx
+│   │   │   │       ├── Hero.tsx
+│   │   │   │       ├── Sobre.tsx
+│   │   │   │       ├── Portfolio.tsx
+│   │   │   │       ├── Contato.tsx
+│   │   │   │       ├── Footer.tsx
+│   │   │   │       └── BackToTop.tsx
+│   │   ├── admin/                # Área administrativa
+│   │   │   ├── [siteId]/         # Ex.: cleristonribeiro.com.br/admin
+│   │   │   │   ├── dashboard/    # Painel de edição
+│   │   │   │   │   ├── page.tsx  # Server-side com generateStaticParams
+│   │   │   │   │   └── DashboardClient.tsx  # Client-side com interatividade
+│   │   ├── login/                # zecki1.com.br/login
+│   │   │   └── page.tsx          # Página de login
 │   │   └── api/                  # Rotas de API
 │   │       └── auth/             # Autenticação com NextAuth
 │   │           └── [...nextauth]/
 │   │               └── route.ts  # Configuração do NextAuth
 │   ├── components/               # Componentes reutilizáveis
-│   │   ├── gsap/                 # Componentes GSAP existentes
+│   │   ├── gsap/                 # Componentes GSAP
 │   │   │   ├── ImageParallax.tsx
 │   │   │   ├── ScrollTriggerClamp.tsx
 │   │   │   ├── ScrollSmootherThree.tsx
@@ -42,15 +57,14 @@ Site/
 │   │   │   ├── ScrollSmoother.tsx
 │   │   │   ├── GsapImageParallax.tsx
 │   │   │   ├── SmoothScrollyImages.tsx
-│   │   │   ├── ScrollSmootherHeader.tsx
+│   │   │   ├── ScrollSmootherHeader.tsx  # Header do seu site
 │   │   │   ├── StaggeredText.tsx
 │   │   │   └── NavigationScrollTrigger.tsx
 │   │   ├── layout/               # Componentes de layout
 │   │   │   ├── Container.tsx
 │   │   │   ├── Cover.tsx
-│   │   │   ├── DynamicPageClient.tsx  # Movido para [slug]/, removido daqui
 │   │   │   ├── Flags.tsx
-│   │   │   ├── Header.tsx
+│   │   │   ├── Header.tsx        # Header genérico (não usado no layout)
 │   │   │   ├── ImageContainer.tsx
 │   │   │   ├── Login.tsx
 │   │   │   ├── Parallax.tsx
@@ -66,38 +80,38 @@ Site/
 │   │       └── (outros componentes shadcn/ui)
 │   ├── lib/                      # Funções utilitárias
 │   │   ├── firebase.ts           # Configuração do Firebase
-│   │   ├── i18n.ts
+│   │   ├── i18n.ts               # Configuração do i18next
 │   │   ├── utils.ts
 │   │   ├── navSections.ts
 │   │   ├── parallaxImages.ts
 │   │   └── hooks/
 │   │       └── use-mobile.ts
-│   ├── scripts/                  # Scripts standalone (adicionado hoje)
-│   │   ├── addTestDoc.ts         # Script para adicionar documento de teste no Firestore
-│   │   └── encryptConfig.ts      # Script para encriptar credenciais (opcional, Solução 2)
+│   ├── scripts/                  # Scripts standalone
+│   │   ├── addTestDoc.ts         # Adiciona documento de teste no Firestore
+│   │   └── encryptConfig.ts      # Encripta credenciais (opcional)
 │   └── assets/                   # Recursos estáticos
 │       ├── img/
 │       │   └── capa.png
 │       ├── doc/
 │       ├── audio/
 │       └── video/
-├── .env.local                    # Variáveis de ambiente locais (confirmado aqui)
+├── .env.local                    # Variáveis de ambiente locais
 ├── .firebaserc                   # Configuração do Firebase CLI
-├── .gitignore                    # Arquivos ignorados pelo Git (atualizado hoje)
-├── componentes.json
-├── eslint.config.mjs
+├── .gitignore                    # Arquivos ignorados pelo Git
+├── componentes.json              # Configuração dos componentes (se usado)
+├── eslint.config.mjs             # Configuração do ESLint
 ├── firebase.json                 # Configuração do Firebase Hosting/Firestore
-├── next.env.d.ts
-├── next.config.js
-├── package-lock.json
-├── package.json
-├── postcss.config.mjs
-├── tailwind.config.js
-├── tsconfig.json
-├── firebaseConfig.enc            # Credenciais encriptadas (opcional, Solução 2)
-├── firebaseKey.key               # Chave de encriptação (opcional, Solução 2)
-├── firebaseIV.iv                 # IV de encriptação (opcional, Solução 2)
-└── README.md
+├── next.env.d.ts                 # Tipagem para variáveis de ambiente
+├── next.config.js                # Configuração do Next.js
+├── package-lock.json             # Lockfile do npm
+├── package.json                  # Dependências e scripts
+├── postcss.config.mjs            # Configuração do PostCSS
+├── tailwind.config.js            # Configuração do Tailwind CSS
+├── tsconfig.json                 # Configuração do TypeScript
+├── firebaseConfig.enc            # Credenciais encriptadas (opcional)
+├── firebaseKey.key               # Chave de encriptação (opcional)
+├── firebaseIV.iv                 # IV de encriptação (opcional)
+└── README.md                     # Documentação do projeto
 
 ```
 

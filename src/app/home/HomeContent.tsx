@@ -29,7 +29,7 @@ export default function HomeContent() {
     };
 
     return (
-        <div className="font-sans ">
+        <div className="">
             <main className="relative z-10">
                 {/* Cover */}
                 <motion.div initial="hidden" animate="visible" variants={coverVariants}>

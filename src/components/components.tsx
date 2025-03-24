@@ -57,7 +57,7 @@ export default function Home() {
     }, []);
 
     return (
-        <div className="min-h-screen font-sans pt-[80vh]">
+        <div className="min-h-screen pt-[80vh]">
             <AosInit />
             <main ref={mainRef} className="relative z-10">
                 <Cover

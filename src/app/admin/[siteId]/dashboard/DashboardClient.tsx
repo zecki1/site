@@ -1,21 +1,29 @@
 "use client";
 import { useEffect, useState } from "react";
 import { db } from "@/lib/firebase";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 
-export default function Dashboard({ params }: { params: { siteId: string } }) {
-    const [siteData, setSiteData] = useState<any>(null);
+export default function DashboardClient({
+    siteId,
+    initialData,
+}: {
+    siteId: string;
+    initialData: any;
+}) {
+    const [siteData, setSiteData] = useState<any>(initialData);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const siteDoc = await getDoc(doc(db, "newSites", params.siteId));
-            if (siteDoc.exists()) setSiteData(siteDoc.data());
-        };
-        fetchData();
-    }, [params.siteId]);
+        if (!initialData) {
+            const fetchData = async () => {
+                const siteDoc = await getDoc(doc(db, "newSites", siteId));
+                if (siteDoc.exists()) setSiteData(siteDoc.data());
+            };
+            fetchData();
+        }
+    }, [siteId, initialData]);
 
     const handleUpdate = async (field: string, value: any) => {
-        await updateDoc(doc(db, "newSites", params.siteId), { [field]: value });
+        await updateDoc(doc(db, "newSites", siteId), { [field]: value });
         setSiteData({ ...siteData, [field]: value });
     };
 
@@ -32,8 +40,7 @@ export default function Dashboard({ params }: { params: { siteId: string } }) {
                     className="border p-2 w-full"
                 />
             </section>
-            {/* Adicione mais seções para imagens, SEO, etc. */}
-            <a href={`/sites/${params.siteId}`} target="_blank" className="text-blue-600">
+            <a href={`/sites/${siteId}`} target="_blank" className="text-blue-600">
                 Ver Site
             </a>
         </div>

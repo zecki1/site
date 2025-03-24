@@ -14,16 +14,17 @@ Site/
 │   └── index.html
 ├── src/                          # Código-fonte
 │   ├── app/                      # App Router do Next.js
-│   │   ├── favicon.ico           # Icone
+│   │   ├── favicon.ico           # Ícone
 │   │   ├── globals.css           # Estilos globais com Tailwind
 │   │   ├── layout.tsx            # Layout raiz com ThemeProvider e Header
 │   │   ├── page.tsx              # Página inicial (redireciona para /home)
 │   │   ├── home/                 # Nova página estática para /home
 │   │   │   └── page.tsx          # Conteúdo da Home (Cover, Sobre, etc.)
-│   │   ├── components/           # Nova página estática com todos os meus componentes
-│   │   │   └── page.tsx          # Conteúdo com todos os meus componentes
+│   │   ├── components/           # Página estática com todos os componentes
+│   │   │   └── page.tsx          # Conteúdo com todos os componentes
 │   │   ├── [slug]/               # Rota dinâmica para sites dos clientes
-│   │   │   └── page.tsx          # Renderiza o site baseado no slug (exclui "home")
+│   │   │   ├── page.tsx          # Renderiza o site baseado no slug (exclui "home")
+│   │   │   └── DynamicPageClient.tsx  # Componente cliente para renderizar os dados (adicionado hoje)
 │   │   ├── admin/                # Área de edição do cliente
 │   │   │   └── page.tsx          # Página de admin para editar o site
 │   │   ├── login/                # Página de login
@@ -47,13 +48,12 @@ Site/
 │   │   ├── layout/               # Componentes de layout
 │   │   │   ├── Container.tsx
 │   │   │   ├── Cover.tsx
-│   │   │   ├── DynamicPageClient.tsx
+│   │   │   ├── DynamicPageClient.tsx  # Movido para [slug]/, removido daqui
 │   │   │   ├── Flags.tsx
 │   │   │   ├── Header.tsx
 │   │   │   ├── ImageContainer.tsx
 │   │   │   ├── Login.tsx
 │   │   │   ├── Parallax.tsx
-│   │   │   ├── ImageContainer.tsx
 │   │   │   ├── ScrollIndicator.tsx
 │   │   │   ├── Sections.tsx
 │   │   │   ├── Sidebar.tsx
@@ -65,25 +65,28 @@ Site/
 │   │       ├── button.tsx
 │   │       └── (outros componentes shadcn/ui)
 │   ├── lib/                      # Funções utilitárias
-│   │   ├── firebase.ts
+│   │   ├── firebase.ts           # Configuração do Firebase
 │   │   ├── i18n.ts
 │   │   ├── utils.ts
 │   │   ├── navSections.ts
 │   │   ├── parallaxImages.ts
 │   │   └── hooks/
 │   │       └── use-mobile.ts
+│   ├── scripts/                  # Scripts standalone (adicionado hoje)
+│   │   ├── addTestDoc.ts         # Script para adicionar documento de teste no Firestore
+│   │   └── encryptConfig.ts      # Script para encriptar credenciais (opcional, Solução 2)
 │   └── assets/                   # Recursos estáticos
 │       ├── img/
 │       │   └── capa.png
 │       ├── doc/
 │       ├── audio/
 │       └── video/
-├── .env.local
-├── .firebaserc
-├── .gitignore
+├── .env.local                    # Variáveis de ambiente locais (confirmado aqui)
+├── .firebaserc                   # Configuração do Firebase CLI
+├── .gitignore                    # Arquivos ignorados pelo Git (atualizado hoje)
 ├── componentes.json
 ├── eslint.config.mjs
-├── firebase.json
+├── firebase.json                 # Configuração do Firebase Hosting/Firestore
 ├── next.env.d.ts
 ├── next.config.js
 ├── package-lock.json
@@ -91,6 +94,9 @@ Site/
 ├── postcss.config.mjs
 ├── tailwind.config.js
 ├── tsconfig.json
+├── firebaseConfig.enc            # Credenciais encriptadas (opcional, Solução 2)
+├── firebaseKey.key               # Chave de encriptação (opcional, Solução 2)
+├── firebaseIV.iv                 # IV de encriptação (opcional, Solução 2)
 └── README.md
 
 ```

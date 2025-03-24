@@ -46,3 +46,6 @@ serviceAccount.json
 firebaseConfig.enc
 firebaseKey.key
 firebaseIV.iv
+*_encrypted.txt
+*_key.txt
+*_iv.txt

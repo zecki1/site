@@ -38,12 +38,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             `,
           }}
         />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" />
-      </head>
+         </head>
       <body className="min-h-screen">
         <ThemeProvider>
           <ScrollSmootherHeader />
-          <div id="main-content" className="pt-[100vh] min-h-screen" style={{ opacity: 0, pointerEvents: "none" }}>
+          <div id="main-content" className="min-h-screen pt-[10]" style={{ opacity: 0, pointerEvents: "none" }}>
             {children}
           </div>
           <Toaster />

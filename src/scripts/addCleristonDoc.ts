@@ -3,9 +3,10 @@ import { createDecipheriv } from "crypto";
 import { initializeApp, cert } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 
-const encryptedConfig = readFileSync(process.cwd() + "/firebaseConfig.enc", "utf8");
-const key = Buffer.from(readFileSync(process.cwd() + "/firebaseKey.key", "utf8"), "hex");
-const iv = Buffer.from(readFileSync(process.cwd() + "/firebaseIV.iv", "utf8"), "hex");
+// Carrega as credenciais encriptadas do Cleriston
+const encryptedConfig = readFileSync(process.cwd() + "/firebaseConfigCleriston.enc", "utf8");
+const key = Buffer.from(readFileSync(process.cwd() + "/firebaseKeyCleriston.key", "utf8"), "hex");
+const iv = Buffer.from(readFileSync(process.cwd() + "/firebaseIVCleriston.iv", "utf8"), "hex");
 
 const decipher = createDecipheriv("aes-256-cbc", key, iv);
 let decrypted = decipher.update(encryptedConfig, "hex", "utf8");
@@ -19,7 +20,7 @@ const app = initializeApp({
 
 const db = getFirestore(app);
 
-const testData = {
+const cleristonData = {
     slug: "cleristonribeiro",
     domain: "cleristonribeiro.com.br",
     title: "Cleriston Ribeiro - Ilustrador",
@@ -78,16 +79,16 @@ const testData = {
     ],
 };
 
-async function addTestDocument() {
+async function addCleristonDocument() {
     try {
-        console.log("Iniciando conexão com Firestore...");
-        const docRef = db.collection("sites").doc("cleristonribeiro");
+        console.log("Iniciando conexão com Firestore do Cleriston...");
+        const docRef = db.collection("newSites").doc("cleristonribeiro");
         console.log("Referência do documento:", docRef.path);
-        await docRef.set(testData);
-        console.log("Documento adicionado com sucesso!");
+        await docRef.set(cleristonData);
+        console.log("Documento adicionado com sucesso ao Firestore do Cleriston!");
     } catch (error) {
         console.error("Erro ao adicionar documento:", error);
     }
 }
 
-addTestDocument();
+addCleristonDocument();

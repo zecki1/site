@@ -1,16 +1,24 @@
 "use client";
 import { useEffect, useState } from "react";
 import { db } from "@/lib/firebase";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+
+interface SiteData {
+    title: string;
+    hero?: {
+        title: string;
+    };
+    [key: string]: any; // Para campos dinâmicos
+}
 
 export default function DashboardClient({
     siteId,
     initialData,
 }: {
     siteId: string;
-    initialData: any;
+    initialData: SiteData;
 }) {
-    const [siteData, setSiteData] = useState<any>(initialData);
+    const [siteData, setSiteData] = useState<SiteData>(initialData);
 
     useEffect(() => {
         if (!initialData) {
@@ -22,7 +30,7 @@ export default function DashboardClient({
         }
     }, [siteId, initialData]);
 
-    const handleUpdate = async (field: string, value: any) => {
+    const handleUpdate = async (field: string, value: string) => {
         await updateDoc(doc(db, "newSites", siteId), { [field]: value });
         setSiteData({ ...siteData, [field]: value });
     };

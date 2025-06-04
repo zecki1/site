@@ -11,7 +11,6 @@ import TextTranslator from "@/components/layout/TextTranslator";
 import { Topic } from "@/components/layout/Topic";
 import CanvasParticles from "@/components/gsap/CanvasParticles";
 import GsapImageParallax from "@/components/gsap/GsapImageParallax";
-import NavigationScrollTrigger from "@/components/gsap/NavigationScrollTrigger";
 import ScrollSmootherHeader from "@/components/gsap/ScrollSmootherHeader";
 import ScrollSmootherThree from "@/components/gsap/ScrollSmootherThree";
 import ScrollTriggerClamp from "@/components/gsap/ScrollTriggerClamp";
@@ -19,7 +18,6 @@ import SmoothScrollyImages from "@/components/gsap/SmoothScrollyImages";
 import StaggeredText from "@/components/gsap/StaggeredText";
 import { images } from "@/components/layout/ImageContainer";
 
-// Importação de componentes básicos do shadcn/ui
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -30,14 +28,12 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/sonner"; // Usando Sonner
+import { toast } from "@/components/ui/sonner";
 
-// Componente Mark
 const Mark: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <span className="font-bold text-purple-500 dark:text-purple-400">{children}</span>
 );
 
-// Componente principal
 function ComponentsPage() {
     const coverVariants = {
         hidden: { opacity: 0, y: 50 },
@@ -109,7 +105,6 @@ function ComponentsPage() {
                             </TextTranslator>
                         </motion.p>
 
-                        {/* Seção Layout */}
                         <div className="mb-16">
                             <h3 className="text-4xl font-bold text-center text-foreground mb-12">
                                 <TextTranslator>{{ ptBR: "Layout", en: "Layout", es: "Diseño" }}</TextTranslator>
@@ -141,7 +136,6 @@ function ComponentsPage() {
                             </div>
                         </div>
 
-                        {/* Seção GSAP */}
                         <div className="mb-16">
                             <h3 className="text-4xl font-bold text-center text-foreground mb-12">
                                 <TextTranslator>{{ ptBR: "GSAP", en: "GSAP", es: "GSAP" }}</TextTranslator>
@@ -151,7 +145,6 @@ function ComponentsPage() {
                                     { title: "CanvasParticles", content: <CanvasParticles imageSrc={images.capa} className="h-64" /> },
                                     { title: "GsapImageParallax", content: <GsapImageParallax images={[images.capa]} className="h-64" /> },
                                     { title: "GsapParallax", content: <GsapParallax backgroundImage={images.capa} className="h-64"><p>Exemplo</p></GsapParallax> },
-                                    // { title: "NavigationScrollTrigger", content: <NavigationScrollTrigger sections={[{ id: "section1", title: { ptBR: "Seção 1", en: "Section 1", es: "Sección 1" } }]} /> },
                                     { title: "ScrollSmootherHeader", content: <ScrollSmootherHeader className="h-64" /> },
                                     { title: "ScrollSmootherThree", content: <ScrollSmootherThree className="h-64" /> },
                                     { title: "ScrollTriggerClamp", content: <ScrollTriggerClamp className="h-64" /> },
@@ -176,7 +169,6 @@ function ComponentsPage() {
                             </div>
                         </div>
 
-                        {/* Seção shadcn/ui (reduzida para componentes básicos) */}
                         <div className="mb-16">
                             <h3 className="text-4xl font-bold text-center text-foreground mb-12">
                                 <TextTranslator>{{ ptBR: "shadcn/ui", en: "shadcn/ui", es: "shadcn/ui" }}</TextTranslator>
@@ -234,10 +226,8 @@ function ComponentsPage() {
     );
 }
 
-// Exportação padrão
 export default ComponentsPage;
 
-// Reexportação explícita dos componentes shadcn/ui usados
 export {
     Button,
     Card,

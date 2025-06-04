@@ -1,30 +1,69 @@
-export default function Footer({ data }: { data: any }) {
+"use client";
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import Header from "./components/Header";
+import Hero from "./components/Hero";
+import Sobre from "./components/Sobre";
+import Portfolio from "./components/Portfolio";
+import Contato from "./components/Contato";
+import Footer from "./components/Footer";
+import BackToTop from "./components/BacktoTop";
+
+interface HeroData {
+    title?: string;
+}
+
+interface SobreData {
+    subtitle?: string;
+    content?: string[];
+    image?: string;
+}
+
+interface PortfolioItem {
+    image: string;
+    title: string;
+    description: string;
+    category: string;
+}
+
+interface PortfolioData {
+    subtitle?: string;
+    items?: PortfolioItem[];
+}
+
+interface ContatoData {
+    [key: string]: unknown;
+}
+
+interface FooterData {
+    [key: string]: unknown;
+}
+
+interface InitialData {
+    hero: HeroData;
+    sobre: SobreData;
+    portfolio: PortfolioData;
+    contato: ContatoData;
+    footer?: FooterData; // Tornar footer opcional
+}
+
+export default function DynamicPageClient({ initialData }: { initialData: InitialData }) {
+    useEffect(() => {
+        AOS.init({ duration: 1000, once: true });
+    }, []);
+
     return (
-        <footer id="footer" className="bg-gray-50 text-gray-700 text-sm text-center py-8">
-            <div className="container mx-auto">
-                <div className="social-links mb-8">
-                    {[
-                        { href: "https://www.instagram.com/cleriston_rib/", icon: "bxl-instagram" },
-                        { href: "https://wa.me/5511993533001", icon: "bxl-whatsapp" },
-                        { href: "https://www.behance.net/cleristonribeiro", icon: "bxl-behance" },
-                        { href: "https://www.linkedin.com/in/cleristonrib/", icon: "bxl-linkedin" },
-                    ].map((link, index) => (
-                        <a
-                            key={index}
-                            href={link.href}
-                            target="_blank"
-                            className="text-lg inline-block bg-blue-600 text-white w-9 h-9 flex items-center justify-center rounded-full mr-2 transition-colors hover:bg-blue-700"
-                        >
-                            <i className={`bx ${link.icon}`} />
-                        </a>
-                    ))}
-                </div>
-                <div className="copyright">
-                    Representado por Lemonade Illustration Agency.<br />
-                    Todos os direitos de imagens são reservados aos seus autores e elaboradores de cada projeto, conforme contrato estabelecido. © 2022 <br />
-                    Desenvolvido por <a href="https://zecki1.com.br" target="_blank" className="text-blue-600 hover:text-blue-700">zecki1</a>
-                </div>
-            </div>
-        </footer>
+        <div className="text-gray-900">
+            <Header />
+            <Hero data={initialData.hero} />
+            <main id="main">
+                <Sobre data={initialData.sobre} />
+                <Portfolio data={initialData.portfolio} />
+                <Contato data={initialData.contato} />
+            </main>
+            <Footer /> {/* Removida a prop data, já que Footer não a usa */}
+            <BackToTop />
+        </div>
     );
 }

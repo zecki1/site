@@ -4,11 +4,12 @@ import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { cn } from "@/lib/utils"
+import Image from "next/image" // Adicionado
 
 interface GsapParallaxProps {
   backgroundImage?: string
   videoSrc?: string
-  images?: string[] // Nova prop para múltiplas imagens
+  images?: string[]
   children: React.ReactNode
   height?: string
   className?: string
@@ -116,10 +117,12 @@ export const GsapParallax: React.FC<GsapParallaxProps> = ({
       ) : images ? (
         <div ref={backgroundRef} className="absolute inset-0 z-0">
           {images.map((src, i) => (
-            <img
+            <Image
               key={i}
               src={src}
               alt={`Parallax ${i}`}
+              width={800}
+              height={600}
               className="parallax-item absolute w-full h-full object-cover"
               style={{ zIndex: i, transform: `translateY(${-i * 20}px)` }}
             />

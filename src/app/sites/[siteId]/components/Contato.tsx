@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-export default function Contato({ data }: { data: any }) {
+export default function Contato() {
     return (
         <section id="contact" className="contact py-16">
             <div className="container mx-auto" data-aos="fade-up">

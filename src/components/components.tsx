@@ -14,6 +14,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { StaggeredText } from "@/components/gsap/StaggeredText";
 import { images } from "@/components/layout/ImageContainer";
 import TextTranslator from "@/components/layout/TextTranslator";
+import Image from "next/image"; // Adicionado
 
 // Componente Mark ajustado pra ser usado
 const Mark: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -118,9 +119,11 @@ export default function Home() {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                             <Card className="hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="100">
                                 <CardHeader>
-                                    <img
+                                    <Image
                                         src="/project-app.jpg"
                                         alt="App Design"
+                                        width={800}
+                                        height={600}
                                         className="w-full h-48 object-cover rounded-t-lg"
                                     />
                                 </CardHeader>
@@ -155,9 +158,11 @@ export default function Home() {
                             </Card>
                             <Card className="hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="200">
                                 <CardHeader>
-                                    <img
+                                    <Image
                                         src="/project-brand.jpg"
                                         alt="Visual Identity"
+                                        width={800}
+                                        height={600}
                                         className="w-full h-48 object-cover rounded-t-lg"
                                     />
                                 </CardHeader>
@@ -192,9 +197,11 @@ export default function Home() {
                             </Card>
                             <Card className="hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="300">
                                 <CardHeader>
-                                    <img
+                                    <Image
                                         src="/project-illustration.jpg"
                                         alt="Illustration"
+                                        width={800}
+                                        height={600}
                                         className="w-full h-48 object-cover rounded-t-lg"
                                     />
                                 </CardHeader>

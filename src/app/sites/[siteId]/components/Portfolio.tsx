@@ -1,8 +1,21 @@
 "use client";
-import { useState, useEffect } from "react"; // Adicionado useEffect aqui
+import { useState, useEffect } from "react";
 import GLightbox from "glightbox";
+import Image from "next/image";
 
-export default function Portfolio({ data }: { data: any }) {
+interface PortfolioItem {
+    image: string;
+    title: string;
+    description: string;
+    category: string;
+}
+
+interface PortfolioData {
+    subtitle?: string;
+    items?: PortfolioItem[];
+}
+
+export default function Portfolio({ data }: { data: PortfolioData }) {
     const [filter, setFilter] = useState("*");
 
     useEffect(() => {
@@ -52,11 +65,17 @@ export default function Portfolio({ data }: { data: any }) {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6" data-aos="fade-up" data-aos-delay="200">
                     {items
-                        .filter((item: any) => filter === "*" || item.category === filter.slice(1))
-                        .map((item: any, index: number) => (
+                        .filter((item: PortfolioItem) => filter === "*" || item.category === filter.slice(1))
+                        .map((item: PortfolioItem, index: number) => (
                             <div key={index} className={`portfolio-item ${item.category}`}>
                                 <div className="portfolio-wrap relative overflow-hidden group">
-                                    <img src={item.image} alt={item.title} className="w-full h-auto" />
+                                    <Image
+                                        src={item.image}
+                                        alt={item.title}
+                                        width={800}
+                                        height={600}
+                                        className="w-full h-auto"
+                                    />
                                     <div className="portfolio-info absolute inset-0 flex flex-col items-center justify-center text-center opacity-0 group-hover:opacity-100 transition-opacity bg-white/70">
                                         <h4 className="text-lg font-semibold text-gray-700">{item.title}</h4>
                                         <p className="text-sm text-gray-700 uppercase">{item.description}</p>

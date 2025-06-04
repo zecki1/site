@@ -1,4 +1,12 @@
-export default function Sobre({ data }: { data: any }) {
+import Image from "next/image"; // Adicionado
+
+interface SobreData {
+    subtitle?: string;
+    content?: string[];
+    image?: string;
+}
+
+export default function Sobre({ data }: { data: SobreData }) {
     return (
         <section id="sobre" className="sobre py-16 bg-gray-100">
             <div className="container mx-auto" data-aos="fade-up">
@@ -24,9 +32,11 @@ export default function Sobre({ data }: { data: any }) {
                             )}
                     </div>
                     <div className="md:w-1/4">
-                        <img
+                        <Image
                             src={data?.image || "/perfil.jpg"}
                             alt="Cleriston Ribeiro - Ilustrador"
+                            width={400}
+                            height={400}
                             className="w-full rounded-lg"
                         />
                     </div>

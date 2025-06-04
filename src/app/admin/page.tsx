@@ -8,7 +8,7 @@ interface SiteData {
     hero?: {
         title: string;
     };
-    [key: string]: any; // Para campos dinâmicos
+    [key: string]: unknown; // Alterado de any para unknown
 }
 
 export default function Dashboard({ params }: { params: { siteId: string } }) {
@@ -17,14 +17,14 @@ export default function Dashboard({ params }: { params: { siteId: string } }) {
     useEffect(() => {
         const fetchData = async () => {
             const siteDoc = await getDoc(doc(db, "newSites", params.siteId));
-            if (siteDoc.exists()) setSiteData(siteDoc.data());
+            if (siteDoc.exists()) setSiteData(siteDoc.data() as SiteData);
         };
         fetchData();
     }, [params.siteId]);
 
     const handleUpdate = async (field: string, value: string) => {
         await updateDoc(doc(db, "newSites", params.siteId), { [field]: value });
-        setSiteData({ ...siteData, [field]: value });
+        setSiteData({ ...siteData, [field]: value } as SiteData);
     };
 
     if (!siteData) return <div>Carregando...</div>;

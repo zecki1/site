@@ -2,13 +2,13 @@
 import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import Sobre from "./components/Sobre";
-import Portfolio from "./components/Portfolio";
-import Contato from "./components/Contato";
-import Footer from "./components/Footer";
-import BackToTop from "./components/BacktoTop";
+import Header from "./Header";
+import Hero from "./Hero";
+import Sobre from "./Sobre";
+import Portfolio from "./Portfolio";
+import Contato from "./Contato";
+import Footer from "./Footer";
+import BackToTop from "./BackToTop";
 
 interface HeroData {
     title?: string;

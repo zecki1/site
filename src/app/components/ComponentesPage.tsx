@@ -30,6 +30,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/sonner";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Mark: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <span className="font-bold text-purple-500 dark:text-purple-400">{children}</span>
 );
@@ -49,7 +50,7 @@ function ComponentsPage() {
     };
 
     return (
-        <div className="min-h-screen ">
+        <div className="min-h-screen">
             <main className="relative z-10">
                 <motion.div initial="hidden" animate="visible" variants={coverVariants}>
                     <GsapParallax

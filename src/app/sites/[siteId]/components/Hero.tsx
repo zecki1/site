@@ -1,6 +1,10 @@
 import { TypeAnimation } from "react-type-animation";
 
-export default function Hero({ data }: { data: any }) {
+interface HeroData {
+    title?: string;
+}
+
+export default function Hero({ data }: { data: HeroData }) {
     return (
         <section
             id="hero"

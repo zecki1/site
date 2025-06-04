@@ -8,7 +8,7 @@ interface SiteData {
     hero?: {
         title: string;
     };
-    [key: string]: any; // Para campos dinâmicos
+    [key: string]: unknown; // Alterado de any para unknown
 }
 
 export default function DashboardClient({
@@ -24,7 +24,7 @@ export default function DashboardClient({
         if (!initialData) {
             const fetchData = async () => {
                 const siteDoc = await getDoc(doc(db, "newSites", siteId));
-                if (siteDoc.exists()) setSiteData(siteDoc.data());
+                if (siteDoc.exists()) setSiteData(siteDoc.data() as SiteData);
             };
             fetchData();
         }
@@ -32,7 +32,7 @@ export default function DashboardClient({
 
     const handleUpdate = async (field: string, value: string) => {
         await updateDoc(doc(db, "newSites", siteId), { [field]: value });
-        setSiteData({ ...siteData, [field]: value });
+        setSiteData({ ...siteData, [field]: value } as SiteData);
     };
 
     if (!siteData) return <div>Carregando...</div>;

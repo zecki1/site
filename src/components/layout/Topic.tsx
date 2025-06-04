@@ -1,7 +1,8 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { Slot } from "@radix-ui/react-slot" // Adicione este import
+import { Slot } from "@radix-ui/react-slot"
+import Image from "next/image" // Adicionado
 
 const generateId = (label: string): string => {
     return label
@@ -16,11 +17,11 @@ interface TopicProps {
     children: React.ReactNode
     label: string
     className?: string
-    asChild?: boolean // Nova prop
+    asChild?: boolean
 }
 
 export const Topic: React.FC<TopicProps> = ({ children, label, className, asChild }) => {
-    const Comp = asChild ? Slot : "article" // Use Slot se asChild for true
+    const Comp = asChild ? Slot : "article"
     return (
         <Comp
             id={generateId(label)}
@@ -31,7 +32,6 @@ export const Topic: React.FC<TopicProps> = ({ children, label, className, asChil
         </Comp>
     )
 }
-
 
 interface Topic2Props extends TopicProps {
     svgComponent?: string
@@ -49,10 +49,6 @@ export const Topic2: React.FC<Topic2Props> = ({
 }) => {
     return (
         <>
-
-
-
-
             <article
                 id={generateId(label)}
                 aria-label={label}
@@ -62,7 +58,13 @@ export const Topic2: React.FC<Topic2Props> = ({
             </article>
             {showSvg && svgComponent && (
                 <div className="w-full">
-                    <img src={svgComponent} alt="Divisor" className="w-full h-auto" />
+                    <Image
+                        src={svgComponent}
+                        alt="Divisor"
+                        width={1920}
+                        height={100}
+                        className="w-full h-auto"
+                    />
                 </div>
             )}
         </>

@@ -11,7 +11,6 @@ import TextTranslator from "@/components/layout/TextTranslator";
 import { Topic } from "@/components/layout/Topic";
 import CanvasParticles from "@/components/gsap/CanvasParticles";
 import GsapImageParallax from "@/components/gsap/GsapImageParallax";
-import NavigationScrollTrigger from "@/components/gsap/NavigationScrollTrigger";
 import ScrollSmootherHeader from "@/components/gsap/ScrollSmootherHeader";
 import ScrollSmootherThree from "@/components/gsap/ScrollSmootherThree";
 import ScrollTriggerClamp from "@/components/gsap/ScrollTriggerClamp";
@@ -30,9 +29,10 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/sonner"; // Usando Sonner
+import { toast } from "@/components/ui/sonner";
 
 // Componente Mark
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Mark: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <span className="font-bold text-purple-500 dark:text-purple-400">{children}</span>
 );
@@ -53,7 +53,7 @@ function ComponentsPage() {
     };
 
     return (
-        <div className="min-h-screen ">
+        <div className="min-h-screen">
             <main className="relative z-10">
                 <motion.div initial="hidden" animate="visible" variants={coverVariants}>
                     <GsapParallax
@@ -151,7 +151,6 @@ function ComponentsPage() {
                                     { title: "CanvasParticles", content: <CanvasParticles imageSrc={images.capa} className="h-64" /> },
                                     { title: "GsapImageParallax", content: <GsapImageParallax images={[images.capa]} className="h-64" /> },
                                     { title: "GsapParallax", content: <GsapParallax backgroundImage={images.capa} className="h-64"><p>Exemplo</p></GsapParallax> },
-                                    // { title: "NavigationScrollTrigger", content: <NavigationScrollTrigger sections={[{ id: "section1", title: { ptBR: "Seção 1", en: "Section 1", es: "Sección 1" } }]} /> },
                                     { title: "ScrollSmootherHeader", content: <ScrollSmootherHeader className="h-64" /> },
                                     { title: "ScrollSmootherThree", content: <ScrollSmootherThree className="h-64" /> },
                                     { title: "ScrollTriggerClamp", content: <ScrollTriggerClamp className="h-64" /> },

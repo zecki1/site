@@ -42,7 +42,7 @@ export default function HomeContent() {
                         ignoreCheck={true}
                     >
                         <motion.p
-                            className="text-foreground text-2xl md:text-4xl mb-10 font-light max-w-3xl tracking-tight"
+                            className="text-2xl md:text-4xl mb-10 font-light max-w-3xl tracking-tight  text-white"
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.5, duration: 0.8 }}

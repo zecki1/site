@@ -3,8 +3,16 @@ import { useEffect, useState } from "react";
 import { db } from "@/lib/firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 
+interface SiteData {
+    title: string;
+    hero?: {
+        title: string;
+    };
+    [key: string]: any; // Para campos dinâmicos
+}
+
 export default function Dashboard({ params }: { params: { siteId: string } }) {
-    const [siteData, setSiteData] = useState<any>(null);
+    const [siteData, setSiteData] = useState<SiteData | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -14,7 +22,7 @@ export default function Dashboard({ params }: { params: { siteId: string } }) {
         fetchData();
     }, [params.siteId]);
 
-    const handleUpdate = async (field: string, value: any) => {
+    const handleUpdate = async (field: string, value: string) => {
         await updateDoc(doc(db, "newSites", params.siteId), { [field]: value });
         setSiteData({ ...siteData, [field]: value });
     };
@@ -32,7 +40,6 @@ export default function Dashboard({ params }: { params: { siteId: string } }) {
                     className="border p-2 w-full"
                 />
             </section>
-            {/* Adicione mais seções para imagens, SEO, etc. */}
             <a href={`/sites/${params.siteId}`} target="_blank" className="text-blue-600">
                 Ver Site
             </a>

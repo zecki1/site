@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export", // Gera HTML estático
+  images: {
+    domains: ['zecki1.com.br'], // Adicione seu domínio, se aplicável
+  },
 };
 
 module.exports = nextConfig;

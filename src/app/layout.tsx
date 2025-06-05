@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import "../app/globals.css";
+import "./globals.css";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { ScrollSmootherHeader } from "@/components/gsap/ScrollSmootherHeader";
 import { Toaster } from "@/components/ui/sonner";
@@ -20,7 +20,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     }
   }, [i18n]);
 
-  // Mostra o ScrollSmootherHeader em todas as rotas, exceto /sites e /admin
   const isClientRoute = pathname?.startsWith("/sites") || pathname?.startsWith("/admin");
   const showHeader = !isClientRoute;
 
@@ -43,6 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             `,
           }}
         />
+        <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
       </head>
       <body className="min-h-screen">
         <ThemeProvider>

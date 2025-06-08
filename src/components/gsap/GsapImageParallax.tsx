@@ -24,7 +24,7 @@ export const GsapImageParallax: React.FC<GsapImageParallaxProps> = ({ images, cl
                     { y: -100 },
                     {
                         y: 100,
-                        easing: "none",
+                        ease: "none",
                         scrollTrigger: {
                             trigger: containerRef.current,
                             start: "top bottom",
@@ -36,7 +36,7 @@ export const GsapImageParallax: React.FC<GsapImageParallaxProps> = ({ images, cl
             });
         }
         return () => {
-            ScrollTrigger.getAll().forEach((trigger) => trigger.stop());
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
         };
     }, [images]);
 

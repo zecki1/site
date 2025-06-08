@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Container } from "lucide-react";
 import GsapParallax from "@/components/gsap/GsapParallax";
 import { Section } from "@/components/layout/Sections";
-import Flags from "@/components/layout/Flags";
+import { Flags } from "@/components/layout/Flags"; // Named import
 import ScrollIndicator from "@/components/layout/ScrollIndicator";
 import { Sidebar } from "@/components/layout/Sidebar";
 import TextTranslator from "@/components/layout/TextTranslator";
@@ -29,11 +29,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/sonner";
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const Mark: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <span className="font-bold text-purple-500 dark:text-purple-400">{children}</span>
-);
 
 function ComponentsPage() {
     const coverVariants = {
@@ -70,9 +65,9 @@ function ComponentsPage() {
                         >
                             <TextTranslator>
                                 {{
-                                    ptBR: "Explore todos os meus componentes reutilizáveis em um só lugar, criados com <Mark>paixão</Mark> e <Mark>precisão</Mark>.",
-                                    en: "Discover all my reusable components in one place, crafted with <Mark>passion</Mark> and <Mark>precision</Mark>.",
-                                    es: "Explora todos mis componentes reutilizables en un solo lugar, creados con <Mark>pasión</Mark> y <Mark>precisión</Mark>.",
+                                    ptBR: "Explore todos os meus componentes reutilizáveis em um só lugar, criados com paixão e precisão.",
+                                    en: "Discover all my reusable components in one place, crafted with passion and precision.",
+                                    es: "Explora todos mis componentes reutilizables en un solo lugar, creados con pasión y precisión.",
                                 }}
                             </TextTranslator>
                         </motion.p>
@@ -99,9 +94,9 @@ function ComponentsPage() {
                         >
                             <TextTranslator>
                                 {{
-                                    ptBR: "Uma coleção de componentes <Mark>reutilizáveis</Mark> e <Mark>modernos</Mark> para acelerar seu desenvolvimento.",
-                                    en: "A collection of <Mark>reusable</Mark> and <Mark>modern</Mark> components to speed up your development.",
-                                    es: "Una colección de componentes <Mark>reutilizables</Mark> y <Mark>modernos</Mark> para acelerar tu desarrollo.",
+                                    ptBR: "Uma coleção de componentes reutilizáveis e modernos para acelerar seu desenvolvimento.",
+                                    en: "A collection of reusable and modern components to speed up your development.",
+                                    es: "Una colección de componentes reutilizables y modernos para acelerar tu desarrollo.",
                                 }}
                             </TextTranslator>
                         </motion.p>

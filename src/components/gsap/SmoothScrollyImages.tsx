@@ -1,40 +1,53 @@
-"use client"
+"use client";
 
-import { useEffect, useRef } from "react"
-import { gsap } from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { cn } from "@/lib/utils"
-import Image from "next/image" // Adicionado
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 interface SmoothScrollyImagesProps {
-  images: string[]
-  className?: string
+  images: string[];
+  className?: string;
 }
 
 export const SmoothScrollyImages: React.FC<SmoothScrollyImagesProps> = ({ images, className }) => {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
-    const gallery = containerRef.current
-    if (gallery) {
-      const totalWidth = gallery.scrollWidth
-      gsap.to(gallery, {
-        x: () => -(totalWidth - window.innerWidth),
-        ease: "none",
-        scrollTrigger: {
-          trigger: gallery,
-          start: "top top",
-          end: () => `+=${totalWidth - window.innerWidth}`,
-          scrub: true,
-          pin: true,
-        },
-      })
-    }
+    gsap.registerPlugin(ScrollTrigger);
+    const gallery = containerRef.current;
+    let ctx: gsap.Context;
+
+    const updateScroll = () => {
+      if (gallery) {
+        const totalWidth = gallery.scrollWidth;
+        ctx = gsap.context(() => {
+          gsap.to(gallery, {
+            x: () => -(totalWidth - window.innerWidth),
+            ease: "none",
+            scrollTrigger: {
+              trigger: gallery,
+              start: "top top",
+              end: () => `+=${totalWidth - window.innerWidth}`,
+              scrub: true,
+              pin: true,
+              invalidateOnRefresh: true,
+            },
+          });
+        });
+      }
+    };
+
+    updateScroll();
+    window.addEventListener("resize", updateScroll);
+
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
-    }
-  }, [images])
+      window.removeEventListener("resize", updateScroll);
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      if (ctx) ctx.revert();
+    };
+  }, [images]);
 
   return (
     <div className={cn("w-full overflow-hidden", className)}>
@@ -51,7 +64,7 @@ export const SmoothScrollyImages: React.FC<SmoothScrollyImagesProps> = ({ images
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SmoothScrollyImages
+export default SmoothScrollyImages;

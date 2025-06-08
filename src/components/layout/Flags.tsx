@@ -1,5 +1,5 @@
-// src/components/Flags.tsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export const BrazilFlag: React.FC<{ className?: string }> = ({ className }) => (
     <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -48,3 +48,35 @@ export const SpainFlag: React.FC<{ className?: string }> = ({ className }) => (
         <rect y="18" width="24" height="6" fill="#C60B1E" />
     </svg>
 );
+
+export const Flags: React.FC = () => {
+    const { i18n } = useTranslation();
+
+    const changeLanguage = (lng: string) => {
+        i18n.changeLanguage(lng);
+        localStorage.setItem("i18nLng", lng);
+    };
+
+    return (
+        <div className="flex space-x-2">
+            <button
+                onClick={() => changeLanguage("ptBR")}
+                className={`p-2 ${i18n.language === "ptBR" ? "border-2 border-purple-500" : ""}`}
+            >
+                <BrazilFlag className="w-6 h-6" />
+            </button>
+            <button
+                onClick={() => changeLanguage("en")}
+                className={`p-2 ${i18n.language === "en" ? "border-2 border-purple-500" : ""}`}
+            >
+                <USFlag className="w-6 h-6" />
+            </button>
+            <button
+                onClick={() => changeLanguage("es")}
+                className={`p-2 ${i18n.language === "es" ? "border-2 border-purple-500" : ""}`}
+            >
+                <SpainFlag className="w-6 h-6" />
+            </button>
+        </div>
+    );
+};

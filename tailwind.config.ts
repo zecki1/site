@@ -1,4 +1,3 @@
-// tailwind.config.ts
 import type { Config } from "tailwindcss";
 import animate from "tailwindcss-animate";
 
@@ -17,6 +16,9 @@ export default {
                     foreground: "var(--primary-foreground)",
                 },
                 border: "var(--border)",
+            },
+            textShadow: {
+                sm: "0 0 2px rgba(0, 0, 0, 0.3)",
             },
         },
     },

@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
-import { useEffect, useRef } from "react"
-import { gsap } from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { cn } from "@/lib/utils"
-import Image from "next/image" // Adicionado
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 interface GsapParallaxProps {
-  backgroundImage?: string
-  videoSrc?: string
-  images?: string[]
-  children: React.ReactNode
-  height?: string
-  className?: string
+  backgroundImage?: string;
+  videoSrc?: string;
+  images?: string[];
+  children: React.ReactNode;
+  height?: string;
+  className?: string;
 }
 
 export const GsapParallax: React.FC<GsapParallaxProps> = ({
@@ -23,17 +23,17 @@ export const GsapParallax: React.FC<GsapParallaxProps> = ({
   height = "100vh",
   className,
 }) => {
-  const parallaxRef = useRef<HTMLDivElement>(null)
-  const backgroundRef = useRef<HTMLDivElement>(null)
-  const videoRef = useRef<HTMLVideoElement>(null)
+  const parallaxRef = useRef<HTMLDivElement>(null);
+  const backgroundRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
-    const parallaxElement = parallaxRef.current
+    gsap.registerPlugin(ScrollTrigger);
+    const parallaxElement = parallaxRef.current;
 
     if (parallaxElement) {
       if (videoSrc && videoRef.current) {
-        const video = videoRef.current
+        const video = videoRef.current;
         video.onloadedmetadata = () => {
           const tl = gsap.timeline({
             scrollTrigger: {
@@ -42,16 +42,14 @@ export const GsapParallax: React.FC<GsapParallaxProps> = ({
               end: "bottom+=200% bottom",
               scrub: 2,
             },
-          })
-          tl.to(video, { currentTime: video.duration })
+          });
+          tl.to(video, { currentTime: video.duration });
           const isTouchDevice = () =>
-            "ontouchstart" in window ||
-            navigator.maxTouchPoints > 0 ||
-            navigator.msMaxTouchPoints > 0
+            "ontouchstart" in window || navigator.maxTouchPoints > 0;
           if (isTouchDevice()) {
-            video.play().then(() => video.pause())
+            video.play().catch(() => { }); // Simplified, handle errors
           }
-        }
+        };
       } else if (backgroundImage && backgroundRef.current) {
         gsap.to(backgroundRef.current, {
           yPercent: 20,
@@ -62,9 +60,9 @@ export const GsapParallax: React.FC<GsapParallaxProps> = ({
             end: "bottom top",
             scrub: true,
           },
-        })
+        });
       } else if (images && backgroundRef.current) {
-        const items = backgroundRef.current.querySelectorAll(".parallax-item")
+        const items = backgroundRef.current.querySelectorAll(".parallax-item");
         items.forEach((item) => {
           gsap.fromTo(
             item,
@@ -79,15 +77,15 @@ export const GsapParallax: React.FC<GsapParallaxProps> = ({
                 scrub: true,
               },
             }
-          )
-        })
+          );
+        });
       }
     }
 
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
-    }
-  }, [backgroundImage, videoSrc, images])
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, [backgroundImage, videoSrc, images]);
 
   return (
     <div ref={parallaxRef} className={cn("relative overflow-hidden", className)} style={{ height }}>
@@ -128,10 +126,12 @@ export const GsapParallax: React.FC<GsapParallaxProps> = ({
             />
           ))}
         </div>
-      ) : null}
+      ) : (
+        <div className="absolute inset-0 z-0 bg-gray-200" /> // Fallback UI
+      )}
       <div className="relative z-10 flex items-center justify-center h-full">{children}</div>
     </div>
-  )
-}
+  );
+};
 
-export default GsapParallax
+export default GsapParallax;

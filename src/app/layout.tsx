@@ -3,11 +3,13 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import "./globals.css";
+import "../app/globals.css";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { ScrollSmootherHeader } from "@/components/gsap/ScrollSmootherHeader";
 import { Toaster } from "@/components/ui/sonner";
 import "../lib/i18n";
+import { images } from "@/components/layout/ImageContainer";
+import { CustomCursor } from "@/components/layout/CustomCursor"; // Importe o cursor
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const { i18n } = useTranslation();
@@ -44,13 +46,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
       </head>
-      <body className="min-h-screen">
+      <body className="min-h-screen bg-background">
         <ThemeProvider>
-          {showHeader && <ScrollSmootherHeader />}
+          <CustomCursor /> {/* Adicione o componente do cursor aqui */}
+          {showHeader && <ScrollSmootherHeader backgroundImage={images.capa} />}
           <div
             id="main-content"
-            className={showHeader ? "pt-[100vh] min-h-screen" : "min-h-screen"}
-            style={{ opacity: showHeader ? 0 : 1, pointerEvents: showHeader ? "none" : "auto" }}
+            className={showHeader ? "pt-[100vh]" : ""}
           >
             {children}
           </div>

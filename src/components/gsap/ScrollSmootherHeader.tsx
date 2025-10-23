@@ -1,4 +1,3 @@
-// src/components/gsap/ScrollSmootherHeader.tsx
 "use client";
 
 import { useEffect, useRef } from "react";
@@ -21,13 +20,15 @@ import { BrazilFlag, USFlag, SpainFlag } from "@/components/layout/Flags";
 
 interface ScrollSmootherHeaderProps {
   className?: string;
+  backgroundImage?: string;
 }
 
-export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ className }) => {
+export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ className, backgroundImage }) => {
   const headerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
+  const backgroundRef = useRef<HTMLDivElement>(null);
   const { theme, setTheme } = useTheme();
   const { i18n } = useTranslation();
 
@@ -38,56 +39,59 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
     const title = titleRef.current;
     const scrollIndicator = scrollIndicatorRef.current;
     const nav = navRef.current;
-    const mainContent = document.querySelector("#main-content");
+    const background = backgroundRef.current;
+    const mainContent = document.querySelector("#main-content") as HTMLElement;
 
-    if (header && title && scrollIndicator && nav && mainContent) {
-      // Estado inicial
-      gsap.set(header, { height: "100vh" });
-      gsap.set(title, { fontSize: "6vw" });
-      gsap.set(scrollIndicator, { opacity: 1 });
-      gsap.set(nav, { opacity: 0, display: "none" });
-      gsap.set(mainContent, { opacity: 0, pointerEvents: "none" });
+    if (header && title && scrollIndicator && nav && mainContent && background) {
+      gsap.set(mainContent, { opacity: 0, y: 50 });
 
-      // Animação do header
-      gsap.to(header, {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: document.body,
+          start: "top top",
+          end: "+=500px",
+          scrub: 1,
+        },
+      });
+
+      tl.to(background, {
+        opacity: 0,
+        ease: "power1.inOut",
+      }, 0);
+
+      tl.to(header, {
         height: "64px",
         boxShadow: "0 0 10px rgba(0, 0, 0, 0.15)",
-        duration: 1,
         ease: "power1.inOut",
-        scrollTrigger: {
-          trigger: header,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-          onUpdate: (self) => {
-            const progress = self.progress;
-            if (progress > 0.5) { // Reduzido de 0.9 para 0.5
-              header.classList.add("bg-background");
-              gsap.to(mainContent, { opacity: 1, pointerEvents: "auto", duration: 0.5 });
-              gsap.to(nav, { opacity: 1, display: "flex", duration: 0.5 });
-              gsap.to(scrollIndicator, { opacity: 0, display: "none", duration: 0.2 });
-            } else {
-              header.classList.remove("bg-background");
-              gsap.to(mainContent, { opacity: 0, pointerEvents: "none", duration: 0.2 });
-              gsap.to(nav, { opacity: 0, display: "none", duration: 0.2 });
-              gsap.to(scrollIndicator, { opacity: 1, display: "flex", duration: 0.2 });
-            }
-          },
-        },
-      });
+      }, 0);
 
-      // Animação do título
-      gsap.to(title, {
+      tl.to(title, {
         fontSize: "1.5rem",
-        duration: 1,
         ease: "power1.inOut",
-        scrollTrigger: {
-          trigger: header,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
+      }, 0);
+
+      tl.to(scrollIndicator, {
+        opacity: 0,
+        ease: "power1.inOut",
+      }, 0);
+
+      tl.to(nav, {
+        opacity: 1,
+        pointerEvents: "auto",
+        ease: "power1.inOut",
+      }, 0.3);
+
+      tl.to(mainContent, {
+        opacity: 1,
+        y: 0,
+        ease: "power1.inOut",
+      }, 0.3);
+
+      tl.to(header, {
+        // AQUI ESTÁ A MUDANÇA: trocamos 'bg-background' por 'bg-black'
+        onStart: () => header.classList.add('bg-black'),
+        onReverseComplete: () => header.classList.remove('bg-black'),
+      }, 0.1);
     }
 
     return () => {
@@ -112,20 +116,30 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
     <header
       ref={headerRef}
       className={cn(
-        "fixed top-0 left-0 w-full z-50 flex flex-col items-center justify-center transition-all duration-300",
+        "fixed top-0 left-0 w-full z-50 flex flex-col items-center justify-center transition-colors duration-300",
         className
       )}
+      style={{ height: "100vh" }}
     >
+      <div
+        ref={backgroundRef}
+        className="absolute inset-0 z-0 bg-cover bg-center"
+        style={{
+          backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none',
+        }}
+      />
+
       <h1
         ref={titleRef}
-        className="text-center uppercase text-[#00e1ff] font-bold font-['Luckiest_Guy'] absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[60] text-shadow-[0_0_2px_rgba(0,0,0,0.3)] md:text-4xl"
+        className="text-center uppercase text-[#00e1ff] font-bold font-['Luckiest_Guy'] absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[60] text-shadow-[0_0_2px_rgba(0,0,0,0.3)]"
+        style={{ fontSize: "6vw" }}
       >
         zecki1
       </h1>
-      <div ref={scrollIndicatorRef} className="absolute bottom-4">
+      <div ref={scrollIndicatorRef} className="absolute bottom-4 z-10">
         <div className="flex flex-col items-center gap-2">
-          <ChevronDown className="w-6 h-6 animate-bounce text-white drop-shadow-md md:w-8 md:h-8" />
-          <span className="py-1 px-2 rounded text-xs bg-black/30 text-white drop-shadow-md md:text-sm md:px-3">
+          <ChevronDown className="w-6 h-6 animate-bounce  drop-shadow-md md:w-8 md:h-8" />
+          <span className="py-1 px-2 rounded text-xs bg-black/30  drop-shadow-md md:text-sm md:px-3">
             <TextTranslator>
               {{ ptBR: "Role para baixo", en: "Scroll down", es: "Desplaza hacia abajo" }}
             </TextTranslator>
@@ -134,14 +148,15 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
       </div>
       <div
         ref={navRef}
-        className="flex items-center justify-between w-full max-w-full px-2 absolute top-0 left-1/2 transform -translate-x-1/2 h-full md:px-4"
+        className="flex items-center justify-between w-full max-w-full px-2 absolute top-0 left-1/2 transform -translate-x-1/2 h-full md:px-4 z-10 border-b-2 border-color1"
+        style={{ opacity: 0, pointerEvents: "none" }}
       >
         <Sidebar />
         <div className="flex gap-1 md:gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon" className="h-8 w-8 md:h-10 md:w-10">
-                <Globe className="h-4 w-4 md:h-5 md:w-5" />
+              <Button variant="outline" size="icon" className="h-8 w-8 md:h-10 md:w-10 border-color1">
+                <Globe className="h-4 w-4 md:h-5 md:w-5  text-color1" />
                 <span className="sr-only">
                   <TextTranslator>
                     {{ ptBR: "Mudar Idioma", en: "Change Language", es: "Cambiar Idioma" }}
@@ -170,16 +185,16 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button variant="outline" size="icon" onClick={toggleTheme} className="h-8 w-8 md:h-10 md:w-10">
-            {theme === "dark" ? <Sun className="h-4 w-4 md:h-5 md:w-5" /> : <Moon className="h-4 w-4 md:h-5 md:w-5" />}
+          <Button variant="outline" size="icon" onClick={toggleTheme} className="h-8 w-8 md:h-10 md:w-10  border-color1 ">
+            {theme === "dark" ? <Sun className="h-4 w-4 md:h-5 md:w-5  text-color1 " /> : <Moon className="h-4 w-4 md:h-5 md:w-5  text-color1" />}
             <span className="sr-only">
               <TextTranslator>
                 {{ ptBR: "Alternar Tema", en: "Toggle Theme", es: "Cambiar Tema" }}
               </TextTranslator>
             </span>
           </Button>
-          <Button variant="outline" size="icon" onClick={clearCache} className="h-8 w-8 md:h-10 md:w-10">
-            <Trash2 className="h-4 w-4 md:h-5 md:w-5" />
+          <Button variant="outline" size="icon" onClick={clearCache} className="h-8 w-8 md:h-10 md:w-10  border-color1">
+            <Trash2 className="h-4 w-4 md:h-5 md:w-5 text-color1 " />
             <span className="sr-only">
               <TextTranslator>
                 {{ ptBR: "Limpar Cache", en: "Clear Cache", es: "Limpiar Caché" }}

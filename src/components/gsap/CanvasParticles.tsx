@@ -1,110 +1,163 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { cn } from "@/lib/utils";
+import React, { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
 
-interface CanvasParticlesProps {
-    imageSrc: string;
-    className?: string;
+// Helper para converter HEX para RGB, útil para mudar a opacidade da cor
+const hexToRgb = (hex: string) => {
+    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result
+        ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16),
+        }
+        : null;
+};
+
+class Particle {
+    x: number;
+    y: number;
+    size: number;
+    speedX: number;
+    speedY: number;
+
+    constructor(x: number, y: number, size: number, speedX: number, speedY: number) {
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.speedX = speedX;
+        this.speedY = speedY;
+    }
+
+    update(width: number, height: number) {
+        if (this.x > width || this.x < 0) {
+            this.speedX = -this.speedX;
+        }
+        if (this.y > height || this.y < 0) {
+            this.speedY = -this.speedY;
+        }
+        this.x += this.speedX;
+        this.y += this.speedY;
+    }
+
+    draw(ctx: CanvasRenderingContext2D, color: string) {
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+    }
 }
 
-export const CanvasParticles: React.FC<CanvasParticlesProps> = ({ imageSrc, className }) => {
+export const ConstellationParticles = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const animationFrameRef = useRef<number | undefined>(undefined);
+    const highlightColor = "#00e1ff"; // Sua cor de destaque
 
     useEffect(() => {
-        gsap.registerPlugin(ScrollTrigger);
-        const canvas = canvasRef.current!;
-        const ctx = canvas.getContext("2d")!;
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
 
-        const updateCanvasSize = () => {
+        let animationFrameId: number;
+        let particles: Particle[] = [];
+        const particleCount = window.innerWidth < 768 ? 40 : 80;
+        const mouse = { x: -1000, y: -1000 };
+
+        const setCanvasSize = () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         };
-        updateCanvasSize();
 
-        const img = new Image();
-        img.crossOrigin = "Anonymous";
-        img.src = imageSrc;
+        const init = () => {
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                let size = Math.random() * 2 + 1;
+                let x = Math.random() * (window.innerWidth - size * 2) + size;
+                let y = Math.random() * (window.innerHeight - size * 2) + size;
+                let speedX = (Math.random() - 0.5) * 0.5;
+                let speedY = (Math.random() - 0.5) * 0.5;
+                particles.push(new Particle(x, y, size, speedX, speedY));
+            }
+        };
 
-        img.onload = () => {
-            const tempCanvas = document.createElement("canvas");
-            const tempCtx = tempCanvas.getContext("2d")!;
-            tempCanvas.width = img.width;
-            tempCanvas.height = img.height;
-            tempCtx.drawImage(img, 0, 0, img.width, img.height);
+        const connect = () => {
+            const highlightRgb = hexToRgb(highlightColor);
+            if (!highlightRgb) return;
 
-            const imageData = tempCtx.getImageData(0, 0, img.width, img.height);
-            const data = imageData.data;
+            for (let a = 0; a < particles.length; a++) {
+                // Conectar com o mouse
+                let dxMouse = particles[a].x - mouse.x;
+                let dyMouse = particles[a].y - mouse.y;
+                let distanceMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
 
-            const particles: { x: number; y: number; size: number; speed: number; color: string }[] = [];
-            const scaleFactor = Math.min(canvas.width / img.width, canvas.height / img.height) * 0.5;
-            const offsetX = (canvas.width - img.width * scaleFactor) / 2;
-            const offsetY = (canvas.height - img.height * scaleFactor) / 2;
+                if (distanceMouse < 150) {
+                    const opacity = 1 - distanceMouse / 150;
+                    ctx.strokeStyle = `rgba(${highlightRgb.r}, ${highlightRgb.g}, ${highlightRgb.b}, ${opacity})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[a].x, particles[a].y);
+                    ctx.lineTo(mouse.x, mouse.y);
+                    ctx.stroke();
+                }
 
-            for (let y = 0; y < img.height; y += 4) {
-                for (let x = 0; x < img.width; x += 4) {
-                    const i = (y * img.width + x) * 4;
-                    const r = data[i];
-                    const g = data[i + 1];
-                    const b = data[i + 2];
-                    const a = data[i + 3];
+                // Conectar com outras partículas
+                for (let b = a; b < particles.length; b++) {
+                    let dx = particles[a].x - particles[b].x;
+                    let dy = particles[a].y - particles[b].y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
 
-                    if (a > 0) {
-                        particles.push({
-                            x: x * scaleFactor + offsetX,
-                            y: y * scaleFactor + offsetY,
-                            size: Math.random() * 2 + 1,
-                            speed: Math.random() * 0.5 + 0.1,
-                            color: `rgba(${r}, ${g}, ${b}, ${a / 255})`,
-                        });
+                    if (distance < 120) {
+                        const opacity = 1 - distance / 120;
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.3})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
                     }
                 }
             }
+        };
 
-            const animate = () => {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                particles.forEach((p) => {
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                    ctx.fillStyle = p.color;
-                    ctx.fill();
-                });
-                animationFrameRef.current = requestAnimationFrame(animate);
-            };
-            animate();
-
-            gsap.to(particles, {
-                y: () => canvas.height,
-                stagger: 0.01,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: canvas,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: true,
-                },
+        const animate = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update(canvas.width, canvas.height);
+                p.draw(ctx, 'rgba(255, 255, 255, 0.8)');
             });
+            connect();
+            animationFrameId = requestAnimationFrame(animate);
         };
 
-        img.onerror = () => {
-            console.error("Erro ao carregar a imagem:", imageSrc);
+        const handleMouseMove = (e: MouseEvent) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
         };
 
-        window.addEventListener("resize", updateCanvasSize);
+        const handleMouseOut = () => {
+            mouse.x = -1000;
+            mouse.y = -1000;
+        }
+
+        setCanvasSize();
+        init();
+        animate();
+
+        window.addEventListener('resize', () => {
+            setCanvasSize();
+            init();
+        });
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mouseout', handleMouseOut);
 
         return () => {
-            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-            if (animationFrameRef.current) {
-                cancelAnimationFrame(animationFrameRef.current);
-            }
-            window.removeEventListener("resize", updateCanvasSize);
+            window.removeEventListener('resize', setCanvasSize);
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseout', handleMouseOut);
+            cancelAnimationFrame(animationFrameId);
         };
-    }, [imageSrc]);
+    }, []);
 
-    return <canvas ref={canvasRef} className={cn("w-full h-screen", className)} />;
+    return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full pointer-events-none z-0" />;
 };
-
-export default CanvasParticles;

@@ -1,11 +1,10 @@
 "use client";
 
 import React, { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
 
 // Helper para converter HEX para RGB, útil para mudar a opacidade da cor
 const hexToRgb = (hex: string) => {
-    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result
         ? {
             r: parseInt(result[1], 16),
@@ -72,11 +71,11 @@ export const ConstellationParticles = () => {
         const init = () => {
             particles = [];
             for (let i = 0; i < particleCount; i++) {
-                let size = Math.random() * 2 + 1;
-                let x = Math.random() * (window.innerWidth - size * 2) + size;
-                let y = Math.random() * (window.innerHeight - size * 2) + size;
-                let speedX = (Math.random() - 0.5) * 0.5;
-                let speedY = (Math.random() - 0.5) * 0.5;
+                const size = Math.random() * 2 + 1;
+                const x = Math.random() * (window.innerWidth - size * 2) + size;
+                const y = Math.random() * (window.innerHeight - size * 2) + size;
+                const speedX = (Math.random() - 0.5) * 0.5;
+                const speedY = (Math.random() - 0.5) * 0.5;
                 particles.push(new Particle(x, y, size, speedX, speedY));
             }
         };
@@ -87,9 +86,9 @@ export const ConstellationParticles = () => {
 
             for (let a = 0; a < particles.length; a++) {
                 // Conectar com o mouse
-                let dxMouse = particles[a].x - mouse.x;
-                let dyMouse = particles[a].y - mouse.y;
-                let distanceMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+                const dxMouse = particles[a].x - mouse.x;
+                const dyMouse = particles[a].y - mouse.y;
+                const distanceMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
 
                 if (distanceMouse < 150) {
                     const opacity = 1 - distanceMouse / 150;
@@ -103,9 +102,9 @@ export const ConstellationParticles = () => {
 
                 // Conectar com outras partículas
                 for (let b = a; b < particles.length; b++) {
-                    let dx = particles[a].x - particles[b].x;
-                    let dy = particles[a].y - particles[b].y;
-                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    const dx = particles[a].x - particles[b].x;
+                    const dy = particles[a].y - particles[b].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
 
                     if (distance < 120) {
                         const opacity = 1 - distance / 120;

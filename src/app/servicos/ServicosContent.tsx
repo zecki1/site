@@ -4,7 +4,7 @@ import Link from "next/link";
 import TextTranslator from "@/components/layout/TextTranslator";
 import { BentoCard } from "@/components/layout/BentoCard";
 import { SkillsMarquee } from "@/components/layout/SkillsMarquee";
-import { ArrowRight, Mail, Video, Copy, ExternalLink, Github, Linkedin } from "lucide-react";
+import { ArrowRight, Mail, Video } from "lucide-react";
 
 // --- COMPONENTE DA PÁGINA ---
 export default function ServicesPage() {

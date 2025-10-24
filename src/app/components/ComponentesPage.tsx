@@ -1,19 +1,19 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Container } from "lucide-react";
-import GsapParallax from "@/components/gsap/GsapParallax";
+// Removido o import do ícone 'Container' que estava sendo usado incorretamente
 import { Section } from "@/components/layout/Sections";
-import { Flags } from "@/components/layout/Flags"; // Named import
+import { Flags } from "@/components/layout/Flags";
 import ScrollIndicator from "@/components/layout/ScrollIndicator";
 import { Sidebar } from "@/components/layout/Sidebar";
 import TextTranslator from "@/components/layout/TextTranslator";
 import { Topic } from "@/components/layout/Topic";
-import CanvasParticles from "@/components/gsap/CanvasParticles";
+import { ConstellationParticles } from "@/components/gsap/CanvasParticles"; // Import corrigido e descomentado
 import GsapImageParallax from "@/components/gsap/GsapImageParallax";
+import GsapParallax from "@/components/gsap/GsapParallax";
 import ScrollSmootherHeader from "@/components/gsap/ScrollSmootherHeader";
 import ScrollSmootherThree from "@/components/gsap/ScrollSmootherThree";
-import ScrollTriggerClamp from "@/components/gsap/ScrollTriggerClamp";
+import { ScrollTriggerClamp } from "@/components/gsap/ScrollTriggerClamp";
 import SmoothScrollyImages from "@/components/gsap/SmoothScrollyImages";
 import StaggeredText from "@/components/gsap/StaggeredText";
 import { images } from "@/components/layout/ImageContainer";
@@ -46,6 +46,8 @@ function ComponentsPage() {
 
     return (
         <div className="min-h-screen">
+            {/* O componente de partículas é renderizado aqui para funcionar como fundo global */}
+            <ConstellationParticles />
             <main className="relative z-10">
                 <motion.div initial="hidden" animate="visible" variants={coverVariants}>
                     <GsapParallax
@@ -107,7 +109,8 @@ function ComponentsPage() {
                             </h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
                                 {[
-                                    { title: "Container", content: <Container className="border p-4"><p>Exemplo</p></Container> },
+                                    // CORREÇÃO: Substituído o ícone 'Container' por uma div para demonstrar um contêiner de layout
+                                    { title: "Container", content: <div className="border p-4 w-full h-full"><p>Exemplo de contêiner</p></div> },
                                     { title: "Flags", content: <Flags /> },
                                     { title: "ScrollIndicator", content: <ScrollIndicator /> },
                                     { title: "Sidebar", content: <Sidebar /> },
@@ -138,7 +141,8 @@ function ComponentsPage() {
                             </h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
                                 {[
-                                    { title: "CanvasParticles", content: <CanvasParticles imageSrc={images.capa} className="h-64" /> },
+                                    // CORREÇÃO: Removidas props inválidas. O componente é um background e será exibido em toda a tela.
+                                    { title: "CanvasParticles", content: <p className="text-sm text-muted-foreground">Efeito de partículas no fundo da página.</p> },
                                     { title: "GsapImageParallax", content: <GsapImageParallax images={[images.capa]} className="h-64" /> },
                                     { title: "GsapParallax", content: <GsapParallax backgroundImage={images.capa} className="h-64"><p>Exemplo</p></GsapParallax> },
                                     { title: "ScrollSmootherHeader", content: <ScrollSmootherHeader className="h-64" /> },

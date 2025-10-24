@@ -9,7 +9,6 @@ import ScrollIndicator from "@/components/layout/ScrollIndicator";
 import { Sidebar } from "@/components/layout/Sidebar";
 import TextTranslator from "@/components/layout/TextTranslator";
 import { Topic } from "@/components/layout/Topic";
-// import { CanvasParticles } from "@/components/gsap/CanvasParticles";
 import GsapImageParallax from "@/components/gsap/GsapImageParallax";
 import ScrollSmootherHeader from "@/components/gsap/ScrollSmootherHeader";
 import ScrollSmootherThree from "@/components/gsap/ScrollSmootherThree";
@@ -148,7 +147,7 @@ function ComponentsPage() {
                             </h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
                                 {[
-                                    { title: "CanvasParticles", content: <CanvasParticles imageSrc={images.capa} className="h-64" /> },
+                                
                                     { title: "GsapImageParallax", content: <GsapImageParallax images={[images.capa]} className="h-64" /> },
                                     { title: "GsapParallax", content: <GsapParallax backgroundImage={images.capa} className="h-64"><p>Exemplo</p></GsapParallax> },
                                     { title: "ScrollSmootherHeader", content: <ScrollSmootherHeader className="h-64" /> },

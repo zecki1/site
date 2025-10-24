@@ -142,8 +142,7 @@ function ComponentsPage() {
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
                                 {[
                                     // CORREÇÃO: Removidas props inválidas. O componente é um background e será exibido em toda a tela.
-                                    { title: "CanvasParticles", content: <p className="text-sm text-muted-foreground">Efeito de partículas no fundo da página.</p> },
-                                    { title: "GsapImageParallax", content: <GsapImageParallax images={[images.capa]} className="h-64" /> },
+                                      { title: "GsapImageParallax", content: <GsapImageParallax images={[images.capa]} className="h-64" /> },
                                     { title: "GsapParallax", content: <GsapParallax backgroundImage={images.capa} className="h-64"><p>Exemplo</p></GsapParallax> },
                                     { title: "ScrollSmootherHeader", content: <ScrollSmootherHeader className="h-64" /> },
                                     { title: "ScrollSmootherThree", content: <ScrollSmootherThree className="h-64" /> },

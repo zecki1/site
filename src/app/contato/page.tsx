@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import TextTranslator from "@/components/layout/TextTranslator";
 import { Github, Linkedin, Mail } from "lucide-react";
-// Importe o novo componente de partículas 'Constellation'
 import { ConstellationParticles } from "@/components/gsap/CanvasParticles";
 
 const staggerContainer = {

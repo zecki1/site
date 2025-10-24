@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import AOS from "aos";
-import "aos/dist/aos.css";
+
 import { Cover } from "@/components/layout/Cover";
 import { Section, SectionFluid } from "@/components/layout/Sections";
 import { Topic } from "@/components/layout/Topic";

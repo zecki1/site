@@ -1,16 +1,28 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['zecki1.com.br'],
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        port: '',
+        pathname: '/**', 
+      },
+      {
+         protocol: 'https',
         hostname: 'firebasestorage.googleapis.com',
         port: '',
-        pathname: '**',
+        pathname: '/**',
+      },
+      {
+        
+        protocol: 'https', 
+        hostname: 'zecki1.com.br',
+        port: '',
+        pathname: '/**',
       },
     ],
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

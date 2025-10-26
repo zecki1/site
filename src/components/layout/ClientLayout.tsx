@@ -34,7 +34,8 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             {showHeader && <ScrollSmootherHeader backgroundImage={images.capa} />}
             <div
                 id="main-content"
-                className={showHeader ? "pt-[100vh]" : ""}
+                // className={showHeader ? "pt-[0vh]" : ""}
+                className={showHeader ? "100vh" : ""}
             >
                 {children}
             </div>

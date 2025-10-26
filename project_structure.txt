@@ -1,7 +1,10 @@
 .
 |-- .env.local
 |-- .firebaserc
+|-- .gitattributes
 |-- .gitignore
+|-- 1234
+|-- 1234.pub
 |-- README.md
 |-- components.json
 |-- eslint.config.mjs
@@ -14,15 +17,18 @@
 |-- project_structure.txt
 |-- public
 |   |-- 404.html
-|   |-- assets
-|   |   `-- img
-|   |       |-- agendamento_salão.png
-|   |       |-- cleriston_ilustrador.png
-|   |       `-- dashboard_painel.png
 |   |-- fonts
 |   |   |-- OpenDyslexic-Regular.woff
 |   |   `-- OpenDyslexic-Regular.woff2
+|   |-- img
+|   |   `-- projects
+|   |       |-- agendamento-salao.png
+|   |       |-- calendario.png
+|   |       |-- cleriston-ilustrador.png
+|   |       |-- dashboard-zecki.png
+|   |       `-- gesso-porto-seguro.png
 |   |-- index.html
+|   |-- locales
 |   `-- models
 |       |-- Game-controller.glb
 |       |-- Lowpoly_tree_sample.fbx
@@ -40,9 +46,6 @@
 |   |   |   |   `-- route.ts
 |   |   |   `-- upload
 |   |   |       `-- route.ts
-|   |   |-- components
-|   |   |   |-- ComponentesPage.tsx
-|   |   |   `-- page.tsx
 |   |   |-- contato
 |   |   |   `-- page.tsx
 |   |   |-- curriculo
@@ -50,22 +53,24 @@
 |   |   |-- favicon.ico
 |   |   |-- globals.css
 |   |   |-- home
-|   |   |   |-- HomeContent.tsx
+|   |   |   |-- page copy.tsx
 |   |   |   `-- page.tsx
 |   |   |-- layout.tsx
 |   |   |-- login
 |   |   |   `-- page.tsx
 |   |   |-- page.tsx
+|   |   |-- recursos
+|   |   |   `-- page.tsx
 |   |   `-- servicos
-|   |       |-- ServicosContent.tsx
 |   |       `-- page.tsx
 |   |-- assets
-|   |   |-- audio
-|   |   |-- docs
 |   |   `-- img
 |   |       `-- capa.png
 |   |-- components
 |   |   |-- components.tsx
+|   |   |-- effects
+|   |   |   |-- FloatingParticles.tsx
+|   |   |   `-- FloatingScrollIcons.tsx
 |   |   |-- gsap
 |   |   |   |-- CanvasParticles.tsx
 |   |   |   |-- GsapImageParallax.tsx
@@ -163,4 +168,4 @@
 |-- tailwind.config.ts
 `-- tsconfig.json
 
-30 directories, 133 files
+30 directories, 138 files

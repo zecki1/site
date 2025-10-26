@@ -122,10 +122,11 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
     <header
       ref={headerRef}
       className={cn(
-        "fixed top-0 left-0 w-full z-50 flex flex-col items-center justify-center transition-all ease-in-out bg-black backdrop-blur-md border-b-2 border-b-[#00e1ff] duration-500",
-        // Base Transition: Adicionando classes para transição suave de cor e background
-        "duration-300 transition-[height,background-color,border-color]",
+        "fixed top-0 left-0 w-full z-50 flex flex-col items-center justify-center bg-black backdrop-blur-md border-b-2 animate-border-color",
+        // Transições base para altura, cor de fundo e cor da borda
+        "transition-[height,background-color] duration-300 ease-in-out", // A transição da cor da borda não é mais necessária aqui
         className,
+   
       )}
       style={{ height: "100vh" }}
     >
@@ -133,8 +134,7 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
 
       <h1
         ref={titleRef}
-        // CORREÇÃO: Adicionado 'left-1/2 -translate-x-1/2' para garantir a centralização inicial
-        className="text-center uppercase text-[#00e1ff] font-bold font-['Luckiest_Guy'] absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-[60] text-shadow-[0_0_2px_rgba(0,0,0,0.3)] transition-all duration-300"
+        className="text-center uppercase text-[#00e1ff] font-bold font-['Luckiest_Guy'] absolute top-1/2 -translate-y-1/2 z-[60] text-shadow-[0_0_2px_rgba(0,0,0,0.3)] transition-all duration-300"
         style={{ fontSize: "10vw" }}
       >
         zecki1
@@ -142,9 +142,7 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
 
       <div ref={scrollIndicatorRef} className="absolute bottom-10 z-10 animate-bounce">
         <div className="flex flex-col items-center gap-2 text-[#00e1ff]">
-          {/* ALTERAÇÃO 3: Substituição do SVG pelo ícone do react-icons */}
           <IoArrowDownCircleOutline className="w-8 h-8 md:w-10 md:h-10 drop-shadow-lg" />
-
           {isMounted && (
             <span className="py-1 px-3 rounded-full text-sm bg-black/40 backdrop-blur-md border border-white/10 text-white drop-shadow-lg">
               <TextTranslator>{{ ptBR: "Role para explorar", en: "Scroll to explore", es: "Desplaza para explorar" }}</TextTranslator>
@@ -161,9 +159,7 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
         <div className="flex-1 flex justify-start">
           <Sidebar />
         </div>
-
         <div className="flex-1 hidden md:flex justify-center" />
-
         <div className="flex flex-1 items-center justify-end gap-1 md:gap-2">
           {isMounted && (
             <>

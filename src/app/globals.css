@@ -297,3 +297,41 @@ main {
   /* Simula Tritanopia (deficiência de azul) */
   filter: hue-rotate(180deg) saturate(50%) !important;
 }
+/* Keyframes para a animação da cor da borda */
+@keyframes borderColorPulse {
+
+  0%,
+  100% {
+    border-color: #00e1ff;
+    /* Azul */
+  }
+
+  50% {
+    border-color: #7f00ff;
+    /* Roxo */
+  }
+}
+
+/* Classe que aplica a animação */
+.animate-border-color {
+  animation: borderColorPulse 4s ease-in-out infinite;
+}
+
+
+@keyframes iconColorPulse {
+
+  0%,
+  100% {
+    color: #00e1ff;
+    /* Azul */
+  }
+
+  50% {
+    color: #7f00ff;
+    /* Roxo */
+  }
+}
+
+.animate-icon-color {
+  animation: iconColorPulse 6s ease-in-out infinite;
+}

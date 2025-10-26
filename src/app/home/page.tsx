@@ -1,178 +1,285 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Linkedin } from 'lucide-react';
+import { ArrowRight, Smartphone, Search, Accessibility, UserCheck, GanttChartSquare, Rocket } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import ScrollSmootherHeader from '@/components/gsap/ScrollSmootherHeader';
 import TextTranslator from '@/components/layout/TextTranslator';
 import { Button } from '@/components/ui/button';
+import { YouTubeBackground } from '@/components/layout/YouTubeBackground'; // Verifique o caminho do seu componente
 
-// Garante que o plugin ScrollTrigger esteja registrado
+// Garante que o plugin ScrollTrigger esteja registrado apenas no cliente
 if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-// --- DADOS (PROPS) ---
-const featureItems = [
+// --- DADOS TRADUZIDOS ---
+const introText = {
+    ptBR: "Cansado de templates genéricos que não convertem? A maioria é confusa, não otimizada para SEO e ignora a experiência do usuário.",
+    en: "Tired of generic templates that don't convert? Most are confusing, not SEO-optimized, and ignore the user experience.",
+    es: "¿Cansado de plantillas genéricas que no convierten? La mayoría son confusas, no están optimizadas para SEO e ignoran la experiencia del usuario."
+};
+
+const mainHeadline = {
+    ptBR: "Bem-vindo ao que seu Site Pode Ser",
+    en: "Welcome to What Your Website Can Be",
+    es: "Bienvenido a lo que tu Sitio Web Puede Ser"
+};
+
+const mainDescription = {
+    ptBR: "Seu projeto não vive isolado. Por isso, conecto suas regras de negócio, requisitos e fluxos de trabalho em um processo de desenvolvimento claro e eficiente — projetado para criar sites rápidos, acessíveis, bem ranqueados no Google e otimizados para mobile-first.",
+    en: "Your project doesn't live in isolation. That's why I connect your business rules, requirements, and workflows into a clear and efficient development process—designed to create fast, accessible, high-ranking sites on Google, optimized for mobile-first.",
+    es: "Tu proyecto no vive de forma aislada. Por eso, conecto tus reglas de negocio, requisitos y flujos de trabajo en un proceso de desarrollo claro y eficiente, diseñado para crear sitios web rápidos, accesibles, bien posicionados en Google y optimizados para mobile-first."
+};
+
+const pillars = [
+    { ptBR: "Clareza, Não Sobrecarga", en: "Clarity, Not Overload", es: "Claridad, No Sobrecarga" },
+    { ptBR: "Soluções, Não Remendos", en: "Solutions, Not Patches", es: "Soluciones, No Arreglos" },
+    { ptBR: "Resultados, Não Promessas", en: "Results, Not Promises", es: "Resultados, No Promesas" }
+];
+
+const services = [
     {
-        number: "01",
-        titlePT: "Conheça sua Base", titleEN: "Know Your Baseline", titleES: "Conozca su Base",
-        descPT: "Análise completa do seu negócio digital para identificar oportunidades ocultas.",
-        descEN: "Complete analysis of your digital business to identify hidden opportunities.",
-        descES: "Análisis completo de su negocio digital para identificar oportunidades ocultas.",
-        imageUrl: "/img/projects/dashboard-zecki.png" // Substitua por suas imagens reais
+        icon: Smartphone,
+        title: { ptBR: "Desenvolvimento Mobile-First", en: "Mobile-First Development", es: "Desarrollo Mobile-First" },
+        description: { ptBR: "Construção de sites otimizados para dispositivos móveis, garantindo carregamento rápido, navegação fluida e design responsivo.", en: "Building sites optimized for mobile devices, ensuring fast loading, smooth navigation, and responsive design.", es: "Construcción de sitios optimizados para dispositivos móviles, garantizando una carga rápida, navegación fluida y diseño responsive." }
     },
     {
-        number: "02",
-        titlePT: "Receba seu Projeto", titleEN: "Get Your Blueprint", titleES: "Obtenga su Proyecto",
-        descPT: "Um plano personalizado, desenhado em torno dos seus objetivos e dados.",
-        descEN: "A personalized plan, designed around your goals and data.",
-        descES: "Un plan personalizado, diseñado en torno a sus objetivos y datos.",
-        imageUrl: "/img/projects/calendario.png"
+        icon: Search,
+        title: { ptBR: "Otimização de SEO", en: "SEO Optimization", es: "Optimización SEO" },
+        description: { ptBR: "Estratégias de SEO técnico e de conteúdo para garantir que seu site seja encontrado no Google, maximizando visibilidade e cliques.", en: "Technical and content SEO strategies to ensure your site is found on Google, maximizing visibility and clicks.", es: "Estrategias de SEO técnico y de contenido para garantizar que tu sitio sea encontrado en Google, maximizando la visibilidad y los clics." }
     },
     {
-        number: "03",
-        titlePT: "Transforme sua Presença", titleEN: "Transform Your Presence", titleES: "Transforme su Presencia",
-        descPT: "Implementação robusta com tecnologias modernas para resultados reais.",
-        descEN: "Robust implementation with modern technologies for real results.",
-        descES: "Implementación robusta con tecnologías modernas para resultados reales.",
-        imageUrl: "/img/projects/agendamento-salao.png"
+        icon: Accessibility,
+        title: { ptBR: "Acessibilidade Digital", en: "Digital Accessibility", es: "Accesibilidad Digital" },
+        description: { ptBR: "Desenvolvimento de interfaces acessíveis (WCAG 2.1) para garantir que seu site seja utilizável por todos, tornando seu projeto inclusivo.", en: "Developing accessible interfaces (WCAG 2.1) to ensure your site is usable by everyone, making your project inclusive.", es: "Desarrollo de interfaces accesibles (WCAG 2.1) para garantizar que tu sitio sea utilizable por todos, haciendo tu proyecto inclusivo." }
+    },
+    {
+        icon: UserCheck,
+        title: { ptBR: "Usabilidade e UX", en: "Usability & UX", es: "Usabilidad y UX" },
+        description: { ptBR: "Criação de interfaces intuitivas com fluxos de navegação simples e CTAs claros, projetados para converter visitantes em clientes.", en: "Creating intuitive interfaces with simple navigation flows and clear CTAs, designed to convert visitors into customers.", es: "Creación de interfaces intuitivas con flujos de navegación simples y CTAs claros, diseñados para convertir visitantes en clientes." }
+    },
+    {
+        icon: GanttChartSquare,
+        title: { ptBR: "Gerenciadores de Tarefas", en: "Custom Task Managers", es: "Gestores de Tareas a Medida" },
+        description: { ptBR: "Desenvolvimento de ferramentas sob medida para gerenciar projetos, integrando regras de negócio para organizar fluxos de trabalho.", en: "Developing custom tools to manage projects, integrating business rules to organize workflows.", es: "Desarrollo de herramientas a medida para gestionar proyectos, integrando reglas de negocio para organizar flujos de trabajo." }
+    },
+    {
+        icon: Rocket,
+        title: { ptBR: "Performance e Escalabilidade", en: "Performance & Scalability", es: "Rendimiento y Escalabilidad" },
+        description: { ptBR: "Construção de sites com código limpo e otimizado, prontos para crescer com seu negócio, garantindo velocidade e suporte a picos de tráfego.", en: "Building sites with clean, optimized code, ready to grow with your business, ensuring speed and support for traffic spikes.", es: "Construcción de sitios con código limpio y optimizado, listos para crecer con tu negocio, garantizando velocidad y soporte para picos de tráfico." }
     }
 ];
 
-const teamMembers = [
-    { name: "Zecki", rolePT: "Fundador & Desenvolvedor", roleEN: "Founder & Developer", roleES: "Fundador y Desarrollador", image: "/img/projects/cleriston-ilustrador.png", link: "https://linkedin.com/in/zecki1" },
-    // Adicione mais membros se houver, ou repita para testar o marquee
-    { name: "Zecki (Clone)", rolePT: "Designer UI/UX", roleEN: "UI/UX Designer", roleES: "Diseñador UI/UX", image: "/img/projects/cleriston-ilustrador.png", link: "#" },
-    { name: "Zecki (Clone 2)", rolePT: "Fullstack Dev", roleEN: "Fullstack Dev", roleES: "Desarrollador Fullstack", image: "/img/projects/cleriston-ilustrador.png", link: "#" },
+const processSteps = [
+    {
+        number: "01",
+        title: { ptBR: "Conheça Sua Base", en: "Know Your Baseline", es: "Conoce Tu Base" },
+        description: { ptBR: "Analiso seu projeto através de auditorias técnicas, regras de negócio e feedback de usuários. Dados são a base para criar uma solução que realmente funciona.", en: "I analyze your project through technical audits, business rules, and user feedback. Data is the foundation for creating a solution that truly works.", es: "Analizo tu proyecto a través de auditorías técnicas, reglas de negocio y feedback de usuarios. Los datos son la base para crear una solución que realmente funcione." }
+    },
+    {
+        number: "02",
+        title: { ptBR: "Obtenha Sua Solução", en: "Get Your Solution", es: "Obtén Tu Solución" },
+        description: { ptBR: "Receba um plano de desenvolvimento personalizado, projetado com base nos seus objetivos, com foco em mobile-first e SEO.", en: "Receive a custom development plan, designed based on your goals, focusing on mobile-first and SEO.", es: "Recibe un plan de desarrollo personalizado, diseñado en base a tus objetivos, con un enfoque en mobile-first y SEO." }
+    },
+    {
+        number: "03",
+        title: { ptBR: "Transforme Sua Presença", en: "Transform Your Presence", es: "Transforma Tu Presencia" },
+        description: { ptBR: "Implemento seu site ou aplicação com código limpo, design acessível e otimizações para SEO, ajustando tudo conforme o projeto evolui.", en: "I implement your site or application with clean code, accessible design, and SEO optimizations, adjusting everything as the project evolves.", es: "Implemento tu sitio o aplicación con código limpio, diseño accesible y optimizaciones SEO, ajustando todo a medida que el proyecto evoluciona." }
+    }
 ];
 
+const testimonials = [
+    {
+        quote: { ptBR: "O Zecki transformou minha ideia em um site mobile-first que elevou minha presença digital. Meu tráfego orgânico cresceu e os usuários adoram a navegação.", en: "Zecki turned my idea into a mobile-first site that elevated my digital presence. My organic traffic grew, and users love the navigation.", es: "Zecki convirtió mi idea en un sitio mobile-first que elevó mi presencia digital. Mi tráfico orgánico creció y a los usuarios les encanta la navegación." },
+        author: "Clerinston Ribeiro",
+        company: { ptBR: "Fundadora, Clerinston Ilustrações", en: "Founder, Clerinston Ilustrações", es: "Fundadora, Clerinston Ilustrações" }
+    },
+    {
+        quote: { ptBR: "As otimizações de SEO colocaram meu site nas primeiras páginas do Google, e o gerenciador de tarefas personalizado mudou minha forma de organizar projetos.", en: "The SEO optimizations put my site on the first pages of Google, and the custom task manager changed how I organize projects.", es: "Las optimizaciones SEO pusieron mi sitio en las primeras páginas de Google, y el gestor de tareas personalizado cambió mi forma de organizar proyectos." },
+        author: "Monnappa",
+        company: { ptBR: "Fundador, CodeHive Workspaces", en: "Founder, CodeHive Workspaces", es: "Fundador, CodeHive Workspaces" }
+    },
+    {
+        quote: { ptBR: "A abordagem focada em acessibilidade e usabilidade fez toda a diferença. Meu site agora é inclusivo, rápido e fácil de usar.", en: "The focus on accessibility and usability made all the difference. My site is now inclusive, fast, and easy to use.", es: "El enfoque en accesibilidad y usabilidad marcó toda la diferencia. Mi sitio ahora es inclusivo, rápido y fácil de usar." },
+        author: "Fozzy",
+        company: { ptBR: "Estética Automotiva", en: "Automotive Aesthetics", es: "Estética Automotriz" }
+    }
+];
 
-// --- SUBCOMPONENTES ---
+const ctaHeadline = {
+    ptBR: "Transforme suas ideias em sites rápidos, acessíveis e otimizados.",
+    en: "Turn your ideas into fast, accessible, and optimized websites.",
+    es: "Convierte tus ideas en sitios web rápidos, accesibles y optimizados."
+};
 
-// Seção Sobre (Sticky com troca de texto)
-const StickyAboutSection = () => {
+
+// --- SUBCOMPONENTES DA PÁGINA ---
+
+const IntroSection = () => {
     const sectionRef = useRef<HTMLDivElement>(null);
-    const [activeIndex, setActiveIndex] = useState(0);
-
-    // Textos para alternar durante o scroll
-    const aboutTexts = [
-        { pt: "Cansado de soluções digitais genéricas que não geram resultados?", en: "Tired of generic digital solutions that don't drive results?", es: "¿Cansado de soluciones digitales genéricas que no generan resultados?" },
-        { pt: "Minha abordagem é 360°: Design, Código e Estratégia unidos para sua marca.", en: "My approach is 360°: Design, Code, and Strategy united for your brand.", es: "Mi enfoque es 360°: Diseño, Código y Estrategia unidos para su marca." }
-    ];
-
     useEffect(() => {
         const ctx = gsap.context(() => {
-            ScrollTrigger.create({
-                trigger: sectionRef.current,
-                start: "top top",
-                end: "+=200%", // Duração do "pin" (2x a altura da tela)
-                pin: true,
-                scrub: true,
-                onUpdate: (self) => {
-                    // Alterna o índice do texto com base no progresso do scroll
-                    const index = Math.min(
-                        Math.floor(self.progress * aboutTexts.length),
-                        aboutTexts.length - 1
-                    );
-                    setActiveIndex(index);
-                }
+            gsap.from(sectionRef.current, {
+                opacity: 0,
+                y: 50,
+                duration: 1,
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: 'top 80%',
+                },
             });
         }, sectionRef);
         return () => ctx.revert();
     }, []);
 
     return (
-        <section ref={sectionRef} className="h-screen flex items-center justify-center bg-background">
-            <div className="u-container text-center">
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={activeIndex}
-                        initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                        exit={{ opacity: 0, y: -30, filter: "blur(10px)" }}
-                        transition={{ duration: 0.5, ease: "easeOut" }}
-                        className="max-w-3xl mx-auto"
-                    >
-                        <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#00e1ff] to-primary">
-                            <TextTranslator>
-                                {{
-                                    ptBR: aboutTexts[activeIndex].pt,
-                                    en: aboutTexts[activeIndex].en,
-                                    es: aboutTexts[activeIndex].es
-                                }}
-                            </TextTranslator>
-                        </h2>
-                    </motion.div>
-                </AnimatePresence>
+        <section ref={sectionRef} className="py-24 md:py-32 bg-background">
+            <div className="u-container text-center max-w-4xl mx-auto">
+                <p className="text-xl md:text-2xl text-muted-foreground mb-8">
+                    <TextTranslator>{introText}</TextTranslator>
+                </p>
+                <h2 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#00e1ff] to-primary mb-8">
+                    <TextTranslator>{mainHeadline}</TextTranslator>
+                </h2>
+                <p className="text-lg md:text-xl text-muted-foreground">
+                    <TextTranslator>{mainDescription}</TextTranslator>
+                </p>
             </div>
         </section>
     );
 };
 
-// Seção "Como Funciona"
-const HowItWorksSection = () => {
+const PillarsSection = () => {
     const sectionRef = useRef<HTMLDivElement>(null);
-
     useEffect(() => {
         const ctx = gsap.context(() => {
-            // Animação simples de entrada para os itens
-            gsap.from(".feature-item", {
-                y: 100,
+            gsap.from(".pillar-card", {
                 opacity: 0,
+                y: 40,
+                duration: 0.8,
                 stagger: 0.2,
-                duration: 1,
-                ease: "power3.out",
+                ease: 'power3.out',
                 scrollTrigger: {
                     trigger: sectionRef.current,
-                    start: "top 60%",
-                }
+                    start: 'top 85%',
+                },
             });
         }, sectionRef);
         return () => ctx.revert();
     }, []);
 
     return (
-        <section ref={sectionRef} className="py-32 bg-muted/30">
+        <section ref={sectionRef} className="py-24 md:py-32 bg-muted/30 px-2">
             <div className="u-container">
-                <div className="text-center mb-24">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                        <TextTranslator>{{ ptBR: "Como Funciona", en: "How It Works", es: "Cómo Funciona" }}</TextTranslator>
-                    </h2>
-                    <div className="w-24 h-1 bg-gradient-to-r from-primary to-[#00e1ff] mx-auto rounded-full" />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {pillars.map((pillar, index) => (
+                        <div key={index} className="pillar-card text-center p-8 bg-background rounded-lg shadow-sm">
+                            <h3 className="text-2xl font-bold text-primary">
+                                <TextTranslator>{pillar}</TextTranslator>
+                            </h3>
+                        </div>
+                    ))}
                 </div>
+            </div>
+        </section>
+    );
+};
 
-                <div className="space-y-32">
-                    {featureItems.map((item, index) => (
-                        <div key={index} className={cn(
-                            "feature-item flex flex-col md:flex-row items-center gap-12 md:gap-24",
-                            index % 2 !== 0 ? "md:flex-row-reverse" : "" // Alterna a direção
-                        )}>
-                            {/* Imagem */}
-                            <div className="w-full md:w-1/2 relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl group">
-                                <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
-                                <Image
-                                    src={item.imageUrl}
-                                    alt={item.titleEN}
-                                    fill
-                                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                                />
+const ServicesSection = () => {
+    const sectionRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            gsap.from(".service-card", {
+                opacity: 0,
+                scale: 0.95,
+                y: 30,
+                duration: 0.7,
+                stagger: 0.1,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: 'top 80%',
+                },
+            });
+        }, sectionRef);
+        return () => ctx.revert();
+    }, []);
+
+    return (
+        <section ref={sectionRef} className="py-24 md:py-32 bg-background px-2">
+            <div className="u-container">
+                <div className="text-center max-w-3xl mx-auto mb-16">
+                    <h2 className="text-3xl md:text-5xl font-bold mb-4">
+                        <TextTranslator>{{ ptBR: "Soluções Claras para Sua Presença Digital", en: "Clear Solutions for Your Digital Presence", es: "Soluciones Claras para Tu Presencia Digital" }}</TextTranslator>
+                    </h2>
+                    <p className="text-lg text-muted-foreground">
+                        <TextTranslator>{{ ptBR: "Jornadas desenhadas para você. Informadas por expertise em front-end, usabilidade, acessibilidade e SEO.", en: "Journeys designed for you. Informed by expertise in front-end, usability, accessibility, and SEO.", es: "Trayectorias diseñadas para ti. Informadas por la experiencia en front-end, usabilidad, accesibilidad y SEO." }}</TextTranslator>
+                    </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {services.map((service, index) => (
+                        <div key={index} className="service-card p-8 bg-muted/30 rounded-xl flex flex-col items-start gap-4">
+                            <div className="p-3 bg-primary/10 rounded-lg text-primary">
+                                <service.icon className="h-8 w-8" />
                             </div>
+                            <h3 className="text-xl font-bold">
+                                <TextTranslator>{service.title}</TextTranslator>
+                            </h3>
+                            <p className="text-muted-foreground">
+                                <TextTranslator>{service.description}</TextTranslator>
+                            </p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+};
 
-                            {/* Texto */}
-                            <div className="w-full md:w-1/2 space-y-6">
-                                <div className="text-6xl md:text-8xl font-bold text-primary/20">{item.number}</div>
-                                <h3 className="text-3xl md:text-4xl font-bold">
-                                    <TextTranslator>{{ ptBR: item.titlePT, en: item.titleEN, es: item.titleES }}</TextTranslator>
+const ProcessSection = () => {
+    const sectionRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            gsap.utils.toArray('.process-step').forEach((step) => {
+                gsap.from(step, {
+                    opacity: 0,
+                    x: -50,
+                    duration: 1,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: step as any,
+                        start: 'top 85%',
+                    }
+                });
+            });
+        }, sectionRef);
+        return () => ctx.revert();
+    }, []);
+
+    return (
+        <section ref={sectionRef} className="py-24 md:py-32 bg-muted/30 px-2">
+            <div className="u-container">
+                <div className="text-center max-w-3xl mx-auto mb-16">
+                    <h2 className="text-3xl md:text-5xl font-bold mb-4">
+                        <TextTranslator>{{ ptBR: "Como Transformar Sua Ideia em um Site", en: "How to Turn Your Idea into a Website", es: "Cómo Convertir Tu Idea en un Sitio Web" }}</TextTranslator>
+                    </h2>
+                </div>
+                <div className="max-w-4xl mx-auto flex flex-col gap-16">
+                    {processSteps.map((step, index) => (
+                        <div key={index} className="process-step flex items-start gap-8">
+                            <div className="text-5xl font-bold text-primary/30 mt-1">{step.number}</div>
+                            <div>
+                                <h3 className="text-2xl font-bold mb-2">
+                                    <TextTranslator>{step.title}</TextTranslator>
                                 </h3>
-                                <p className="text-xl text-muted-foreground leading-relaxed">
-                                    <TextTranslator>{{ ptBR: item.descPT, en: item.descEN, es: item.descES }}</TextTranslator>
+                                <p className="text-lg text-muted-foreground">
+                                    <TextTranslator>{step.description}</TextTranslator>
                                 </p>
                             </div>
                         </div>
@@ -183,100 +290,90 @@ const HowItWorksSection = () => {
     );
 };
 
-// Marquee Infinito para a Equipe
-const InfiniteMarquee = ({ children, direction = 'left' }: { children: React.ReactNode, direction?: 'left' | 'right' }) => {
-    return (
-        <div className="flex overflow-hidden w-full mask-gradient-x">
-            <div className={cn(
-                "flex shrink-0 gap-8 py-4",
-                direction === 'left' ? "animate-marquee-left" : "animate-marquee-right"
-            )}>
-                {children}
-                {children} {/* Duplicado para o efeito infinito */}
-            </div>
-        </div>
-    );
-};
+const TestimonialsSection = () => {
+    const sectionRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            gsap.from(".testimonial-card", {
+                opacity: 0,
+                y: 50,
+                duration: 1,
+                stagger: 0.2,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: 'top 80%',
+                },
+            });
+        }, sectionRef);
+        return () => ctx.revert();
+    }, []);
 
-// Seção da Equipe
-const TeamSection = () => {
     return (
-        <section className="py-32 overflow-hidden">
-            <div className="u-container text-center mb-16">
-                <h2 className="text-3xl md:text-5xl font-bold max-w-4xl mx-auto leading-tight">
-                    <TextTranslator>
-                        {{
-                            ptBR: <>Não apenas código — <span className="text-primary">cuidado real</span>, de quem entende que seu projeto é pessoal.</>,
-                            en: <>Not just code — <span className="text-primary">real care</span>, from someone who knows your project is personal.</>,
-                            es: <>No solo código — <span className="text-primary">cuidado real</span>, de quien entiende que su proyecto es personal.</>
-                        }}
-                    </TextTranslator>
-                </h2>
+        <section ref={sectionRef} className="py-24 md:py-32 bg-background px-2">
+            <div className="u-container">
+                <div className="text-center max-w-3xl mx-auto mb-16">
+                    <h2 className="text-3xl md:text-5xl font-bold">
+                        <TextTranslator>{{ ptBR: "Histórias Reais de Projetos Transformados", en: "Real Stories of Transformed Projects", es: "Historias Reales de Proyectos Transformados" }}</TextTranslator>
+                    </h2>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {testimonials.map((testimonial, index) => (
+                        <figure key={index} className="testimonial-card flex flex-col justify-between p-8 bg-muted/30 rounded-lg">
+                            <blockquote className="text-lg italic border-l-4 border-primary pl-6 mb-6">
+                                <TextTranslator>{testimonial.quote}</TextTranslator>
+                            </blockquote>
+                            <figcaption>
+                                <div className="font-bold">{testimonial.author}</div>
+                                <div className="text-sm text-muted-foreground">
+                                    <TextTranslator>{testimonial.company}</TextTranslator>
+                                </div>
+                            </figcaption>
+                        </figure>
+                    ))}
+                </div>
             </div>
-
-            <InfiniteMarquee>
-                {teamMembers.map((member, index) => (
-                    <div key={index} className="flex flex-col items-center gap-4 px-8 min-w-[250px]">
-                        <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-primary/20 p-1">
-                            <div className="w-full h-full rounded-full overflow-hidden relative">
-                                <Image src={member.image} alt={member.name} fill className="object-cover" />
-                            </div>
-                        </div>
-                        <div className="text-center">
-                            <h4 className="text-xl font-bold">{member.name}</h4>
-                            <p className="text-sm text-primary">
-                                <TextTranslator>{{ ptBR: member.rolePT, en: member.roleEN, es: member.roleES }}</TextTranslator>
-                            </p>
-                        </div>
-                        <Link href={member.link} target="_blank" className="text-muted-foreground hover:text-primary transition-colors">
-                            <Linkedin size={20} />
-                        </Link>
-                    </div>
-                ))}
-            </InfiniteMarquee>
         </section>
     );
 };
 
+const CtaSection = () => {
+    return (
+        <section className="py-32 md:py-48 relative text-center text-white overflow-hidden">
+            <YouTubeBackground videoId="3mRQVJwqvrQ" />
+            <div className="absolute inset-0 bg-black/60 z-0"></div>
+            <div className="u-container relative z-10 flex flex-col items-center">
+                <h2 className="text-4xl md:text-6xl font-bold max-w-4xl mb-8">
+                    <TextTranslator>{ctaHeadline}</TextTranslator>
+                </h2>
+                <Button asChild size="lg" className="rounded-full text-lg px-10 py-7 bg-primary hover:bg-primary/90 shadow-lg hover:shadow-primary/50 transition-all duration-300">
+                    <Link href="/contato">
+                        <TextTranslator>{{ ptBR: "Solicitar Proposta", en: "Request Proposal", es: "Solicitar Propuesta" }}</TextTranslator>
+                        <ArrowRight className="ml-2 h-5 w-5" />
+                    </Link>
+                </Button>
+            </div>
+        </section>
+    );
+};
+
+
 // --- COMPONENTE PRINCIPAL ---
 export default function HomeContent() {
-    // O 'backgroundImage' aqui será a imagem inicial do seu Hero
     return (
         <div className="bg-background text-foreground overflow-x-hidden">
-            <ScrollSmootherHeader backgroundImage="/img/projects/gesso-porto-seguro.png" />
+            <ScrollSmootherHeader backgroundImage="/assets/img/capa.png" /> {/* Mude para uma imagem de fundo real */}
 
-            {/* O ID 'main-content' é crucial para o ScrollSmootherHeader saber o que animar */}
-            <main id="main-content" className="relative z-10 bg-background">
+            <main id="main-content" className="relative z-10 bg-background ">
+                {/* Espaçador para a animação do Header */}
+                <div className="h-screen" aria-hidden="true" />
 
-                {/* Espaçador para compensar a altura inicial do Hero que agora é controlada pelo Header */}
-                <div className="h-screen" />
-
-                <StickyAboutSection />
-                <HowItWorksSection />
-                <TeamSection />
-
-                {/* Seção CTA Final */}
-                <section className="py-32 relative">
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-primary/10 -z-10" />
-                    <div className="u-container text-center">
-                        <h2 className="text-5xl md:text-7xl font-bold mb-8">
-                            <TextTranslator>
-                                {{
-                                    ptBR: "Vamos começar?",
-                                    en: "Ready to start?",
-                                    es: "¿Listo para empezar?"
-                                }}
-                            </TextTranslator>
-                        </h2>
-                        <Button asChild size="lg" className="rounded-full text-lg px-8 py-6 bg-primary hover:bg-primary/90 shadow-lg hover:shadow-primary/50 transition-all duration-300">
-                            <Link href="/contato">
-                                <TextTranslator>{{ ptBR: "Solicitar Proposta", en: "Request Proposal", es: "Solicitar Propuesta" }}</TextTranslator>
-                                <ArrowRight className="ml-2 h-5 w-5" />
-                            </Link>
-                        </Button>
-                    </div>
-                </section>
-
+                <IntroSection />
+                <PillarsSection />
+                <ServicesSection />
+                <ProcessSection />
+                <TestimonialsSection />
+                <CtaSection />
             </main>
         </div>
     );

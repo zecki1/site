@@ -44,7 +44,7 @@ export const SettingsMenu = () => {
             <DropdownMenuContent className="w-64" align="end">
                 <DropdownMenuGroup>
                     <div className="px-2 py-1.5 text-sm font-semibold">
-                        <TextTranslator>{{ ptBR: "Modo de visualização", en: "View mode", es: "Modo de visualización" }}</TextTranslator>
+                        <TextTranslator>{{ ptBR: "Acessibilidade", en: "View mode", es: "Modo de visualización" }}</TextTranslator>
                     </div>
                     <DropdownMenuSeparator />
                     <div className="flex items-center justify-between p-2">

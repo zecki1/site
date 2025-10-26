@@ -9,6 +9,7 @@ import { ScrollSmootherHeader } from "@/components/gsap/ScrollSmootherHeader";
 import { Toaster } from "@/components/ui/sonner";
 import { images } from "@/components/layout/ImageContainer";
 import { CustomCursor } from "@/components/layout/CustomCursor";
+import { GlobalBackgroundEffects } from "@/components/effects/GlobalBackgroundEffects";
 
 export function Providers({ children }: { children: React.ReactNode }) {
     const { i18n } = useTranslation();
@@ -25,23 +26,36 @@ export function Providers({ children }: { children: React.ReactNode }) {
         }
     }, [i18n]);
 
-    const isClientRoute = pathname?.startsWith("/sites") || pathname?.startsWith("/admin");
-    const showHeader = !isClientRoute;
+    const routesWithoutHeader = ['/login', '/admin', '/sites'];
+    const showGlobalElements = isMounted && !routesWithoutHeader.some(route => pathname?.startsWith(route));
 
     if (!isMounted) {
-        return <>{children}</>;
+        return (
+            <ThemeProvider>
+                <div id="main-content">
+                    {children}
+                </div>
+            </ThemeProvider>
+        );
     }
 
     return (
         <ThemeProvider>
             <CustomCursor />
-            {showHeader && <ScrollSmootherHeader backgroundImage={images.capa} />}
-            <div
+
+            {showGlobalElements && (
+                <>
+                    <ScrollSmootherHeader backgroundImage={images.capa} />
+                    <GlobalBackgroundEffects />
+                </>
+            )}
+
+            <main
                 id="main-content"
-                className={showHeader ? "pt-[100vh]" : ""}
+                className={showGlobalElements ? "pt-[100vh]" : ""}
             >
                 {children}
-            </div>
+            </main>
             <Toaster />
         </ThemeProvider>
     );

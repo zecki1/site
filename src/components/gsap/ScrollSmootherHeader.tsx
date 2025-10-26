@@ -62,7 +62,7 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
             tl.to(header, {
                 height: "64px",
                 backgroundColor: "rgba(0, 0, 0, 0.6)", // Fundo semi-transparente
-                backdropFilter: "blur(10px)",         // Efeito de blur (vidro)
+                backdropFilter: "blur(40px)",         // Efeito de blur (vidro)
                 boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
                 borderBottom: "1px solid rgba(255, 255, 255, 0.1)", // Borda sutil
                 ease: "power1.inOut"
@@ -107,7 +107,7 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
     return (
         <header
             ref={headerRef}
-            className={cn("fixed top-0 left-0 w-full z-50 flex flex-col items-center justify-center transition-all duration-300", className)}
+        className={cn("fixed top-0 left-0 w-full z-50 flex flex-col items-center justify-center transition-all duration-300 glass-header-active", className)}
             style={{ height: "100vh" }}
         >
             {/* Imagem de fundo do Hero */}

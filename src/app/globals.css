@@ -297,13 +297,3 @@ main {
   /* Simula Tritanopia (deficiência de azul) */
   filter: hue-rotate(180deg) saturate(50%) !important;
 }
-
-
-/* Adicione esta classe ao final do seu globals.css */
-.glass-header-active {
-  background-color: rgba(10, 10, 10, 0.6) !important;
-  backdrop-filter: blur(100px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-}

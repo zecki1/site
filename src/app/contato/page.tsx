@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import TextTranslator from "@/components/layout/TextTranslator";
 import { Github, Linkedin, Mail } from "lucide-react";
-import { ConstellationParticles } from "@/components/gsap/CanvasParticles";
+// 1. Remova a importação do ConstellationParticles e importe a nossa nova cena
+import { InteractiveScene } from "@/components/three/InteractiveScene";
 
 const staggerContainer = {
     hidden: { opacity: 0 },
@@ -34,10 +35,13 @@ export default function ContactPage() {
 
     return (
         <section className="relative min-h-screen flex items-center justify-center text-center bg-background p-8 overflow-hidden">
-            {/* Troque o componente de partículas antigo por este */}
-            <ConstellationParticles />
 
-            {/* O resto do conteúdo permanece o mesmo */}
+            {/* 2. Troque o componente de partículas antigo pelo novo componente de cena 3D */}
+            <InteractiveScene />
+
+            {/* O resto do conteúdo permanece o mesmo. 
+                O className="relative z-10" é crucial para que este conteúdo
+                fique NA FRENTE do nosso canvas 3D. */}
             <motion.div
                 variants={staggerContainer}
                 initial="hidden"

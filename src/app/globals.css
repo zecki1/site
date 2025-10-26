@@ -224,3 +224,78 @@ main {
 .animate-scroll {
   animation: scroll 40s linear infinite;
 }
+/* Keyframes para a animação de rotação contínua */
+@keyframes rotate {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Aplica os estilos apenas em desktops com mouse */
+/* --- ESTILOS DO CURSOR CUSTOMIZADO --- */
+
+/* Aplica os estilos apenas em desktops com mouse */
+@media (hover: hover) and (pointer: fine) {
+
+  /* Classe adicionada via JS para esconder o cursor padrão com segurança */
+  html.cursor-active,
+  html.cursor-active * {
+    cursor: none;
+  }
+}
+
+/* Estilo do nosso anel/mira */
+.cursor-mira {
+  /* Remove o preenchimento */
+  background-color: transparent;
+  /* Adiciona a borda com a cor primária do tema */
+  border: 2px solid var(--color-primary);
+  /* Garante que a transição de volta ao estado normal seja suave */
+  transition: transform 0.3s ease-out, border-color 0.3s ease-out;
+  /* Aplica a animação de rotação */
+  animation: rotate 12s linear infinite;
+}
+
+/* Adicione ao final de src/app/globals.css */
+
+@font-face {
+  font-family: "OpenDyslexic";
+  src: url("/fonts/OpenDyslexic-Regular.woff2") format("woff2"),
+    url("/fonts/OpenDyslexic-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Classes de filtro para acessibilidade */
+.monocromatic {
+  filter: grayscale(100%) !important;
+}
+
+.protanopia {
+  /* Simula Protanopia (deficiência de vermelho) */
+  filter: hue-rotate(20deg) saturate(50%) !important;
+}
+
+.protanomaly {
+  filter: hue-rotate(20deg) saturate(75%) !important;
+}
+
+.deuteranopia {
+  /* Simula Deuteranopia (deficiência de verde) */
+  filter: hue-rotate(90deg) saturate(50%) !important;
+}
+
+.deuteranomaly {
+  filter: hue-rotate(90deg) saturate(75%) !important;
+}
+
+.tritanopia {
+  /* Simula Tritanopia (deficiência de azul) */
+  filter: hue-rotate(180deg) saturate(50%) !important;
+}
+
+

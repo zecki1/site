@@ -48,6 +48,8 @@
 }
 
 :root {
+  --color-primary-interactive: oklch(83.476% 0.14531 211.713);
+    /* Cor padrão */
     --color-primary: oklch(83.476% 0.14531 211.713);
       --color-secondary: oklch(87.389% 0.28473 140.58);
       --color-accent: oklch(58.646% 0.29959 308.186);

@@ -29,6 +29,8 @@
 |   |       `-- gesso-porto-seguro.png
 |   |-- index.html
 |   |-- locales
+|   |-- lottie
+|   |   `-- bakcground.json
 |   `-- models
 |       |-- Game-controller.glb
 |       |-- Lowpoly_tree_sample.fbx
@@ -53,7 +55,6 @@
 |   |   |-- favicon.ico
 |   |   |-- globals.css
 |   |   |-- home
-|   |   |   |-- page copy.tsx
 |   |   |   `-- page.tsx
 |   |   |-- layout.tsx
 |   |   |-- login
@@ -69,8 +70,11 @@
 |   |-- components
 |   |   |-- components.tsx
 |   |   |-- effects
+|   |   |   |-- CanvasParticles.tsx
+|   |   |   |-- ElectricLines.tsx
 |   |   |   |-- FloatingParticles.tsx
-|   |   |   `-- FloatingScrollIcons.tsx
+|   |   |   |-- FloatingScrollIcons.tsx
+|   |   |   `-- GlobalBackgroundEffects.tsx
 |   |   |-- gsap
 |   |   |   |-- CanvasParticles.tsx
 |   |   |   |-- GsapImageParallax.tsx
@@ -86,6 +90,7 @@
 |   |   |   |-- AccessibilityProvider.tsx
 |   |   |   |-- BentoCard.tsx
 |   |   |   |-- ClientLayout.tsx
+|   |   |   |-- ColorSwitcher.tsx
 |   |   |   |-- Container.tsx
 |   |   |   |-- Cover.tsx
 |   |   |   |-- CustomCursor.tsx
@@ -162,10 +167,11 @@
 |   |   |-- i18n.ts
 |   |   |-- navSections.ts
 |   |   |-- parallaxImages.ts
+|   |   |-- servicesData.ts
 |   |   `-- utils.ts
 |   `-- types
 |       `-- three.d.ts
 |-- tailwind.config.ts
 `-- tsconfig.json
 
-30 directories, 138 files
+31 directories, 143 files

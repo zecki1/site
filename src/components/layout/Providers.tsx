@@ -19,11 +19,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         setIsMounted(true);
         const savedLang = localStorage.getItem("i18nLng");
-        if (savedLang) {
-            i18n.changeLanguage(savedLang);
-        } else {
-            i18n.changeLanguage("ptBR");
-        }
+        if (savedLang) { i18n.changeLanguage(savedLang); }
+        else { i18n.changeLanguage("ptBR"); }
     }, [i18n]);
 
     const routesWithoutHeader = ['/login', '/admin', '/sites'];
@@ -32,9 +29,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     if (!isMounted) {
         return (
             <ThemeProvider>
-                <div id="main-content">
-                    {children}
-                </div>
+                <div id="main-content">{children}</div>
             </ThemeProvider>
         );
     }
@@ -50,10 +45,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
                 </>
             )}
 
-            <main
-                id="main-content"
-                className={showGlobalElements ? "pt-[100vh]" : ""}
-            >
+            <main id="main-content" className="relative isolate pt-[60vh]">
                 {children}
             </main>
             <Toaster />

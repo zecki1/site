@@ -1,4 +1,4 @@
-import capaImage from "@/assets/img/capa.png"
+import capaImage from "/public/img/capa.jpg"
 
 export const images = {
     capa: capaImage.src,

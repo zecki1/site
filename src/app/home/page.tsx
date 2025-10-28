@@ -15,7 +15,6 @@ if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-// --- COMPONENTE PRINCIPAL (SEM CARDS, DESIGN LIMPO) ---
 export default function HomeContent() {
     // Refs para cada seção que será animada
     const introSectionRef = useRef<HTMLDivElement>(null);
@@ -27,9 +26,15 @@ export default function HomeContent() {
     // Efeitos para animar cada seção quando ela entra na tela
     useEffect(() => {
         const ctx = gsap.context(() => {
-            gsap.from(introSectionRef.current, { opacity: 0, y: 50, duration: 1, scrollTrigger: { trigger: introSectionRef.current, start: 'top 80%' } });
-            gsap.from(".pillar-card", { opacity: 0, y: 40, duration: 0.8, stagger: 0.2, ease: 'power3.out', scrollTrigger: { trigger: pillarsSectionRef.current, start: 'top 85%' } });
-            gsap.from(".service-card", { opacity: 0, scale: 0.95, y: 30, duration: 0.7, stagger: 0.1, ease: 'power3.out', scrollTrigger: { trigger: servicesSectionRef.current, start: 'top 80%' } });
+            // CORREÇÃO: Adicionado 'toggleActions' para que a animação rode apenas uma vez ao entrar na tela.
+            // Isso evita re-execuções desnecessárias e melhora a performance.
+            const scrollTriggerConfig = {
+                toggleActions: 'play none none none', // play on enter, do nothing on leave, enter back, or leave back
+            };
+
+            gsap.from(introSectionRef.current, { opacity: 0, y: 50, duration: 1, scrollTrigger: { trigger: introSectionRef.current, start: 'top 80%', ...scrollTriggerConfig } });
+            gsap.from(".pillar-card", { opacity: 0, y: 40, duration: 0.8, stagger: 0.2, ease: 'power3.out', scrollTrigger: { trigger: pillarsSectionRef.current, start: 'top 85%', ...scrollTriggerConfig } });
+            gsap.from(".service-card", { opacity: 0, scale: 0.95, y: 30, duration: 0.7, stagger: 0.1, ease: 'power3.out', scrollTrigger: { trigger: servicesSectionRef.current, start: 'top 80%', ...scrollTriggerConfig } });
 
             gsap.utils.toArray<HTMLElement>('.process-step').forEach((step) => {
                 gsap.from(step, {
@@ -40,18 +45,18 @@ export default function HomeContent() {
                     scrollTrigger: {
                         trigger: step,
                         start: 'top 85%',
+                        ...scrollTriggerConfig,
                     },
                 });
             });
 
-            gsap.from(".testimonial-card", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: 'power3.out', scrollTrigger: { trigger: testimonialsSectionRef.current, start: 'top 80%' } });
+            gsap.from(".testimonial-card", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: 'power3.out', scrollTrigger: { trigger: testimonialsSectionRef.current, start: 'top 80%', ...scrollTriggerConfig } });
         });
         return () => ctx.revert();
     }, []);
 
     return (
         <>
-
             {/* Seção 1: Introdução (SEM CARD) */}
             <section ref={introSectionRef} className="relative flex items-center justify-center min-h-screen py-24 md:py-32">
                 <div className="u-container text-center max-w-4xl mx-auto bg-background py-10">
@@ -146,7 +151,6 @@ export default function HomeContent() {
                             <TextTranslator>{{ ptBR: "Como Transformar Sua Ideia em um Site", en: "How to Turn Your Idea into a Website", es: "Cómo Convertir Tu Idea en un Sitio Web" }}</TextTranslator>
                         </h2>
                     </div>
-                    {/* Os steps individuais não precisam do card, a seção já tem fundo */}
                     <div className="max-w-4xl mx-auto flex flex-col gap-12">
                         {[
                             { number: "01", title: { ptBR: "Conheça Sua Base", en: "Know Your Baseline", es: "Conoce Tu Base" }, description: { ptBR: "Analiso seu projeto através de auditorias técnicas, regras de negócio e feedback de usuários. Dados são a base para criar uma solução que realmente funciona.", en: "I analyze your project through technical audits, business rules, and user feedback. Data is the foundation for creating a solution that truly works.", es: "Analizo tu proyecto a través de auditorías técnicas, reglas de negocio y feedback de usuarios. Los datos son la base para crear una solución que realmente funcione." } },
@@ -175,13 +179,11 @@ export default function HomeContent() {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
                         {[
-                            // --- INÍCIO DA CORREÇÃO ---
                             { quote: { ptBR: "O Zecki transformou minha ideia em um site mobile-first que elevou minha presença digital. Meu tráfego orgânico cresceu e os usuários adoram a navegação.", en: "Zecki turned my idea into a mobile-first site that elevated my digital presence. My organic traffic grew, and users love the navigation.", es: "Zecki convirtió mi idea en un sitio mobile-first que elevó mi presencia digital. Mi tráfico orgánico creció y a los usuarios les encanta la navegación." }, author: { ptBR: "Clerinston Ribeiro", en: "Clerinston Ribeiro", es: "Clerinston Ribeiro" }, company: { ptBR: "Fundador, Clerinston Ilustrações", en: "Founder, Clerinston Ilustrações", es: "Fundador, Clerinston Ilustrações" } },
                             { quote: { ptBR: "As otimizações de SEO colocaram meu site nas primeiras páginas do Google, e o gerenciador de tarefas personalizado mudou minha forma de organizar projetos.", en: "The SEO optimizations put my site on the first pages of Google, and the custom task manager changed how I organize projects.", es: "Las optimizaciones SEO pusieron mi sitio en las primeras páginas de Google, y el gestor de tareas personalizado cambió mi forma de organizar proyectos." }, author: { ptBR: "Monnappa", en: "Monnappa", es: "Monnappa" }, company: { ptBR: "Fundador, CodeHive Workspaces", en: "Founder, CodeHive Workspaces", es: "Fundador, CodeHive Workspaces" } },
                             { quote: { ptBR: "A abordagem focada em acessibilidade e usabilidade fez toda a diferença. Meu site agora é inclusivo, rápido e fácil de usar.", en: "The focus on accessibility and usability made all the difference. My site is now inclusive, fast, and easy to use.", es: "El enfoque en accesibilidad y usabilidad marcó toda la diferencia. Mi sitio ahora es inclusivo, rápido y fácil de usar." }, author: { ptBR: "Fozzy", en: "Fozzy", es: "Fozzy" }, company: { ptBR: "Estética Automotiva", en: "Automotive Aesthetics", es: "Estética Automotriz" } }
-                            // --- FIM DA CORREÇÃO ---
                         ].map((testimonial, index) => (
-                            <figure key={index} className="testimonial-card flex flex-col justify-between p-8 bg-muted/30 rounded-lg  backdrop-blur">
+                            <figure key={index} className="testimonial-card flex flex-col justify-between p-8 bg-muted/30 rounded-lg backdrop-blur">
                                 <blockquote className="text-lg italic border-l-4 border-primary pl-6 mb-6 "><TextTranslator>{testimonial.quote}</TextTranslator></blockquote>
                                 <figcaption>
                                     <div className="font-bold"><TextTranslator>{testimonial.author}</TextTranslator></div>
@@ -193,11 +195,11 @@ export default function HomeContent() {
                 </div>
             </section>
 
-            {/* Seção 6: CTA Final (COM FUNDO PRÓPRIO) */}
+            {/* Seção 6: CTA Final (COM FUNDO PRÓPRIO E YOUTUBE OTIMIZADO) */}
             <section className="py-32 md:py-48 relative text-center text-white overflow-hidden">
                 <YouTubeBackground videoId="3mRQVJwqvrQ" />
-                <div className="absolute inset-0 bg-black/60 z-0"></div>
-                <div className="u-container relative z-10 flex flex-col items-center">
+                <div className="absolute inset-0 bg-black/60 z-10 pointer-events-none"></div>
+                <div className="u-container relative z-20 flex flex-col items-center">
                     <h2 className="text-4xl md:text-6xl font-bold max-w-4xl mb-8">
                         <TextTranslator>{{ ptBR: "Transforme suas ideias em sites rápidos, acessíveis e otimizados.", en: "Turn your ideas into fast, accessible, and optimized websites.", es: "Convierte tus ideas en sitios web rápidos, accesibles y optimizados." }}</TextTranslator>
                     </h2>
@@ -209,7 +211,6 @@ export default function HomeContent() {
                     </Button>
                 </div>
             </section>
-
         </>
     );
 }

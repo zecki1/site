@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -22,6 +23,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoArrowDownCircleOutline } from "react-icons/io5";
+import { Luckiest_Guy } from "next/font/google";
+
+const luckiestGuyFont = Luckiest_Guy({
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+});
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -46,8 +54,6 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
   const { i18n } = useTranslation();
 
   const [isMounted, setIsMounted] = useState(false);
-  // CORREÇÃO: O estado 'isHeaderActive' foi removido pois não era utilizado.
-  // const [setIsHeaderActive] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -59,37 +65,35 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
     const mainContent = document.getElementById("main-content");
     if (!mainContent) return;
 
-    const ctx = gsap.context(() => {
-      gsap.set(mainContent, { opacity: 0 });
+    gsap.set(mainContent, { opacity: 1 });
 
+    const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: document.body,
           start: "top top",
           end: "+=500px",
-          scrub: true,
-          // CORREÇÃO: A propriedade onToggle foi removida pois a função que ela
-          // chamava ('setIsHeaderActive') não era necessária.
+          scrub: 1,
         },
       });
 
-      tl.to(backgroundRef.current, { opacity: 0, ease: "power1.inOut" }, 0);
+      tl.to(backgroundRef.current, { autoAlpha: 0, ease: "power1.inOut" }, 0);
       tl.to(headerRef.current, { height: "64px", ease: "power1.inOut" }, 0);
       tl.to(titleRef.current, { top: '50%', yPercent: -50, ease: "power1.inOut" }, 0);
+
       ScrollTrigger.matchMedia({
         "(min-width: 769px)": () => tl.to(titleRef.current, { fontSize: "1.5rem", ease: "power1.inOut" }, 0),
         "(max-width: 768px)": () => tl.to(titleRef.current, { fontSize: "1.25rem", ease: "power1.inOut" }, 0),
       });
-      tl.to(scrollIndicatorRef.current, { opacity: 0, ease: "power1.inOut" }, 0);
-      tl.to(navRef.current, { opacity: 1, pointerEvents: "auto", ease: "power1.inOut" }, 0.3);
-      tl.to(mainContent, { opacity: 1, ease: "power1.inOut" }, 0.3);
+
+      tl.to(scrollIndicatorRef.current, { autoAlpha: 0, ease: "power1.inOut" }, 0);
+      tl.to(navRef.current, { autoAlpha: 1, pointerEvents: "auto", ease: "power1.inOut" }, 0.3);
     });
 
     return () => {
       ctx.revert();
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
-    // A dependência agora está correta, pois 'setIsHeaderActive' foi removido.
   }, [isMounted]);
 
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
@@ -112,14 +116,27 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
       className={cn(
         "fixed top-0 left-0 w-full z-50 flex flex-col items-center justify-center bg-black backdrop-blur-md border-b-2 animate-border-color",
         "transition-[height] duration-300 ease-in-out",
-
+        "will-change-height",
         className
       )}
       style={{ height: "100vh" }}
     >
-      <div ref={backgroundRef} className="absolute inset-0 z-0 bg-cover bg-center" style={{ backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none' }} />
+      <div
+        ref={backgroundRef}
+        className="absolute inset-0 z-0 bg-cover bg-center"
+        style={{ backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none' }}
+        // @ts-expect-error Property 'fetchpriority' does not exist on type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+        fetchPriority="high"
+      />
 
-      <h1 ref={titleRef} className="text-center uppercase text-[#00e1ff] font-bold font-['Luckiest_Guy'] absolute top-1/2 -translate-y-1/2 z-[60] text-shadow-[0_0_2px_rgba(0,0,0,0.3)] transition-all duration-300" style={{ fontSize: "10vw" }}>
+      <h1
+        ref={titleRef}
+        className={cn(
+          "text-center uppercase text-[#00e1ff] font-bold absolute top-1/2 -translate-y-1/2 z-[60] text-shadow-[0_0_2px_rgba(0,0,0,0.3)] transition-all duration-300",
+          luckiestGuyFont.className
+        )}
+        style={{ fontSize: "10vw" }}
+      >
         zecki1
       </h1>
 
@@ -134,7 +151,7 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
         </div>
       </div>
 
-      <div ref={navRef} className="flex items-center justify-between w-full max-w-7xl px-4 md:px-8 absolute top-0 left-1/2 -translate-x-1/2 h-16 z-10" style={{ opacity: 0, pointerEvents: "none" }}>
+      <div ref={navRef} className="flex items-center justify-between w-full max-w-7xl px-4 md:px-8 absolute top-0 left-1/2 -translate-x-1/2 h-16 z-10" style={{ opacity: 0, visibility: 'hidden', pointerEvents: "none" }}>
         <div className="flex-1 flex justify-start">
           <Sidebar />
         </div>
@@ -142,36 +159,30 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
         <div className="flex flex-1 items-center justify-end gap-1 md:gap-2">
           {isMounted && (
             <>
-              {/* --- MUDANÇA PARA UI MOBILE --- */}
-              {/* Botões visíveis em telas grandes (md e acima) */}
               <div className="hidden md:flex items-center gap-1">
-                <Button variant="ghost" size="icon" onClick={handleLanguageCycle} className={iconButtonClasses}>
+                <Button variant="ghost" size="icon" onClick={handleLanguageCycle} className={iconButtonClasses} aria-label={i18n.t('changeLanguageLabel', 'Mudar Idioma')}>
                   <AnimatePresence mode="wait" initial={false}>
                     <motion.div key={i18n.language} initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 10, opacity: 0 }} transition={{ duration: 0.2 }} className="font-bold">
                       {languageAcronyms[i18n.language] || "PT"}
                     </motion.div>
                   </AnimatePresence>
                 </Button>
-                <Button variant="ghost" size="icon" onClick={toggleTheme} className={iconButtonClasses}>
+                <Button variant="ghost" size="icon" onClick={toggleTheme} className={iconButtonClasses} aria-label={i18n.t('changeThemeLabel', 'Mudar Tema')}>
                   <AnimatePresence mode="wait" initial={false}>
                     <motion.div key={theme} initial={{ scale: 0.5, opacity: 0, rotate: -90 }} animate={{ scale: 1, opacity: 1, rotate: 0 }} exit={{ scale: 0.5, opacity: 0, rotate: 90 }} transition={{ duration: 0.2 }}>
                       {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
                     </motion.div>
                   </AnimatePresence>
                 </Button>
-                <Button asChild variant="ghost" size="icon" className={iconButtonClasses}>
+                <Button asChild variant="ghost" size="icon" className={iconButtonClasses} aria-label={i18n.t('clientAreaLabel', 'Área do Cliente')}>
                   <Link href="/login"><User className="h-5 w-5" /></Link>
                 </Button>
               </div>
-
-              {/* Acessibilidade sempre visível */}
               <SettingsMenu />
-
-              {/* Menu Dropdown visível apenas em telas pequenas (abaixo de md) */}
               <div className="md:hidden">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className={iconButtonClasses}>
+                    <Button variant="ghost" size="icon" className={iconButtonClasses} aria-label={i18n.t('optionsLabel', 'Abrir Opções')}>
                       <Settings className="h-5 w-5" />
                     </Button>
                   </DropdownMenuTrigger>

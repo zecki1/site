@@ -66,7 +66,7 @@
 |   |       `-- page.tsx
 |   |-- assets
 |   |   `-- img
-|   |       `-- capa.png
+|   |       `-- capa.jpg
 |   |-- components
 |   |   |-- components.tsx
 |   |   |-- effects

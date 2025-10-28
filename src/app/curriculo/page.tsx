@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, Github, Linkedin, BookOpen, Send, Trophy, Star, Shield, Laptop } from "lucide-react";
 import TextTranslator from "@/components/layout/TextTranslator";
-import FloatingParticles from "@/components/effects/FloatingParticles"; 
 
 const sectionAnimation = { initial: { opacity: 0, y: 50 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.8, ease: "easeOut" } };
 const staggerContainer = { whileInView: { transition: { staggerChildren: 0.1 } } };
@@ -11,27 +10,26 @@ const staggerItem = { initial: { opacity: 0, x: -20 }, whileInView: { opacity: 1
 
 export default function ResumePage() {
     return (
-        <div className="relative bg-background text-foreground min-h-screen overflow-hidden isolate pt-60">
+        <>
+            {/* Seção 1: Cabeçalho */}
+            <section className="py-24 md:py-32 ">
+                <div className="u-container">
+                    <motion.header {...sectionAnimation} className="text-center bg-background/70 backdrop-blur py-8 rounded-lg">
+                        <h1 className="text-4xl md:text-5xl font-bold tracking-tighter">Ezequiel Regino Monção</h1>
+                        <h2 className="mt-2 text-xl md:text-2xl text-primary">
+                            <TextTranslator ignoreCheck={true}>{{ ptBR: "Desenvolvedor Full-Stack & Designer", en: "Full-Stack Developer & Designer", es: "Desarrollador Full-Stack & Diseñador" }}</TextTranslator>
+                        </h2>
+                        <p className="mt-4 max-w-3xl mx-auto text-muted-foreground">
+                            <TextTranslator ignoreCheck={true}>{{ ptBR: "Com mais de 17 anos de experiência, combino expertise em desenvolvimento web, design gráfico e marketing digital para criar soluções digitais acessíveis, escaláveis e visualmente impactantes. Como tech lead, lidero equipes na criação de interfaces mobile-first, otimizadas para SEO e conformes com padrões de acessibilidade (WCAG 2.1). Minha paixão é transformar ideias em experiências digitais intuitivas e robustas, utilizando ferramentas modernas como React, Next.js, Laravel e Figma. Projetos como Cleriston Ribeiro, Dashboard Zecki e Calendário Alpha exemplificam meu compromisso com qualidade, performance e inclusão.", en: "With over 17 years of experience, I combine expertise in web development, graphic design, and digital marketing to create accessible, scalable, and visually impactful digital solutions. As a tech lead, I lead teams in creating mobile-first interfaces, optimized for SEO, and compliant with accessibility standards (WCAG 2.1). My passion is to turn ideas into intuitive and robust digital experiences using modern tools like React, Next.js, Laravel, and Figma. Projects like Cleriston Ribeiro, Dashboard Zecki, and Calendário Alpha exemplify my commitment to quality, performance, and inclusion.", es: "Con más de 17 años de experiencia, combino mi pericia en desarrollo web, diseño gráfico y marketing digital para crear soluciones digitales accesibles, escalables y visualmente impactantes. Como líder técnico, dirijo equipos en la creación de interfaces mobile-first, optimizadas para SEO y conformes con los estándares de accesibilidad (WCAG 2.1). Mi pasión es transformar ideas en experiencias digitales intuitivas y robustas, utilizando herramientas modernas como React, Next.js, Laravel y Figma. Proyectos como Cleriston Ribeiro, Dashboard Zecki y Calendário Alpha ejemplifican mi compromiso con la calidad, el rendimiento y la inclusión." }}</TextTranslator>
+                        </p>
+                    </motion.header>
+                </div>
+            </section>
 
-            <div className="absolute inset-0 -z-10">
-                <FloatingParticles />
-            </div>
-            <div className="max-w-7xl mx-auto p-4 md:p-8  bg-background/70 backdrop-blur-md py-2">
-           
-                {/* Cabeçalho do Currículo */}
-                <motion.header {...sectionAnimation} className="text-center mb-16">
-                    <h1 className="text-4xl md:text-5xl font-bold tracking-tighter">Ezequiel Regino Monção</h1>
-                    <h2 className="mt-2 text-xl md:text-2xl text-primary">
-                        <TextTranslator ignoreCheck={true}>{{ ptBR: "Desenvolvedor Full-Stack & Designer", en: "Full-Stack Developer & Designer", es: "Desarrollador Full-Stack & Diseñador" }}</TextTranslator>
-                    </h2>
-                    <p className="mt-4 max-w-3xl mx-auto text-muted-foreground">
-                        <TextTranslator ignoreCheck={true}>{{ ptBR: "Com mais de 17 anos de experiência, combino expertise em desenvolvimento web, design gráfico e marketing digital para criar soluções digitais acessíveis, escaláveis e visualmente impactantes. Como tech lead, lidero equipes na criação de interfaces mobile-first, otimizadas para SEO e conformes com padrões de acessibilidade (WCAG 2.1). Minha paixão é transformar ideias em experiências digitais intuitivas e robustas, utilizando ferramentas modernas como React, Next.js, Laravel e Figma. Projetos como Cleriston Ribeiro, Dashboard Zecki e Calendário Alpha exemplificam meu compromisso com qualidade, performance e inclusão.", en: "With over 17 years of experience, I combine expertise in web development, graphic design, and digital marketing to create accessible, scalable, and visually impactful digital solutions. As a tech lead, I lead teams in creating mobile-first interfaces, optimized for SEO, and compliant with accessibility standards (WCAG 2.1). My passion is to turn ideas into intuitive and robust digital experiences using modern tools like React, Next.js, Laravel, and Figma. Projects like Cleriston Ribeiro, Dashboard Zecki, and Calendário Alpha exemplify my commitment to quality, performance, and inclusion.", es: "Con más de 17 años de experiencia, combino mi pericia en desarrollo web, diseño gráfico y marketing digital para crear soluciones digitales accesibles, escalables y visualmente impactantes. Como líder técnico, dirijo equipos en la creación de interfaces mobile-first, optimizadas para SEO y conformes con los estándares de accesibilidad (WCAG 2.1). Mi pasión es transformar ideas en experiencias digitales intuitivas y robustas, utilizando herramientas modernas como React, Next.js, Laravel y Figma. Proyectos como Cleriston Ribeiro, Dashboard Zecki y Calendário Alpha ejemplifican mi compromiso con la calidad, el rendimiento y la inclusión." }}</TextTranslator>
-                    </p>
-                </motion.header>
-
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
-                    {/* Coluna Esquerda: Informações Rápidas */}
-                    <motion.aside {...sectionAnimation} className="lg:col-span-1 flex flex-col gap-12">
+            {/* Seção 2: Conteúdo Principal */}
+            <section className="pb-24 md:pb-32 bg-background/70 backdrop-blur container mx-auto">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 u-container py-16">
+                    <motion.aside {...sectionAnimation} className="lg:col-span-1 flex flex-col gap-12  mx-10">
                         <div>
                             <h3 className="flex items-center gap-3 text-2xl font-bold border-b pb-2 mb-4"><Mail size={20} /> <TextTranslator ignoreCheck={true}>{{ ptBR: "Contato", en: "Contact", es: "Contacto" }}</TextTranslator></h3>
                             <ul className="space-y-3 text-muted-foreground">
@@ -69,8 +67,7 @@ export default function ResumePage() {
                         </div>
                     </motion.aside>
 
-                    {/* Coluna Direita: Detalhes */}
-                    <main className="lg:col-span-2 flex flex-col gap-12">
+                    <div className="lg:col-span-2 flex flex-col gap-12">
                         <motion.section {...sectionAnimation}>
                             <h3 className="flex items-center gap-3 text-3xl font-bold border-b pb-2 mb-4"><Trophy size={24} /> <TextTranslator ignoreCheck={true}>{{ ptBR: "Experiências Profissionais", en: "Professional Experience", es: "Experiencia Profesional" }}</TextTranslator></h3>
                             <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" viewport={{ once: true }} className="space-y-8">
@@ -146,9 +143,9 @@ export default function ResumePage() {
                                 </div>
                             </div>
                         </motion.section>
-                    </main>
+                    </div>
                 </div>
-            </div>
-        </div>
+            </section>
+        </>
     );
 }

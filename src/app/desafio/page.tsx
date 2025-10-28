@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { UnicChoice, DraginDrop, TrueOrFalse } from '@/components/ui/exerciciosdePassagem';
-import FloatingParticles from '@/components/effects/FloatingParticles';
 
 import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend, ArcElement } from 'chart.js';
 import { Radar, Doughnut } from 'react-chartjs-2';
@@ -167,13 +166,11 @@ export default function SkillsTestPage() {
     };
 
     return (
-        <div className="relative bg-background text-foreground min-h-screen overflow-hidden isolate">
-            <div className="absolute inset-0 -z-10"><FloatingParticles /></div>
-
+        <>
             {showResultsModal && <Confetti width={width} height={height} recycle={false} numberOfPieces={500} style={{ zIndex: 40, position: 'fixed' }} />}
 
             <Dialog open={showRulesModal} onOpenChange={setShowRulesModal}>
-                <DialogContent className="bg-background/80 backdrop-blur-md border-primary/30 text-white">
+                <DialogContent className="bg-background/80 backdrop-blur border-primary/30 text-white">
                     <DialogHeader>
                         <DialogTitle className="text-center text-2xl font-bold">Bem-vindo ao Desafio de Habilidades!</DialogTitle>
                         <DialogDescription className="text-center text-lg text-balance">Teste seus conhecimentos em Design, Código e Marketing.</DialogDescription>
@@ -194,7 +191,7 @@ export default function SkillsTestPage() {
             </Dialog>
 
             <Dialog open={showResultsModal} onOpenChange={setShowResultsModal}>
-                <DialogContent className="bg-background backdrop-blur-md border-primary/30 text-black dark:text-white max-w-3xl">
+                <DialogContent className="bg-background backdrop-blur border-primary/30 text-black dark:text-white max-w-3xl">
                     <DialogHeader>
                         <DialogTitle className="text-center text-2xl font-bold text-balance sm:text-3xl">Parabéns! Aqui estão seus resultados.</DialogTitle>
                     </DialogHeader>
@@ -202,7 +199,6 @@ export default function SkillsTestPage() {
                         <div className="relative w-full h-64 sm:w-1/2 sm:h-80">
                             <Doughnut data={doughnutData} options={{ maintainAspectRatio: false, plugins: { legend: { position: 'top', labels: { color: '#808080' } } } }} />
                         </div>
-                       
                     </div>
                     <div className='flex flex-col sm:flex-row gap-4 justify-center items-center my-4'>
                         <div className="relative w-full h-64 sm:w-1/2 sm:h-80">
@@ -217,32 +213,37 @@ export default function SkillsTestPage() {
                 </DialogContent>
             </Dialog>
 
-            <div className="container mx-auto px-4 py-24 md:py-32">
-                <motion.header {...sectionAnimation} className="text-center max-w-3xl mx-auto mb-16">
-                    <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4">
-                        <TextTranslator ignoreCheck={true}>{{ ptBR: "Teste suas Habilidades", en: "Test Your Skills", es: "Prueba tus Habilidades" }}</TextTranslator>
-                    </h1>
-                </motion.header>
+            <section className="py-24 md:py-32 container mx-auto">
+                {/* ✨ CORREÇÃO CRÍTICA:
+                    - O 'div' com a classe 'u-container' agora envolve todo o conteúdo da seção.
+                */}
+                <div className="u-container">
+                    <motion.header {...sectionAnimation} className="text-center max-w-3xl mx-auto mb-16">
+                        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4">
+                            <TextTranslator ignoreCheck={true}>{{ ptBR: "Teste suas Habilidades", en: "Test Your Skills", es: "Prueba tus Habilidades" }}</TextTranslator>
+                        </h1>
+                    </motion.header>
 
-                <div className="space-y-16" key={quizResetKey}>
-                    {(Object.keys(shuffledQuiz) as Array<keyof typeof shuffledQuiz>).map(category => (
-                        <motion.section {...sectionAnimation} key={category}>
-                            <Card className="bg-background/70 backdrop-blur-md border-primary/20">
-                                <CardHeader><CardTitle className="capitalize">{category} ({shuffledQuiz[category].length} questões)</CardTitle></CardHeader>
-                                <CardContent className="space-y-8">
-                                    {shuffledQuiz[category].map((q, index) => renderQuestionComponent(q, category, index))}
-                                </CardContent>
-                            </Card>
-                        </motion.section>
-                    ))}
+                    <div className="space-y-16" key={quizResetKey}>
+                        {(Object.keys(shuffledQuiz) as Array<keyof typeof shuffledQuiz>).map(category => (
+                            <motion.section {...sectionAnimation} key={category}>
+                                <Card className="bg-background/70 backdrop-blur border-primary/20">
+                                    <CardHeader><CardTitle className="capitalize">{category} ({shuffledQuiz[category].length} questões)</CardTitle></CardHeader>
+                                    <CardContent className="space-y-8">
+                                        {shuffledQuiz[category].map((q, index) => renderQuestionComponent(q, category, index))}
+                                    </CardContent>
+                                </Card>
+                            </motion.section>
+                        ))}
 
-                    <div className="text-center py-8">
-                        <Button size="lg" onClick={calculateAndShowResults} disabled={!isTestFinished}>
-                            Ver Meus Resultados
-                        </Button>
+                        <div className="text-center py-8">
+                            <Button size="lg" onClick={calculateAndShowResults} disabled={!isTestFinished}>
+                                Ver Meus Resultados
+                            </Button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </section>
+        </>
     );
 }

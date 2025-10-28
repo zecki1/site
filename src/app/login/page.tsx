@@ -2,24 +2,22 @@
 
 import { useState, FormEvent, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendPasswordResetEmail } from "firebase/auth";
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 import { auth } from "@/lib/firebase";
 import { Toaster, toast } from "sonner";
-import { Loader2, Mail, Lock, LogIn } from "lucide-react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-
+import { Loader2, Mail, Lock, LogIn, Phone, Send, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import TextTranslator from "@/components/layout/TextTranslator";
-import FloatingParticles from "@/components/effects/FloatingParticles";
 
 const pageTexts = {
     title: { ptBR: "Área do Cliente", en: "Client Area", es: "Área de Cliente" },
     description: { ptBR: "Acesse o painel de gerenciamento do seu site.", en: "Access your website's management panel.", es: "Accede al panel de gestión de tu sitio web." },
     forgotPassword: { ptBR: "Esqueci minha senha", en: "Forgot my password", es: "Olvidé mi contraseña" },
-    continueWith: { ptBR: "Ou continue com", en: "Or continue with", es: "O continuar con" },
     placeholders: {
         email: { ptBR: "seu@email.com", en: "your@email.com", es: "tu@email.com" },
         password: { ptBR: "••••••••", en: "••••••••", es: "••••••••" },
@@ -28,171 +26,174 @@ const pageTexts = {
         logIn: { ptBR: "Entrar", en: "Log In", es: "Entrar" },
         loggingIn: { ptBR: "Entrando...", en: "Logging in...", es: "Entrando..." },
     },
-    toasts: {
-        titles: {
-            loginFailed: { ptBR: "Falha no login", en: "Login failed", es: "Fallo de inicio de sesión" },
-            loginSuccess: { ptBR: "Login bem-sucedido!", en: "Login successful!", es: "¡Inicio de sesión exitoso!" },
-            googleLoginSuccess: { ptBR: "Login com Google bem-sucedido!", en: "Google login successful!", es: "¡Inicio de sesión con Google exitoso!" },
-            requiredFields: { ptBR: "Campos obrigatórios", en: "Required fields", es: "Campos obligatorios" },
-            provideEmail: { ptBR: "Informe seu e-mail", en: "Provide your email", es: "Informa tu correo electrónico" },
-        },
-        descriptions: {
-            redirecting: { ptBR: "Redirecionando...", en: "Redirecting...", es: "Redirigiendo..." },
-            provideEmailForReset: { ptBR: "Digite seu e-mail no campo acima para redefinir a senha.", en: "Enter your email in the field above to reset your password.", es: "Ingresa tu correo en el campo de arriba para restablecer la contraseña." },
-            resetEmailSent: { ptBR: "Email de redefinição de senha enviado! Verifique sua caixa de entrada.", en: "Password reset email sent! Check your inbox.", es: "¡Correo de restablecimiento enviado! Revisa tu bandeja de entrada." },
-        },
-        errors: {
-            invalidCredential: { ptBR: "Email ou senha inválidos.", en: "Invalid email or password.", es: "Correo o contraseña no válidos." },
-            tooManyRequests: { ptBR: "Acesso bloqueado temporariamente. Tente novamente mais tarde.", en: "Access temporarily blocked. Please try again later.", es: "Acceso bloqueado temporalmente. Inténtalo de novo más tarde." },
-            userDisabled: { ptBR: "Esta conta de usuário foi desativada.", en: "This user account has been disabled.", es: "Esta cuenta de usuario ha sido deshabilitada." },
-            unknown: { ptBR: "Ocorreu um erro desconhecido. Tente novamente.", en: "An unknown error occurred. Please try again.", es: "Ocurrió un error desconocido. Inténtalo de nuevo." },
-            fillFields: { ptBR: "Por favor, preencha o e-mail e a senha.", en: "Please fill in both email and password.", es: "Por favor, completa el correo y la contraseña." },
-            resetEmailFailed: { ptBR: "Falha ao enviar o email de redefinição. Verifique o email digitado.", en: "Failed to send reset email. Please check the entered email.", es: "Fallo al enviar el correo. Verifica el correo ingresado." },
-        },
-    },
+    toasts: { errors: { /* ... */ } }
 };
+
+const sectionAnimation = { initial: { opacity: 0, y: 50 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.8, ease: "easeOut" } };
+const staggerContainer = { animate: { transition: { staggerChildren: 0.15 } } };
+const itemAnimation = { initial: { opacity: 0, x: -20 }, animate: { opacity: 1, x: 0 } };
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const [isGoogleLoading, setIsGoogleLoading] = useState(false);
     const router = useRouter();
     const { i18n } = useTranslation();
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => { setIsMounted(true); }, []);
 
     const getTranslatedText = (textObj: { [key: string]: string | undefined }): string => {
-        const [isMounted, setIsMounted] = useState(false);
-        useEffect(() => setIsMounted(true), []);
         const lang = isMounted ? i18n.language : "ptBR";
         return textObj[lang] || textObj.ptBR || "";
     };
 
     const handleAuthError = (err: unknown) => {
         const error = err as FirebaseError;
-        let errorObj = pageTexts.toasts.errors.unknown;
+        let errorKey = 'unknown';
         switch (error.code) {
-            case 'auth/user-not-found': case 'auth/wrong-password': case 'auth/invalid-credential':
-                errorObj = pageTexts.toasts.errors.invalidCredential; break;
+            case 'auth/user-not-found':
+            case 'auth/wrong-password':
+            case 'auth/invalid-credential':
+                errorKey = 'invalidCredential'; break;
             case 'auth/too-many-requests':
-                errorObj = pageTexts.toasts.errors.tooManyRequests; break;
+                errorKey = 'tooManyRequests'; break;
             case 'auth/user-disabled':
-                errorObj = pageTexts.toasts.errors.userDisabled; break;
+                errorKey = 'userDisabled'; break;
             default: console.error("Firebase Auth Error:", error); break;
         }
-        toast.error(getTranslatedText(pageTexts.toasts.titles.loginFailed), { description: getTranslatedText(errorObj) });
+        toast.error("Falha no login");
     };
 
     const handleLogin = async (e: FormEvent) => {
         e.preventDefault();
         if (!email || !password) {
-            toast.error(getTranslatedText(pageTexts.toasts.titles.requiredFields), { description: getTranslatedText(pageTexts.toasts.errors.fillFields) });
+            toast.error("Campos obrigatórios", { description: "Por favor, preencha o e-mail e a senha." });
             return;
         }
         setIsLoading(true);
         try {
             await signInWithEmailAndPassword(auth, email, password);
-            toast.success(getTranslatedText(pageTexts.toasts.titles.loginSuccess), { description: getTranslatedText(pageTexts.toasts.descriptions.redirecting) });
+            toast.success("Login bem-sucedido!", { description: "Redirecionando para o painel..." });
             setTimeout(() => router.push("/admin/dashboard"), 1500);
         } catch (err) {
             handleAuthError(err);
+        } finally {
             setIsLoading(false);
-        }
-    };
-
-    const handleGoogleSignIn = async () => {
-        setIsGoogleLoading(true);
-        const provider = new GoogleAuthProvider();
-        try {
-            await signInWithPopup(auth, provider);
-            toast.success(getTranslatedText(pageTexts.toasts.titles.googleLoginSuccess), { description: getTranslatedText(pageTexts.toasts.descriptions.redirecting) });
-            setTimeout(() => router.push("/admin/dashboard"), 1500);
-        } catch (err) {
-            handleAuthError(err);
-            setIsGoogleLoading(false);
         }
     };
 
     const handlePasswordReset = () => {
         if (!email) {
-            toast.info(getTranslatedText(pageTexts.toasts.titles.provideEmail), { description: getTranslatedText(pageTexts.toasts.descriptions.provideEmailForReset) });
+            toast.info("Informe seu e-mail", { description: "Digite seu e-mail no campo acima para redefinir a senha." });
             return;
         }
         sendPasswordResetEmail(auth, email)
-            .then(() => { toast.success(getTranslatedText(pageTexts.toasts.descriptions.resetEmailSent)); })
-            .catch(() => { toast.error(getTranslatedText(pageTexts.toasts.errors.resetEmailFailed)); });
+            .then(() => toast.success("E-mail de redefinição enviado!", { description: "Verifique sua caixa de entrada." }))
+            .catch(() => toast.error("Falha no envio", { description: "Verifique o e-mail digitado e tente novamente." }));
     };
 
     return (
-        <div className="relative flex items-center justify-center min-h-screen w-full bg-background overflow-hidden p-4">
-
-            <FloatingParticles />
-
-            <div className="absolute inset-0 z-0">
-                <div className="absolute bottom-0 left-[-20%] right-0 top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(0,225,255,0.7),rgba(255,255,255,0))]"></div>
-                <div className="absolute bottom-[-80px] right-[-30%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(127,0,255,0.7),rgba(255,255,255,0))]"></div>
-            </div>
-
-            <Toaster position="top-center" richColors />
-
-            <motion.div
-                initial={{ opacity: 0, y: -20, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="w-full max-w-md bg-card/80 backdrop-blur-lg border border-border/20 rounded-2xl shadow-2xl z-10"
-            >
-                <div className="p-8 space-y-6">
-                    <div className="text-center">
-                        <motion.h1
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.2 }}
-                            className="text-3xl font-bold text-card-foreground"
-                        >
+        <>
+            <Toaster position="bottom-center" richColors />
+           
+            <section className="min-h-screen flex items-center justify-center py-12">
+                <div className="max-w-7xl mx-auto p-4 md:p-8 u-container">
+                    <motion.header
+                        variants={sectionAnimation}
+                        initial="initial"
+                        animate="animate"
+                        className="text-center mb-16 bg-background/70 backdrop-blur"
+                    >
+                        <h1 className="text-4xl md:text-5xl font-bold tracking-tighter bg-background/70 backdrop-blu">
                             <TextTranslator>{pageTexts.title}</TextTranslator>
-                        </motion.h1>
-                        <motion.p
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.3 }}
-                            className="text-muted-foreground mt-2"
-                        >
+                        </h1>
+                        <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
                             <TextTranslator>{pageTexts.description}</TextTranslator>
-                        </motion.p>
+                        </p>
+                    </motion.header>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 md:gap-16">
+                        <motion.aside
+                            variants={sectionAnimation}
+                            initial="initial"
+                            animate="animate"
+                            className="lg:col-span-1 flex flex-col gap-8 bg-background/70 backdrop-blur"
+                        >
+                            <div>
+                                <h3 className="flex items-center gap-3 text-2xl font-bold border-b pb-2 mb-4">
+                                    <ShieldCheck size={22} />
+                                    <TextTranslator>{{ ptBR: "Plataforma Segura", en: "Secure Platform", es: "Plataforma Segura" }}</TextTranslator>
+                                </h3>
+                                <p className="text-muted-foreground text-sm">
+                                    <TextTranslator>{{
+                                        ptBR: "Este é o seu centro de controle dedicado para gerenciar todo o conteúdo do seu site de forma simples e intuitiva. Seus dados estão protegidos.",
+                                        en: "This is your dedicated control center for managing all your website's content simply and intuitively. Your data is protected.",
+                                        es: "Este es tu centro de control dedicado para gestionar todo el contenido de tu sitio web de forma simple e intuitiva. Tus datos están protegidos."
+                                    }}</TextTranslator>
+                                </p>
+                            </div>
+                            <div>
+                                <h3 className="flex items-center gap-3 text-2xl font-bold border-b pb-2 mb-4">
+                                    <TextTranslator>{{ ptBR: "Precisa de Ajuda?", en: "Need Help?", es: "¿Necesitas Ayuda?" }}</TextTranslator>
+                                </h3>
+                                <ul className="space-y-3 text-muted-foreground">
+                                    <li className="flex items-center gap-3"><Send size={16} /> <a href="mailto:zecki1@hotmail.com" className="hover:text-primary transition-colors">zecki1@hotmail.com</a></li>
+                                    <li className="flex items-center gap-3"><Phone size={16} /> <a href="tel:+5511982101630" className="hover:text-primary transition-colors">+55 (11) 9 8210-1630</a></li>
+                                </ul>
+                            </div>
+                        </motion.aside>
+
+                        <motion.main
+                            variants={staggerContainer}
+                            initial="initial"
+                            animate="animate"
+                            className="lg:col-span-2 bg-card/50 backdrop-blur border rounded-2xl p-6 md:p-8 shadow-lg"
+                        >
+                            <form onSubmit={handleLogin} className="space-y-6">
+                                <motion.div variants={itemAnimation} className="space-y-2">
+                                    <Label htmlFor="email" className="text-sm font-medium">Email</Label>
+                                    <div className="relative">
+                                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                        <Input
+                                            id="email" type="email" placeholder={getTranslatedText(pageTexts.placeholders.email)}
+                                            value={email} onChange={(e) => setEmail(e.target.value)}
+                                            required disabled={isLoading}
+                                            className="pl-10 h-12"
+                                        />
+                                    </div>
+                                </motion.div>
+
+                                <motion.div variants={itemAnimation} className="space-y-2">
+                                    <Label htmlFor="password" className="text-sm font-medium">Senha</Label>
+                                    <div className="relative">
+                                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                        <Input
+                                            id="password" type="password" placeholder={getTranslatedText(pageTexts.placeholders.password)}
+                                            value={password} onChange={(e) => setPassword(e.target.value)}
+                                            required disabled={isLoading}
+                                            className="pl-10 h-12"
+                                        />
+                                    </div>
+                                </motion.div>
+
+                                <motion.div variants={itemAnimation} className="flex justify-end text-sm">
+                                    <button type="button" onClick={handlePasswordReset} className="text-primary hover:underline font-medium disabled:opacity-50" disabled={isLoading}>
+                                        <TextTranslator>{pageTexts.forgotPassword}</TextTranslator>
+                                    </button>
+                                </motion.div>
+
+                                <motion.div variants={itemAnimation}>
+                                    <Button type="submit" className="w-full h-12 font-bold text-md" disabled={isLoading}>
+                                        {isLoading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <LogIn className="mr-2 h-5 w-5" />}
+                                        {isLoading ? getTranslatedText(pageTexts.buttons.loggingIn) : getTranslatedText(pageTexts.buttons.logIn)}
+                                    </Button>
+                                </motion.div>
+                            </form>
+                        </motion.main>
                     </div>
-
-                    <form onSubmit={handleLogin} className="space-y-4">
-                        <div className="relative">
-                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                            <Input
-                                id="email" type="email" placeholder={getTranslatedText(pageTexts.placeholders.email)}
-                                value={email} onChange={(e) => setEmail(e.target.value)}
-                                required disabled={isLoading || isGoogleLoading}
-                                className="pl-10 h-12"
-                            />
-                        </div>
-                        <div className="relative">
-                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                            <Input
-                                id="password" type="password" placeholder={getTranslatedText(pageTexts.placeholders.password)}
-                                value={password} onChange={(e) => setPassword(e.target.value)}
-                                required disabled={isLoading || isGoogleLoading}
-                                className="pl-10 h-12"
-                            />
-                        </div>
-
-                        <div className="flex justify-end text-sm">
-                            <button type="button" onClick={handlePasswordReset} className="text-primary hover:underline font-medium">
-                                <TextTranslator>{pageTexts.forgotPassword}</TextTranslator>
-                            </button>
-                        </div>
-
-                        <Button type="submit" className="w-full h-12 font-bold text-md" disabled={isLoading || isGoogleLoading}>
-                            {isLoading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <LogIn className="mr-2 h-5 w-5" />}
-                            {isLoading ? getTranslatedText(pageTexts.buttons.loggingIn) : getTranslatedText(pageTexts.buttons.logIn)}
-                        </Button>
-                    </form>
                 </div>
-            </motion.div>
-        </div>
+            </section>
+        </>
     );
 }

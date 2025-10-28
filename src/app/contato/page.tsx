@@ -11,7 +11,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import TextTranslator from "@/components/layout/TextTranslator";
-import FloatingParticles from "@/components/effects/FloatingParticles"; 
 
 const sectionAnimation = { initial: { opacity: 0, y: 50 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.8, ease: "easeOut" } };
 
@@ -24,7 +23,6 @@ export default function ContactPage() {
 
     const currentLanguage = isMounted ? i18n.language : 'ptBR';
 
-    // Objeto de traduções para a página de contato
     const pageTexts = {
         title: { ptBR: "Vamos Construir Algo Incrível", en: "Let's Build Something Amazing", es: "Construyamos Algo Increíble" },
         subtitle: { ptBR: "Tem um projeto em mente ou apenas quer dizer oi? Use o formulário abaixo ou escolha um dos canais de contato.", en: "Have a project in mind or just want to say hi? Use the form below or choose one of the contact channels.", es: "¿Tienes un proyecto en mente o simplemente quieres saludar? Usa el formulario de abajo o elige uno de los canales de contacto." },
@@ -69,15 +67,10 @@ export default function ContactPage() {
     }
 
     return (
-        <div className="relative bg-background text-foreground min-h-screen overflow-hidden isolate pt-100">
-           
-            <div className="absolute inset-0 -z-10">
-                <FloatingParticles />
-            </div>
-
-            <div className="container mx-auto px-4 ">
-                {/* Cabeçalho da Página */}
-                <motion.header {...sectionAnimation} className="text-center max-w-3xl mx-auto mb-16 bg-background/70 backdrop-blur-md py-2">
+        <>
+            {/* Seção 1: Cabeçalho */}
+            <section className="py-24 md:py-32">
+                <motion.header {...sectionAnimation} className="text-center max-w-3xl mx-auto bg-background/70 backdrop-blur py-2 u-container">
                     <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4">
                         <TextTranslator ignoreCheck={true}>{pageTexts.title}</TextTranslator>
                     </h1>
@@ -85,11 +78,11 @@ export default function ContactPage() {
                         <TextTranslator ignoreCheck={true}>{pageTexts.subtitle}</TextTranslator>
                     </p>
                 </motion.header>
+            </section>
 
-                {/* Conteúdo Principal: Contato + Formulário */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 max-w-6xl mx-auto py-6">
-
-                    {/* Coluna de Informações de Contato */}
+            {/* Seção 2: Conteúdo Principal (Formulário e Contatos) */}
+            <section className="pb-24 md:pb-32">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 max-w-6xl mx-auto u-container">
                     <motion.div {...sectionAnimation} transition={{ delay: 0.2 }} className="lg:col-span-1 flex flex-col space-y-8">
                         <div className="flex items-start gap-4">
                             <div className="bg-primary/10 text-primary p-3 rounded-full mt-1"><MapPin /></div>
@@ -122,10 +115,8 @@ export default function ContactPage() {
                         </div>
                     </motion.div>
 
-                    {/* Coluna do Formulário */}
                     <motion.div {...sectionAnimation} transition={{ delay: 0.4 }} className="lg:col-span-2">
-                        {/* O card tem fundo semi-transparente para o efeito desejado */}
-                        <div className="bg-background/70 backdrop-blur-md p-6 md:p-8 rounded-2xl shadow-lg border border-white/10">
+                        <div className="bg-background/70 backdrop-blur p-6 md:p-8 rounded-2xl shadow-lg border border-white/10">
                             <form ref={form} onSubmit={sendEmail} className="space-y-6">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                     <div className="space-y-2">
@@ -164,7 +155,7 @@ export default function ContactPage() {
                         </div>
                     </motion.div>
                 </div>
-            </div>
-        </div>
+            </section>
+        </>
     );
 }

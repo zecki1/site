@@ -23,8 +23,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
         else { i18n.changeLanguage("ptBR"); }
     }, [i18n]);
 
-    const routesWithoutHeader = ['/login', '/admin', '/sites'];
-    const showGlobalElements = isMounted && !routesWithoutHeader.some(route => pathname?.startsWith(route));
+    // ✨ LÓGICA MANTIDA: Usamos isso para aplicar o padding-top apenas nas páginas públicas.
+    const adminRoutes = [ '/admin', '/sites'];
+    const isPublicPage = isMounted && !adminRoutes.some(route => pathname?.startsWith(route));
 
     if (!isMounted) {
         return (
@@ -37,17 +38,20 @@ export function Providers({ children }: { children: React.ReactNode }) {
     return (
         <ThemeProvider>
             <CustomCursor />
+            <ScrollSmootherHeader backgroundImage={images.capa} />
 
-            {showGlobalElements && (
-                <>
-                    <ScrollSmootherHeader backgroundImage={images.capa} />
-                    <GlobalBackgroundEffects />
-                </>
-            )}
+            <GlobalBackgroundEffects />
 
-            <main id="main-content" className="relative isolate pt-[60vh]">
+            <main
+                id="main-content"
+                // A classe 'isolate' é importante, pois cria um novo contexto de empilhamento,
+                // garantindo que o conteúdo de 'main' não fique atrás do background.
+                className={`relative isolate ${isPublicPage ? 'pt-[60vh]' : ''}`}
+            >
+                {/* ✨ CORREÇÃO: A chamada duplicada foi REMOVIDA daqui. */}
                 {children}
             </main>
+
             <Toaster />
         </ThemeProvider>
     );

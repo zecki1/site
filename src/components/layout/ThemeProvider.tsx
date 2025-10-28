@@ -50,23 +50,39 @@ export function ThemeProvider({
     fontFamilyKey = "zecki1-ui-font-family",
     ...props
 }: ThemeProviderProps) {
-    const [theme, setTheme] = useState<Theme>(defaultTheme);
-    const [accessibilityMode, setAccessibilityMode] = useState<AccessibilityMode>("none");
-    const [fontSize, setFontSize] = useState<number>(16);
-    const [fontFamily, setFontFamily] = useState<FontFamily>("default");
+    // CORREÇÃO: Usamos a função de inicialização do useState para ler o localStorage
+    // apenas uma vez, na primeira renderização, de forma segura no servidor e no cliente.
+    const [theme, setTheme] = useState<Theme>(() => {
+        if (typeof window === 'undefined') {
+            return defaultTheme;
+        }
+        return (localStorage.getItem(storageKey) as Theme) || defaultTheme;
+    });
 
-    useEffect(() => {
-        const savedTheme = (localStorage.getItem(storageKey) as Theme) || defaultTheme;
-        const savedAccessibilityMode = (localStorage.getItem(accessibilityKey) as AccessibilityMode) || "none";
-        const savedFontSize = parseInt(localStorage.getItem(fontSizeKey) || "16", 10);
-        const savedFontFamily = (localStorage.getItem(fontFamilyKey) as FontFamily) || "default";
+    const [accessibilityMode, setAccessibilityMode] = useState<AccessibilityMode>(() => {
+        if (typeof window === 'undefined') {
+            return "none";
+        }
+        return (localStorage.getItem(accessibilityKey) as AccessibilityMode) || "none";
+    });
 
-        setTheme(savedTheme);
-        setAccessibilityMode(savedAccessibilityMode);
-        setFontSize(savedFontSize);
-        setFontFamily(savedFontFamily);
-    }, []);
+    const [fontSize, setFontSize] = useState<number>(() => {
+        if (typeof window === 'undefined') {
+            return 16;
+        }
+        return parseInt(localStorage.getItem(fontSizeKey) || "16", 10);
+    });
 
+    const [fontFamily, setFontFamily] = useState<FontFamily>(() => {
+        if (typeof window === 'undefined') {
+            return "default";
+        }
+        return (localStorage.getItem(fontFamilyKey) as FontFamily) || "default";
+    });
+
+    // O useEffect de inicialização foi removido, pois a lógica agora está nos useStates.
+
+    // Este useEffect continua, pois ele precisa ser executado sempre que um dos valores mudar.
     useEffect(() => {
         const root = window.document.documentElement;
 

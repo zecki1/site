@@ -3,7 +3,26 @@
 import { useState, useEffect, useRef } from "react";
 import { Paintbrush } from "lucide-react";
 import TextTranslator from "@/components/layout/TextTranslator";
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+// CORREÇÃO: Importa o tipo 'DotLottie' para a ref
+import { DotLottieReact, DotLottie } from '@lottiefiles/dotlottie-react';
+
+// --- Interfaces de Tipo para a estrutura do Lottie ---
+// Isso substitui o uso de 'any' e torna o código mais seguro e legível.
+interface LottieShapeItem {
+    ty: string;
+    c?: {
+        k: number[];
+    };
+}
+
+interface LottieShape {
+    it: LottieShapeItem[];
+}
+
+interface LottieLayer {
+    nm: string; // nm = name
+    shapes?: LottieShape[];
+}
 
 const colors = [
     { name: "Cyan", value: "#00e1ff" },
@@ -15,10 +34,11 @@ const colors = [
 
 export const ColorSwitcher = () => {
     const [activeColor, setActiveColor] = useState(colors[0].value);
-    const lottiePlayerRef = useRef<any>(null);
+    // CORREÇÃO: Usa o tipo importado 'DotLottie' e permite 'null' como valor inicial.
+    const lottiePlayerRef = useRef<DotLottie | null>(null);
 
     // Função auxiliar para converter HEX para o formato de array que o Lottie usa [R, G, B]
-    const hexToRgbArray = (hex: string) => {
+    const hexToRgbArray = (hex: string): number[] => {
         const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
         // Retorna a cor normalizada entre 0 e 1
         return result
@@ -34,9 +54,9 @@ export const ColorSwitcher = () => {
     // Efeito que é acionado quando a cor ativa muda, para atualizar a animação
     useEffect(() => {
         const player = lottiePlayerRef.current;
-        if (!player) return;
+        const lottieInstance = player?.getLottie();
+        if (!player || !lottieInstance) return;
 
-        // Nomes das camadas do seu arquivo Lottie que você deseja colorir
         const layersToColor = [
             'Layer 21', 'Layer 19', 'Layer 16', 'Layer 14', 'Layer 7',
             'Layer 6', 'Layer 5', 'Layer 4', 'Layer 3'
@@ -45,34 +65,34 @@ export const ColorSwitcher = () => {
         try {
             const colorArray = hexToRgbArray(activeColor);
 
-            player.getLottie().layers.forEach((layer: any) => {
-                if (layersToColor.includes(layer.nm)) {
-                    if (layer.shapes && layer.shapes.length > 0) {
-                        layer.shapes[0].it.forEach((item: any) => {
-                            // Procura por propriedades de preenchimento ('fl')
-                            if (item.ty === 'fl' && item.c && item.c.k) {
-                                item.c.k = colorArray;
-                            }
-                        });
-                    }
+            // CORREÇÃO: Usa a interface 'LottieLayer' para tipar o parâmetro 'layer'.
+            lottieInstance.layers.forEach((layer: LottieLayer) => {
+                if (layersToColor.includes(layer.nm) && layer.shapes?.[0]?.it) {
+                    // CORREÇÃO: Usa a interface 'LottieShapeItem' para tipar o parâmetro 'item'.
+                    layer.shapes[0].it.forEach((item: LottieShapeItem) => {
+                        // Procura por propriedades de preenchimento ('fl') e usa optional chaining para segurança.
+                        if (item.ty === 'fl' && item.c?.k) {
+                            item.c.k = colorArray;
+                        }
+                    });
                 }
             });
             // Recarrega o player para aplicar as mudanças de cor
-            player.load(player.getLottie());
+            player.load(lottieInstance);
 
         } catch (e) {
             console.error("Failed to update Lottie colors:", e);
         }
 
-    }, [activeColor, lottiePlayerRef.current]); // Depende da cor e da existência do player
+        // CORREÇÃO: A ref não deve estar no array de dependências.
+        // O efeito só precisa ser re-executado quando a cor mudar.
+    }, [activeColor]);
 
     return (
         <div className="flex flex-col items-center gap-6 my-16 p-8 bg-muted/20 rounded-2xl border border-border/10">
             <div className="w-64 h-64">
                 <DotLottieReact
-                    // CORREÇÃO: Usa a propriedade `lottieRef` para obter a instância do player
                     lottieRef={lottiePlayerRef}
-                    // CORREÇÃO: Aponta para o caminho correto do arquivo na pasta public
                     src="/lottie/background.json"
                     loop
                     autoplay

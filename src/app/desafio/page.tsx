@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
@@ -16,6 +17,43 @@ import { Radar, Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend, ArcElement);
 
+// --- Tipagem para a Estrutura do Quiz (Agora 100% correta) ---
+type TranslatableText = { ptBR: string; en: string; es: string; };
+
+interface BaseQuestion {
+    question: TranslatableText;
+}
+
+// CORREÇÃO: A interface agora corresponde exatamente aos dados em quizData.ts
+interface UnicChoiceQuestion extends BaseQuestion {
+    type: 'UnicChoice';
+    options: { text: TranslatableText }[]; // O componente espera 'text', e seus dados têm 'text'.
+    correctAnswer: string;
+}
+
+interface DraginDropQuestion extends BaseQuestion {
+    type: 'DraginDrop';
+    sentences: {
+        text: TranslatableText;
+        correctOrder: number[];
+        wordsPerSentence: number;
+    }[];
+    words: { id: number; text: TranslatableText }[];
+}
+
+// CORREÇÃO: A interface agora corresponde exatamente aos dados em quizData.ts
+interface TrueOrFalseQuestion extends BaseQuestion {
+    type: 'TrueOrFalse';
+    options: {
+        true: { text: TranslatableText };
+        false: { text: TranslatableText };
+    };
+    correctAnswer: boolean;
+}
+
+type QuizQuestion = UnicChoiceQuestion | DraginDropQuestion | TrueOrFalseQuestion;
+// --- Fim da Tipagem ---
+
 const useWindowSize = () => {
     const [size, setSize] = useState({ width: 0, height: 0 });
     useEffect(() => {
@@ -29,15 +67,17 @@ const useWindowSize = () => {
 
 const sectionAnimation = { initial: { opacity: 0, y: 50 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.8, ease: "easeOut" } };
 
-const initialAnswersState = {
+// CORREÇÃO: A tipagem do estado inicial agora é explícita e correta.
+const initialAnswersState: { [key in keyof typeof quizData]: (boolean | null)[] } = {
     design: Array(quizData.design.length).fill(null),
     code: Array(quizData.code.length).fill(null),
     marketing: Array(quizData.marketing.length).fill(null),
 };
 
-const shuffleArray = (array: any[]) => [...array].sort(() => Math.random() - 0.5);
+const shuffleArray = <T,>(array: T[]): T[] => [...array].sort(() => Math.random() - 0.5);
 
 export default function SkillsTestPage() {
+    // Com as tipagens corretas, podemos remover os @ts-ignore
     const [shuffledQuiz, setShuffledQuiz] = useState(quizData);
     const [answers, setAnswers] = useState(initialAnswersState);
     const [showRulesModal, setShowRulesModal] = useState(false);
@@ -114,7 +154,7 @@ export default function SkillsTestPage() {
         setShowRulesModal(true);
     };
 
-    const renderQuestionComponent = (question: any, category: keyof typeof quizData, index: number) => {
+    const renderQuestionComponent = (question: QuizQuestion, category: keyof typeof quizData, index: number) => {
         const commonProps = {
             question: question.question,
             onComplete: (isCorrect: boolean) => handleQuestionComplete(category, index, isCorrect),
@@ -128,21 +168,39 @@ export default function SkillsTestPage() {
         const key = `${category}-${index}-${quizResetKey}`;
 
         switch (question.type) {
-            case 'UnicChoice':
-                return <UnicChoice key={key} {...commonProps} attempts={2} options={question.options} correctAnswer={question.correctAnswer} prefixType="alphabetical" />;
+            case 'UnicChoice': {
+                const mappedOptions = question.options.map((opt, idx) => ({
+                    text: opt.text,
+                    value: idx.toString() // O 'value' é o índice da opção.
+                }));
+                return <UnicChoice key={key} {...commonProps} attempts={2} options={mappedOptions} correctAnswer={question.correctAnswer} prefixType="alphabetical" />;
+            }
             case 'DraginDrop':
                 return <DraginDrop key={key} {...commonProps} attempts={2} sentences={question.sentences} words={question.words} />;
-            case 'TrueOrFalse':
-                const { retry, ...tfFeedback } = commonProps.feedback;
-                return <TrueOrFalse key={key} {...commonProps} feedback={tfFeedback} options={question.options} correctAnswer={question.correctAnswer} />;
+            case 'TrueOrFalse': {
+                const tfFeedback = {
+                    positive: commonProps.feedback.positive,
+                    negative: commonProps.feedback.negative,
+                };
+                const mappedOptions = [
+                    { text: question.options.true.text, value: 'true' },
+                    { text: question.options.false.text, value: 'false' }
+                ];
+                const correctAnswerString = String(question.correctAnswer);
+                return <TrueOrFalse key={key} {...commonProps} feedback={tfFeedback} options={mappedOptions} correctAnswer={correctAnswerString} />;
+            }
             default:
-                return <p key={key}>Tipo de questão não suportado: {question.type}</p>;
+                // Esta linha ajuda o TypeScript a garantir que todos os casos foram tratados.
+                const exhaustiveCheck: never = question;
+                return <p key={key}>Tipo de questão não suportado: {exhaustiveCheck}</p>;
         }
     };
 
     const totalQuestions = Object.values(quizData).flat().length;
     const correctAnswersCount = Object.values(scores).reduce((a, b) => a + b, 0);
     const incorrectAnswersCount = totalQuestions - correctAnswersCount;
+
+    const chartTextColor = '#9CA3AF';
 
     const doughnutData = {
         labels: ['Acertos', 'Erros'],
@@ -197,12 +255,12 @@ export default function SkillsTestPage() {
                     </DialogHeader>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center my-4">
                         <div className="relative w-full h-64 sm:w-1/2 sm:h-80">
-                            <Doughnut data={doughnutData} options={{ maintainAspectRatio: false, plugins: { legend: { position: 'top', labels: { color: '#808080' } } } }} />
+                            <Doughnut data={doughnutData} options={{ maintainAspectRatio: false, plugins: { legend: { position: 'top', labels: { color: chartTextColor } } } }} />
                         </div>
                     </div>
                     <div className='flex flex-col sm:flex-row gap-4 justify-center items-center my-4'>
                         <div className="relative w-full h-64 sm:w-1/2 sm:h-80">
-                            <Radar data={radarData} options={{ maintainAspectRatio: false, scales: { r: { beginAtZero: true, max: 5, pointLabels: { color: '#808080', font: { size: 14 } }, grid: { color: 'rgba(255, 255, 255, 0.2)' }, ticks: { backdropColor: 'transparent', color: '#808080', stepSize: 1 } } }, plugins: { legend: { labels: { color: '#808080' } } } }} />
+                            <Radar data={radarData} options={{ maintainAspectRatio: false, scales: { r: { beginAtZero: true, max: 5, pointLabels: { color: chartTextColor, font: { size: 14 } }, grid: { color: 'rgba(156, 163, 175, 0.2)' }, ticks: { backdropColor: 'transparent', color: chartTextColor, stepSize: 1 } } }, plugins: { legend: { labels: { color: chartTextColor } } } }} />
                         </div>
                     </div>
                     <DialogFooter>
@@ -214,9 +272,6 @@ export default function SkillsTestPage() {
             </Dialog>
 
             <section className="py-24 md:py-32 container mx-auto">
-                {/* ✨ CORREÇÃO CRÍTICA:
-                    - O 'div' com a classe 'u-container' agora envolve todo o conteúdo da seção.
-                */}
                 <div className="u-container">
                     <motion.header {...sectionAnimation} className="text-center max-w-3xl mx-auto mb-16">
                         <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4">
@@ -230,7 +285,7 @@ export default function SkillsTestPage() {
                                 <Card className="bg-background/70 backdrop-blur border-primary/20">
                                     <CardHeader><CardTitle className="capitalize">{category} ({shuffledQuiz[category].length} questões)</CardTitle></CardHeader>
                                     <CardContent className="space-y-8">
-                                        {shuffledQuiz[category].map((q, index) => renderQuestionComponent(q, category, index))}
+                                        {shuffledQuiz[category].map((q, index) => renderQuestionComponent(q as QuizQuestion, category, index))}
                                     </CardContent>
                                 </Card>
                             </motion.section>

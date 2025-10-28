@@ -29,7 +29,21 @@ export default function HomeContent() {
             gsap.from(introSectionRef.current, { opacity: 0, y: 50, duration: 1, scrollTrigger: { trigger: introSectionRef.current, start: 'top 80%' } });
             gsap.from(".pillar-card", { opacity: 0, y: 40, duration: 0.8, stagger: 0.2, ease: 'power3.out', scrollTrigger: { trigger: pillarsSectionRef.current, start: 'top 85%' } });
             gsap.from(".service-card", { opacity: 0, scale: 0.95, y: 30, duration: 0.7, stagger: 0.1, ease: 'power3.out', scrollTrigger: { trigger: servicesSectionRef.current, start: 'top 80%' } });
-            gsap.utils.toArray('.process-step').forEach((step) => { gsap.from(step, { opacity: 0, x: -50, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: step as any, start: 'top 85%' } }); });
+
+            // CORREÇÃO: Tipamos o array de elementos como HTMLElement para evitar o uso de 'any'.
+            gsap.utils.toArray<HTMLElement>('.process-step').forEach((step) => {
+                gsap.from(step, {
+                    opacity: 0,
+                    x: -50,
+                    duration: 1,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: step, // Agora 'step' é reconhecido como HTMLElement
+                        start: 'top 85%',
+                    },
+                });
+            });
+
             gsap.from(".testimonial-card", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: 'power3.out', scrollTrigger: { trigger: testimonialsSectionRef.current, start: 'top 80%' } });
         });
         return () => ctx.revert();
@@ -37,7 +51,7 @@ export default function HomeContent() {
 
     return (
         <>
-           
+
             {/* Seção 1: Introdução (SEM CARD) */}
             <section ref={introSectionRef} className="relative flex items-center justify-center min-h-screen py-24 md:py-32">
                 <div className="u-container text-center max-w-4xl mx-auto bg-background py-10">
@@ -192,8 +206,8 @@ export default function HomeContent() {
                         </Link>
                     </Button>
                 </div>
-                </section>
-        
+            </section>
+
         </>
     );
 }

@@ -46,7 +46,8 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
   const { i18n } = useTranslation();
 
   const [isMounted, setIsMounted] = useState(false);
-  const [isHeaderActive, setIsHeaderActive] = useState(false);
+  // CORREÇÃO: O estado 'isHeaderActive' foi removido pois não era utilizado.
+  // const [setIsHeaderActive] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -67,7 +68,8 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
           start: "top top",
           end: "+=500px",
           scrub: true,
-          onToggle: self => setIsHeaderActive(self.isActive),
+          // CORREÇÃO: A propriedade onToggle foi removida pois a função que ela
+          // chamava ('setIsHeaderActive') não era necessária.
         },
       });
 
@@ -87,6 +89,7 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
       ctx.revert();
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
+    // A dependência agora está correta, pois 'setIsHeaderActive' foi removido.
   }, [isMounted]);
 
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
@@ -109,7 +112,7 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
       className={cn(
         "fixed top-0 left-0 w-full z-50 flex flex-col items-center justify-center bg-black backdrop-blur-md border-b-2 animate-border-color",
         "transition-[height] duration-300 ease-in-out",
-       
+
         className
       )}
       style={{ height: "100vh" }}

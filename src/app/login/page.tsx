@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, FormEvent, useEffect } from "react";
@@ -14,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import TextTranslator from "@/components/layout/TextTranslator";
 
+// CORREÇÃO: Adicionadas mensagens de erro específicas e traduzidas.
 const pageTexts = {
     title: { ptBR: "Área do Cliente", en: "Client Area", es: "Área de Cliente" },
     description: { ptBR: "Acesse o painel de gerenciamento do seu site.", en: "Access your website's management panel.", es: "Accede al panel de gestión de tu sitio web." },
@@ -26,7 +28,14 @@ const pageTexts = {
         logIn: { ptBR: "Entrar", en: "Log In", es: "Entrar" },
         loggingIn: { ptBR: "Entrando...", en: "Logging in...", es: "Entrando..." },
     },
-    toasts: { errors: { /* ... */ } }
+    toasts: {
+        errors: {
+            invalidCredential: { ptBR: "Credenciais inválidas", en: "Invalid credentials", es: "Credenciales inválidas" },
+            tooManyRequests: { ptBR: "Muitas tentativas", en: "Too many requests", es: "Demasiadas solicitudes" },
+            userDisabled: { ptBR: "Usuário desabilitado", en: "User disabled", es: "Usuario deshabilitado" },
+            unknown: { ptBR: "Ocorreu um erro", en: "An error occurred", es: "Ocurrió un error" }
+        }
+    }
 };
 
 const sectionAnimation = { initial: { opacity: 0, y: 50 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.8, ease: "easeOut" } };
@@ -48,21 +57,30 @@ export default function LoginPage() {
         return textObj[lang] || textObj.ptBR || "";
     };
 
+    // CORREÇÃO: A variável 'errorKey' agora é usada para exibir uma mensagem de erro específica.
     const handleAuthError = (err: unknown) => {
         const error = err as FirebaseError;
-        let errorKey = 'unknown';
+        let errorKey: keyof typeof pageTexts.toasts.errors = 'unknown';
+
         switch (error.code) {
             case 'auth/user-not-found':
             case 'auth/wrong-password':
             case 'auth/invalid-credential':
-                errorKey = 'invalidCredential'; break;
+                errorKey = 'invalidCredential';
+                break;
             case 'auth/too-many-requests':
-                errorKey = 'tooManyRequests'; break;
+                errorKey = 'tooManyRequests';
+                break;
             case 'auth/user-disabled':
-                errorKey = 'userDisabled'; break;
-            default: console.error("Firebase Auth Error:", error); break;
+                errorKey = 'userDisabled';
+                break;
+            default:
+                console.error("Firebase Auth Error:", error);
+                break;
         }
-        toast.error("Falha no login");
+
+        const errorMessage = getTranslatedText(pageTexts.toasts.errors[errorKey]);
+        toast.error(errorMessage);
     };
 
     const handleLogin = async (e: FormEvent) => {
@@ -96,7 +114,7 @@ export default function LoginPage() {
     return (
         <>
             <Toaster position="bottom-center" richColors />
-           
+
             <section className="min-h-screen flex items-center justify-center py-12">
                 <div className="max-w-7xl mx-auto p-4 md:p-8 u-container">
                     <motion.header

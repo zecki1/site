@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import "../app/globals.css";
 import { Providers } from '@/components/layout/Providers';
 import { VlibrasWidget } from '@/components/layout/VlibrasWidget';
+import { AppLayout } from '@/components/layout/AppLayout'; // Importe o novo componente
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://zecki1.com.br'),
@@ -59,7 +60,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
       </head>
       <body className="min-h-screen bg-background" suppressHydrationWarning>
-        <Providers>{children}</Providers>
+        <Providers>
+          <AppLayout>{children}</AppLayout>
+        </Providers>
         <VlibrasWidget />
       </body>
     </html>

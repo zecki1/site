@@ -2,32 +2,48 @@
 
 import React, { useRef, useEffect } from 'react';
 
+// CORREÇÃO: A classe 'Point' por si só já define a estrutura (a "forma")
+// e a implementação. A interface separada foi removida para evitar
+// o erro de "declaration merging".
+class Point {
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+
+    constructor(x: number, y: number) {
+        this.x = x;
+        this.y = y;
+        this.vx = (Math.random() - 0.5) * 1.5;
+        this.vy = (Math.random() - 0.5) * 1.5;
+    }
+}
+
 const ElectricLines = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
         const canvas = canvasRef.current;
-        if (!canvas) return;
+        const parent = canvas?.parentElement;
+        if (!canvas || !parent) return;
+
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-        let width = canvas.width = canvas.parentElement!.clientWidth;
-        let height = canvas.height = 150;
-        let points: { x: number; y: number; vx: number; vy: number }[] = [];
+        let width = canvas.width = parent.clientWidth;
+        const height = canvas.height = 150;
+        // O tipo 'Point' agora se refere diretamente à classe 'Point'.
+        let points: Point[] = [];
         let running = true;
 
-        const Point = function (this: any, x: number, y: number) {
-            this.x = x;
-            this.y = y;
-            this.vx = (Math.random() - 0.5) * 1.5;
-            this.vy = (Math.random() - 0.5) * 1.5;
-        };
-
         const init = () => {
-            width = canvas.width = canvas.parentElement!.clientWidth;
+            const currentParent = canvas.parentElement;
+            if (!currentParent) return;
+            width = canvas.width = currentParent.clientWidth;
+
             points = [];
             for (let i = 0; i < 3; i++) {
-                points.push(new (Point as any)(
+                points.push(new Point(
                     Math.random() * width,
                     Math.random() * height
                 ));

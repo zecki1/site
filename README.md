@@ -1,1 +1,0 @@
-Criação de quiz de perguntas voltadas as areas, curiosidades, conhecimento, teste seu conhecimento, como é feito o desenvolvimento de games, melhorias e boas praticas o por que da acessibilidade

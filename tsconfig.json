@@ -14,35 +14,18 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-<<<<<<< HEAD
     "baseUrl": "src",
     "paths": {
       "@/*": ["*"]
     },
     "types": ["node", "three"],
     "typeRoots": ["./node_modules/@types", "./src/types"],
-=======
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
->>>>>>> refazendo-header
     "plugins": [
       {
         "name": "next"
       }
     ]
   },
-<<<<<<< HEAD
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-=======
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "next-env.d.ts",
-     ".next/types/**/*.ts"
-  ],
->>>>>>> refazendo-header
   "exclude": ["node_modules"]
 }

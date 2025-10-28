@@ -58,7 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
         <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
-        <link rel="preload" fetchPriority="high" as="image" href="/public/img/capa.jpg" type="image/jpg" />
+        <link rel="preload" fetchPriority="high" as="image" href="/img/capa.jpg" type="image/jpg" />
       </head>
       <body className="min-h-screen bg-background" suppressHydrationWarning>
         <Providers>

@@ -80,7 +80,7 @@ export const YouTubeBackground: React.FC<YouTubeBackgroundProps> = ({
                 <div
                     className="absolute inset-0 bg-cover bg-center cursor-pointer group"
                     style={{ backgroundImage: `url(${thumbnailUrl})` }}
-                    aria-label="Play video background"
+                    // aria-label="Vídeo do youtube"
                 >
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center transition-all duration-300 group-hover:bg-black/40">
                         <svg

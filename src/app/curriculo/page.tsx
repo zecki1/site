@@ -74,8 +74,8 @@ export default function ResumePage() {
 
                     <div className="lg:col-span-2 flex flex-col gap-12">
                         <motion.section {...sectionAnimation}>
-                            <h3 className="flex items-center gap-3 text-3xl font-bold border-b pb-2 mb-4"><Trophy size={24} /> <TextTranslator ignoreCheck={true}>{{ ptBR: "Experiências Profissionais", en: "Professional Experience", es: "Experiencia Profesional" }}</TextTranslator></h3>
-                            <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" viewport={{ once: true }} className="space-y-8">
+                            <h3 className="flex items-center gap-3 text-3xl font-bold border-b pb-2 mb-4 mx-8"><Trophy size={24} /> <TextTranslator ignoreCheck={true}>{{ ptBR: "Experiências Profissionais", en: "Professional Experience", es: "Experiencia Profesional" }}</TextTranslator></h3>
+                            <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" viewport={{ once: true }} className="space-y-8 mx-8">
                                 <motion.div variants={staggerItem}>
                                     <div className="flex flex-col sm:flex-row justify-between sm:items-baseline"><h4 className="text-xl font-semibold">Tech Lead - Desenvolvedor e Designer</h4><p className="text-sm text-muted-foreground">2020 - Atual</p></div>
                                     <p className="text-primary mb-2">Senai</p>
@@ -106,8 +106,8 @@ export default function ResumePage() {
                         </motion.section>
 
                         <motion.section {...sectionAnimation}>
-                            <h3 className="flex items-center gap-3 text-3xl font-bold border-b pb-2 mb-4"><Shield size={24} /> <TextTranslator ignoreCheck={true}>{{ ptBR: "Habilidades", en: "Skills", es: "Habilidades" }}</TextTranslator></h3>
-                            <div className="space-y-4">
+                            <h3 className="flex items-center gap-3 text-3xl font-bold border-b pb-2 mb-4  mx-8"><Shield size={24} /> <TextTranslator ignoreCheck={true}>{{ ptBR: "Habilidades", en: "Skills", es: "Habilidades" }}</TextTranslator></h3>
+                            <div className="space-y-4  mx-8">
                                 <div>
                                     <h4 className="font-semibold text-lg mb-2">Desenvolvimento Web:</h4>
                                     <p className="text-muted-foreground text-sm">React, Next.js, Vue, Angular, JavaScript, TypeScript, HTML5, CSS3, Tailwind CSS, PHP, Laravel.</p>
@@ -132,8 +132,8 @@ export default function ResumePage() {
                         </motion.section>
 
                         <motion.section {...sectionAnimation}>
-                            <h3 className="flex items-center gap-3 text-3xl font-bold border-b pb-2 mb-4"><Laptop size={24} /> <TextTranslator ignoreCheck={true}>{{ ptBR: "Projetos Destacados", en: "Featured Projects", es: "Proyectos Destacados" }}</TextTranslator></h3>
-                            <div className="space-y-4">
+                            <h3 className="flex items-center gap-3 text-3xl font-bold border-b pb-2 mb-4  mx-8"><Laptop size={24} /> <TextTranslator ignoreCheck={true}>{{ ptBR: "Projetos Destacados", en: "Featured Projects", es: "Proyectos Destacados" }}</TextTranslator></h3>
+                            <div className="space-y-4  mx-8">
                                 <div>
                                     <h4 className="font-semibold text-lg">Cleriston Ribeiro</h4>
                                     <p className="text-muted-foreground text-sm">Site de portfólio para ilustrador, com design mobile-first, SEO otimizado e acessibilidade WCAG 2.1, garantindo navegação fluida e visibilidade no Google.</p>

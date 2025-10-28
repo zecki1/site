@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const skills = [
     "React", "Next.js", "TypeScript", "Python", "FastAPI", "LangChain",
     "OpenAI API", "OpenCV", "Pinecone", "Prisma", "PostgreSQL", "Docker",
@@ -24,6 +25,45 @@ export const SkillsMarquee = () => {
                 {/* Renderiza a lista duas vezes para o efeito de loop infinito */}
                 {skills.map((skill, index) => <SkillTag key={`a-${index}`} skill={skill} />)}
                 {skills.map((skill, index) => <SkillTag key={`b-${index}`} skill={skill} />)}
+=======
+// src/components/layout/SkillsMarquee.tsx
+
+"use client";
+
+import React from 'react';
+
+// NOVO: Definindo as propriedades que o componente espera
+interface SkillsMarqueeProps {
+    skills: string[];
+    skillClassName?: string;
+    textClassName?: string;
+}
+
+// Componente para um único item do marquee
+const SkillTag: React.FC<{ skill: string; skillClassName?: string; textClassName?: string; }> = ({ skill, skillClassName, textClassName }) => (
+    <div className={`flex items-center gap-3 px-4 py-2 border border-[#353739] rounded-full bg-black/20 whitespace-nowrap ${skillClassName}`}>
+        <span className={`font-sans text-sm text-[#f2f2f2] ${textClassName}`}>{skill}</span>
+    </div>
+);
+
+// ALTERADO: O componente agora recebe 'skills' como uma propriedade
+export const SkillsMarquee: React.FC<SkillsMarqueeProps> = ({ skills, skillClassName, textClassName }) => {
+    // Garante que a lista de skills não esteja vazia para evitar erros
+    if (!skills || skills.length === 0) {
+        return null;
+    }
+
+    return (
+        <div className="relative w-full overflow-hidden">
+            {/* Gradiente para suavizar as bordas */}
+            <div className="absolute top-0 left-0 bottom-0 w-8 bg-gradient-to-r from-background to-transparent pointer-events-none z-10" />
+            <div className="absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-background to-transparent pointer-events-none z-10" />
+
+            <div className="flex gap-4 animate-scroll w-max">
+                {/* Renderiza a lista duas vezes para o efeito de loop infinito */}
+                {skills.map((skill, index) => <SkillTag key={`a-${index}`} skill={skill} skillClassName={skillClassName} textClassName={textClassName} />)}
+                {skills.map((skill, index) => <SkillTag key={`b-${index}`} skill={skill} skillClassName={skillClassName} textClassName={textClassName} />)}
+>>>>>>> refazendo-header
             </div>
         </div>
     );

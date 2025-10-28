@@ -48,4 +48,11 @@ firebaseKey.key
 firebaseIV.iv
 *_encrypted.txt
 *_key.txt
+<<<<<<< HEAD
 *_iv.txt
+=======
+*_iv.txt
+
+1234
+1234.pub
+>>>>>>> refazendo-header

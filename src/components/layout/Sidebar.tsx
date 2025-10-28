@@ -13,11 +13,14 @@ import {
 import { AlignJustify } from "lucide-react";
 import TextTranslator from "@/components/layout/TextTranslator";
 
-// Páginas principais atualizadas para a nova estrutura
+// --- MUDANÇA AQUI ---
+// A lista de páginas agora inclui a página "Desafio".
 const pages = [
     { slug: "home", title: { ptBR: "Início", en: "Home", es: "Inicio" } },
+    { slug: "sobre", title: { ptBR: "Sobre", en: "About", es: "Sobre mí" } },
     { slug: "servicos", title: { ptBR: "Serviços", en: "Services", es: "Servicios" } },
     { slug: "curriculo", title: { ptBR: "Currículo", en: "Resume", es: "Currículum" } },
+    { slug: "desafio", title: { ptBR: "Desafio", en: "Challenge", es: "Desafío" } }, // ADICIONADO
     { slug: "contato", title: { ptBR: "Contato", en: "Contact", es: "Contacto" } },
 ] as const;
 
@@ -47,10 +50,11 @@ export const Sidebar = () => {
                     {pages.map((page) => (
                         <a
                             key={page.slug}
-                            href={`/${page.slug}`}
+                            // Corrigido para usar a raiz correta do site
+                            href={page.slug === "home" ? "/" : `/${page.slug}`}
                             onClick={(e) => {
                                 e.preventDefault();
-                                handleNavigation(page.slug);
+                                handleNavigation(page.slug === "home" ? "" : page.slug);
                             }}
                             className="block py-2 text-lg text-muted-foreground hover:text-primary transition-colors"
                         >

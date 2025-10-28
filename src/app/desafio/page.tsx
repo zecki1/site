@@ -17,17 +17,16 @@ import { Radar, Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend, ArcElement);
 
-// --- Tipagem para a Estrutura do Quiz (Agora 100% correta) ---
+// --- Tipagem para a Estrutura do Quiz ---
 type TranslatableText = { ptBR: string; en: string; es: string; };
 
 interface BaseQuestion {
     question: TranslatableText;
 }
 
-// CORREÇÃO: A interface agora corresponde exatamente aos dados em quizData.ts
 interface UnicChoiceQuestion extends BaseQuestion {
     type: 'UnicChoice';
-    options: { text: TranslatableText }[]; // O componente espera 'text', e seus dados têm 'text'.
+    options: { text: TranslatableText }[];
     correctAnswer: string;
 }
 
@@ -41,7 +40,6 @@ interface DraginDropQuestion extends BaseQuestion {
     words: { id: number; text: TranslatableText }[];
 }
 
-// CORREÇÃO: A interface agora corresponde exatamente aos dados em quizData.ts
 interface TrueOrFalseQuestion extends BaseQuestion {
     type: 'TrueOrFalse';
     options: {
@@ -65,9 +63,12 @@ const useWindowSize = () => {
     return size;
 };
 
-const sectionAnimation = { initial: { opacity: 0, y: 50 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.8, ease: "easeOut" } };
+// ✨ CORREÇÃO APLICADA AQUI ✨
+// Adicionamos 'as const' ao valor da propriedade 'ease'.
+// Isso informa ao TypeScript para tratar "easeOut" como um tipo literal,
+// resolvendo o erro de incompatibilidade com a tipagem da Framer Motion.
+const sectionAnimation = { initial: { opacity: 0, y: 50 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.8, ease: "easeOut" as const } };
 
-// CORREÇÃO: A tipagem do estado inicial agora é explícita e correta.
 const initialAnswersState: { [key in keyof typeof quizData]: (boolean | null)[] } = {
     design: Array(quizData.design.length).fill(null),
     code: Array(quizData.code.length).fill(null),
@@ -77,7 +78,6 @@ const initialAnswersState: { [key in keyof typeof quizData]: (boolean | null)[] 
 const shuffleArray = <T,>(array: T[]): T[] => [...array].sort(() => Math.random() - 0.5);
 
 export default function SkillsTestPage() {
-    // Com as tipagens corretas, podemos remover os @ts-ignore
     const [shuffledQuiz, setShuffledQuiz] = useState(quizData);
     const [answers, setAnswers] = useState(initialAnswersState);
     const [showRulesModal, setShowRulesModal] = useState(false);
@@ -171,7 +171,7 @@ export default function SkillsTestPage() {
             case 'UnicChoice': {
                 const mappedOptions = question.options.map((opt, idx) => ({
                     text: opt.text,
-                    value: idx.toString() // O 'value' é o índice da opção.
+                    value: idx.toString()
                 }));
                 return <UnicChoice key={key} {...commonProps} attempts={2} options={mappedOptions} correctAnswer={question.correctAnswer} prefixType="alphabetical" />;
             }
@@ -182,15 +182,9 @@ export default function SkillsTestPage() {
                     positive: commonProps.feedback.positive,
                     negative: commonProps.feedback.negative,
                 };
-                const mappedOptions = [
-                    { text: question.options.true.text, value: 'true' },
-                    { text: question.options.false.text, value: 'false' }
-                ];
-                const correctAnswerString = String(question.correctAnswer);
-                return <TrueOrFalse key={key} {...commonProps} feedback={tfFeedback} options={mappedOptions} correctAnswer={correctAnswerString} />;
+                return <TrueOrFalse key={key} {...commonProps} feedback={tfFeedback} options={question.options} correctAnswer={question.correctAnswer} />;
             }
             default:
-                // Esta linha ajuda o TypeScript a garantir que todos os casos foram tratados.
                 const exhaustiveCheck: never = question;
                 return <p key={key}>Tipo de questão não suportado: {exhaustiveCheck}</p>;
         }

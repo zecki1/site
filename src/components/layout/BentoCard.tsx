@@ -1,18 +1,20 @@
+
+import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
 interface BentoCardProps {
-    children: React.ReactNode;
+    children: ReactNode;
     className?: string;
-    // Adicione outras props que você possa precisar, como variantes de animação
 }
 
 export const BentoCard: React.FC<BentoCardProps> = ({ children, className }) => {
+
     const cardAnimation = {
         initial: { opacity: 0, y: 30 },
         whileInView: { opacity: 1, y: 0 },
         viewport: { once: true, amount: 0.2 },
-        transition: { duration: 0.6, ease: "easeOut" },
+        transition: { duration: 0.6, ease: "easeOut" as const },
     };
 
     return (

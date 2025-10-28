@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -6,7 +7,11 @@ import { History, Target } from 'lucide-react';
 import TextTranslator from '@/components/layout/TextTranslator';
 import { YouTubeBackground } from '@/components/layout/YouTubeBackground';
 
-const sectionAnimation = { initial: { opacity: 0, y: 50 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.8, ease: "easeOut" } };
+// ✨ CORREÇÃO APLICADA AQUI ✨
+// Adicionamos 'as const' ao valor da propriedade 'ease'. Isso garante
+// que o TypeScript o interprete como o tipo literal "easeOut", que é
+// compatível com a definição de tipo esperada pela Framer Motion.
+const sectionAnimation = { initial: { opacity: 0, y: 50 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.8, ease: "easeOut" as const } };
 
 export default function AboutPage() {
     return (

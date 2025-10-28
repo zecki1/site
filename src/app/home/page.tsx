@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useRef } from 'react';
@@ -30,7 +31,6 @@ export default function HomeContent() {
             gsap.from(".pillar-card", { opacity: 0, y: 40, duration: 0.8, stagger: 0.2, ease: 'power3.out', scrollTrigger: { trigger: pillarsSectionRef.current, start: 'top 85%' } });
             gsap.from(".service-card", { opacity: 0, scale: 0.95, y: 30, duration: 0.7, stagger: 0.1, ease: 'power3.out', scrollTrigger: { trigger: servicesSectionRef.current, start: 'top 80%' } });
 
-            // CORREÇÃO: Tipamos o array de elementos como HTMLElement para evitar o uso de 'any'.
             gsap.utils.toArray<HTMLElement>('.process-step').forEach((step) => {
                 gsap.from(step, {
                     opacity: 0,
@@ -38,7 +38,7 @@ export default function HomeContent() {
                     duration: 1,
                     ease: 'power3.out',
                     scrollTrigger: {
-                        trigger: step, // Agora 'step' é reconhecido como HTMLElement
+                        trigger: step,
                         start: 'top 85%',
                     },
                 });
@@ -175,9 +175,11 @@ export default function HomeContent() {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
                         {[
-                            { quote: { ptBR: "O Zecki transformou minha ideia em um site mobile-first que elevou minha presença digital. Meu tráfego orgânico cresceu e os usuários adoram a navegação.", en: "Zecki turned my idea into a mobile-first site that elevated my digital presence. My organic traffic grew, and users love the navigation.", es: "Zecki convirtió mi idea en un sitio mobile-first que elevó mi presencia digital. Mi tráfico orgánico creció y a los usuarios les encanta la navegación." }, author: "Clerinston Ribeiro", company: { ptBR: "Fundador, Clerinston Ilustrações", en: "Founder, Clerinston Ilustrações", es: "Fundador, Clerinston Ilustrações" } },
-                            { quote: { ptBR: "As otimizações de SEO colocaram meu site nas primeiras páginas do Google, e o gerenciador de tarefas personalizado mudou minha forma de organizar projetos.", en: "The SEO optimizations put my site on the first pages of Google, and the custom task manager changed how I organize projects.", es: "Las optimizaciones SEO pusieron mi sitio en las primeras páginas de Google, y el gestor de tareas personalizado cambió mi forma de organizar proyectos." }, author: "Monnappa", company: { ptBR: "Fundador, CodeHive Workspaces", en: "Founder, CodeHive Workspaces", es: "Fundador, CodeHive Workspaces" } },
-                            { quote: { ptBR: "A abordagem focada em acessibilidade e usabilidade fez toda a diferença. Meu site agora é inclusivo, rápido e fácil de usar.", en: "The focus on accessibility and usability made all the difference. My site is now inclusive, fast, and easy to use.", es: "El enfoque en accesibilidad y usabilidad marcó toda la diferencia. Mi sitio ahora es inclusivo, rápido y fácil de usar." }, author: "Fozzy", company: { ptBR: "Estética Automotiva", en: "Automotive Aesthetics", es: "Estética Automotriz" } }
+                            // --- INÍCIO DA CORREÇÃO ---
+                            { quote: { ptBR: "O Zecki transformou minha ideia em um site mobile-first que elevou minha presença digital. Meu tráfego orgânico cresceu e os usuários adoram a navegação.", en: "Zecki turned my idea into a mobile-first site that elevated my digital presence. My organic traffic grew, and users love the navigation.", es: "Zecki convirtió mi idea en un sitio mobile-first que elevó mi presencia digital. Mi tráfico orgánico creció y a los usuarios les encanta la navegación." }, author: { ptBR: "Clerinston Ribeiro", en: "Clerinston Ribeiro", es: "Clerinston Ribeiro" }, company: { ptBR: "Fundador, Clerinston Ilustrações", en: "Founder, Clerinston Ilustrações", es: "Fundador, Clerinston Ilustrações" } },
+                            { quote: { ptBR: "As otimizações de SEO colocaram meu site nas primeiras páginas do Google, e o gerenciador de tarefas personalizado mudou minha forma de organizar projetos.", en: "The SEO optimizations put my site on the first pages of Google, and the custom task manager changed how I organize projects.", es: "Las optimizaciones SEO pusieron mi sitio en las primeras páginas de Google, y el gestor de tareas personalizado cambió mi forma de organizar proyectos." }, author: { ptBR: "Monnappa", en: "Monnappa", es: "Monnappa" }, company: { ptBR: "Fundador, CodeHive Workspaces", en: "Founder, CodeHive Workspaces", es: "Fundador, CodeHive Workspaces" } },
+                            { quote: { ptBR: "A abordagem focada em acessibilidade e usabilidade fez toda a diferença. Meu site agora é inclusivo, rápido e fácil de usar.", en: "The focus on accessibility and usability made all the difference. My site is now inclusive, fast, and easy to use.", es: "El enfoque en accesibilidad y usabilidad marcó toda la diferencia. Mi sitio ahora es inclusivo, rápido y fácil de usar." }, author: { ptBR: "Fozzy", en: "Fozzy", es: "Fozzy" }, company: { ptBR: "Estética Automotiva", en: "Automotive Aesthetics", es: "Estética Automotriz" } }
+                            // --- FIM DA CORREÇÃO ---
                         ].map((testimonial, index) => (
                             <figure key={index} className="testimonial-card flex flex-col justify-between p-8 bg-muted/30 rounded-lg  backdrop-blur">
                                 <blockquote className="text-lg italic border-l-4 border-primary pl-6 mb-6 "><TextTranslator>{testimonial.quote}</TextTranslator></blockquote>

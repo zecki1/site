@@ -16,7 +16,6 @@ import { CiAt } from "react-icons/ci";
 import { CiChat2 } from "react-icons/ci";
 
 const icons = [FaCode, LuCodeXml, LuCode, AiOutlineCode, BiCodeCurly, RxGithubLogo, RxCross2, RxImage, CiCloudOn, CiAt, CiChat2];
-// ✨ CORREÇÃO: Aumentado o número de partículas para melhor preenchimento.
 const particleCount = 80;
 const repelRadius = 100;
 
@@ -100,17 +99,12 @@ const FloatingParticles = () => {
     return (
         <div
             ref={containerRef}
-            // ✨ CORREÇÃO CRÍTICA:
-            // 'fixed' -> Fixa o container na janela de visualização, independente da rolagem.
-            // '-z-10' -> Coloca o container atrás de todo o outro conteúdo da página.
-            // 'inset-0' -> Garante que ele ocupe 100% da altura e largura da janela.
             className="fixed inset-0 w-full h-full -z-10 hidden md:block pointer-events-none"
             aria-hidden="true"
         >
             {Array.from({ length: particleCount }).map((_, index) => {
                 const IconComponent = icons[index % icons.length];
                 const style = {
-                    // A lógica de espalhar as partículas verticalmente ainda funciona bem com 'position: fixed'
                     top: `${gsap.utils.random(5, 185)}%`,
                     left: `${gsap.utils.random(5, 95)}%`,
                     fontSize: `${gsap.utils.random(20, 50)}px`,
@@ -119,7 +113,10 @@ const FloatingParticles = () => {
                 return (
                     <div
                         key={index}
-                        ref={el => particleRefs.current[index] = el}
+                        // ✨ CORREÇÃO APLICADA AQUI ✨
+                        // Adicionamos chaves {} para criar um corpo de função que não retorna
+                        // um valor, resolvendo o erro de tipagem do TypeScript.
+                        ref={(el) => { particleRefs.current[index] = el; }}
                         className="particle-icon animate-icon-color absolute"
                         style={style}
                     >

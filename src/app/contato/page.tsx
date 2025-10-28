@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
@@ -12,7 +13,17 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import TextTranslator from "@/components/layout/TextTranslator";
 
-const sectionAnimation = { initial: { opacity: 0, y: 50 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.8, ease: "easeOut" } };
+// ✨ CORREÇÃO APLICADA AQUI ✨
+// Adicionamos 'as const' ao objeto 'transition'. Isso informa ao TypeScript
+// para tratar 'easeOut' como o tipo literal "easeOut", e não como uma 'string' genérica,
+// resolvendo a incompatibilidade de tipo com a 'framer-motion'.
+const sectionAnimation = {
+    initial: { opacity: 0, y: 50 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true },
+    transition: { duration: 0.8, ease: "easeOut" as const }
+};
+
 
 export default function ContactPage() {
     const { i18n } = useTranslation();
@@ -68,7 +79,6 @@ export default function ContactPage() {
 
     return (
         <>
-            {/* Seção 1: Cabeçalho */}
             <section className="py-24 md:py-32">
                 <motion.header {...sectionAnimation} className="text-center max-w-3xl mx-auto bg-background/70 backdrop-blur py-2 u-container">
                     <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4">
@@ -80,7 +90,6 @@ export default function ContactPage() {
                 </motion.header>
             </section>
 
-            {/* Seção 2: Conteúdo Principal (Formulário e Contatos) */}
             <section className="pb-24 md:pb-32">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 max-w-6xl mx-auto u-container">
                     <motion.div {...sectionAnimation} transition={{ delay: 0.2 }} className="lg:col-span-1 flex flex-col space-y-8">

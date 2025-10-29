@@ -1,11 +1,10 @@
 "use client";
 
-// ✅ CORREÇÃO: A linha de importação foi corrigida para incluir useRef, useState e useEffect.
 import React, { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import Image, { StaticImageData } from "next/image";
 import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react"; // Importe o hook recomendado para React
+import { useGSAP } from "@gsap/react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/layout/ThemeProvider";
 import { Button } from "@/components/ui/button";
@@ -56,7 +55,6 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({
   const backgroundRef = useRef<HTMLDivElement>(null);
   const { theme, setTheme } = useTheme();
   const { i18n } = useTranslation();
-
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -85,20 +83,11 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({
     tl.to(titleRef.current, { top: '50%', yPercent: -50, ease: "power1.inOut" }, 0);
     tl.to(scrollIndicatorRef.current, { autoAlpha: 0, ease: "power1.inOut" }, 0);
     tl.to(navRef.current, { autoAlpha: 1, pointerEvents: "auto", ease: "power1.inOut" }, 0.3);
-
-    gsap.to(titleRef.current, {
-      scale: 0.2,
-      ease: "power1.inOut",
-      scrollTrigger: {
-        trigger: document.body,
-        start: "top top",
-        end: "+=500px",
-        scrub: 0.3,
-      }
-    });
+    tl.to(titleRef.current, { scale: 0.2, ease: "power1.inOut" }, 0);
 
   }, { dependencies: [isMounted] });
 
+  // O resto do componente continua aqui...
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
   const languages = ["ptBR", "en", "es"];
   const handleLanguageCycle = () => {

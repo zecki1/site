@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import "../app/globals.css";
 import { Providers } from '@/components/layout/Providers';
 import { VlibrasWidget } from '@/components/layout/VlibrasWidget';
-import { AppLayout } from '@/components/layout/AppLayout';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://zecki1.com.br'),
@@ -58,14 +57,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
         <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
-        {/* Pré-carregamento otimizado para a imagem de capa do desktop */}
         <link rel="preload" fetchPriority="high" as="image" href="/img/capa.jpg" type="image/jpeg" media="(min-width: 768px)" />
-        {/* Pré-carregamento otimizado para a imagem de capa do mobile */}
         <link rel="preload" fetchPriority="high" as="image" href="/img/capa-m.jpg" type="image/jpeg" media="(max-width: 767px)" />
       </head>
       <body className="min-h-screen bg-background" suppressHydrationWarning>
+        {/* ✅ A estrutura agora é simples e limpa. Providers cuida de tudo. */}
         <Providers>
-          <AppLayout>{children}</AppLayout>
+          {children}
         </Providers>
         <VlibrasWidget />
       </body>

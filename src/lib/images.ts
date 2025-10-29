@@ -1,9 +1,8 @@
-// /lib/images.ts ou /config/images.ts
-
-import capaImageDesktop from "/public/img/capa.jpg";
-import capaImageMobile from "/public/img/capa-m.jpg";
+// Em /lib/images.ts
+import capaDesktopSrc from '/public/img/capa.jpg';
+import capaMobileSrc from '/public/img/capa-m.jpg';
 
 export const images = {
-    capaDesktop: capaImageDesktop,
-    capaMobile: capaImageMobile,
-} as const;
+    capaDesktop: capaDesktopSrc.src,
+    capaMobile: capaMobileSrc.src,
+};

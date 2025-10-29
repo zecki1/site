@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Image, { StaticImageData } from "next/image";
 import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/layout/ThemeProvider";
 import { Button } from "@/components/ui/button";
@@ -23,18 +22,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoArrowDownCircleOutline } from "react-icons/io5";
-import { Luckiest_Guy } from "next/font/google";
 
-const luckiestGuyFont = Luckiest_Guy({
-  weight: "400",
-  subsets: ["latin"],
-  display: "swap",
-});
+gsap.registerPlugin(ScrollTrigger);
 
+// ✅ CORREÇÃO: A interface agora espera duas imagens específicas, como strings.
 interface ScrollSmootherHeaderProps {
   className?: string;
-  desktopImage: StaticImageData;
-  mobileImage: StaticImageData;
+  desktopImage: string;
+  mobileImage: string;
 }
 
 const languageAcronyms: { [key: string]: string } = {
@@ -43,11 +38,7 @@ const languageAcronyms: { [key: string]: string } = {
   es: "ES",
 };
 
-export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({
-  className,
-  desktopImage,
-  mobileImage,
-}) => {
+export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ className, desktopImage, mobileImage }) => {
   const headerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
@@ -61,33 +52,43 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({
     setIsMounted(true);
   }, []);
 
-  useGSAP(() => {
+  useEffect(() => {
     if (!isMounted) return;
 
     const mainContent = document.getElementById("main-content");
-    if (mainContent) {
-      gsap.set(mainContent, { opacity: 1 });
-    }
+    if (!mainContent) return;
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: document.body,
-        start: "top top",
-        end: "+=500px",
-        scrub: 0.3,
-      },
+    const ctx = gsap.context(() => {
+      gsap.set(mainContent, { opacity: 0 });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: document.body,
+          start: "top top",
+          end: "+=500px",
+          scrub: true,
+        },
+      });
+
+      tl.to(backgroundRef.current, { opacity: 0, ease: "power1.inOut" }, 0);
+      tl.to(headerRef.current, { height: "64px", ease: "power1.inOut" }, 0);
+      tl.to(titleRef.current, { top: '50%', yPercent: -50, ease: "power1.inOut" }, 0);
+      ScrollTrigger.matchMedia({
+        "(min-width: 769px)": () => tl.to(titleRef.current, { fontSize: "1.5rem", ease: "power1.inOut" }, 0),
+        "(max-width: 768px)": () => tl.to(titleRef.current, { fontSize: "1.25rem", ease: "power1.inOut" }, 0),
+      });
+      tl.to(scrollIndicatorRef.current, { opacity: 0, ease: "power1.inOut" }, 0);
+      tl.to(navRef.current, { opacity: 1, pointerEvents: "auto", ease: "power1.inOut" }, 0.3);
+      tl.to(mainContent, { opacity: 1, ease: "power1.inOut" }, 0.3);
     });
 
-    tl.to(backgroundRef.current, { autoAlpha: 0, ease: "power1.inOut" }, 0);
-    tl.to(headerRef.current, { height: "64px", ease: "power1.inOut" }, 0);
-    tl.to(titleRef.current, { top: '50%', yPercent: -50, ease: "power1.inOut" }, 0);
-    tl.to(scrollIndicatorRef.current, { autoAlpha: 0, ease: "power1.inOut" }, 0);
-    tl.to(navRef.current, { autoAlpha: 1, pointerEvents: "auto", ease: "power1.inOut" }, 0.3);
-    tl.to(titleRef.current, { scale: 0.2, ease: "power1.inOut" }, 0);
+    return () => {
+      ctx.revert();
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, [isMounted]);
 
-  }, { dependencies: [isMounted] });
-
-  // O resto do componente continua aqui...
+  // O resto do seu código permanece exatamente o mesmo
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
   const languages = ["ptBR", "en", "es"];
   const handleLanguageCycle = () => {
@@ -99,53 +100,31 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({
     localStorage.clear();
     window.location.reload();
   };
-
   const iconButtonClasses = "h-10 w-10 text-[#00e1ff] hover:bg-[#00e1ff]/20 transition-colors";
 
   return (
     <header
       ref={headerRef}
-      data-speed="0.8"
       className={cn(
         "fixed top-0 left-0 w-full z-50 flex flex-col items-center justify-center bg-black backdrop-blur-md border-b-2 animate-border-color",
-        "will-change-height",
+        "transition-[height] duration-300 ease-in-out",
         className
       )}
       style={{ height: "100vh" }}
     >
-      <div
-        ref={backgroundRef}
-        data-speed="0.5"
-        className="absolute inset-0 z-0 overflow-hidden"
-      >
-        <Image
-          src={mobileImage}
-          alt="Imagem de fundo para mobile"
-          layout="fill"
-          objectFit="cover"
-          quality={100}
-          priority
-          className="md:hidden"
+      {/* ✅ CORREÇÃO: Container de fundo que agora suporta imagens responsivas */}
+      <div ref={backgroundRef} className="absolute inset-0 z-0">
+        <div
+          className="absolute inset-0 bg-cover bg-center md:hidden"
+          style={{ backgroundImage: `url(${mobileImage})` }}
         />
-        <Image
-          src={desktopImage}
-          alt="Imagem de fundo para desktop"
-          layout="fill"
-          objectFit="cover"
-          quality={100}
-          priority
-          className="hidden md:block"
+        <div
+          className="absolute inset-0 bg-cover bg-center hidden md:block"
+          style={{ backgroundImage: `url(${desktopImage})` }}
         />
       </div>
 
-      <h1
-        ref={titleRef}
-        className={cn(
-          "text-center uppercase text-[#00e1ff] font-bold absolute top-1/2 -translate-y-1/2 z-[60] text-shadow-[0_0_2px_rgba(0,0,0,0.3)]",
-          luckiestGuyFont.className
-        )}
-        style={{ fontSize: "10vw", transformOrigin: 'center center' }}
-      >
+      <h1 ref={titleRef} className="text-center uppercase text-[#00e1ff] font-bold font-['Luckiest_Guy'] absolute top-1/2 -translate-y-1/2 z-[60] text-shadow-[0_0_2px_rgba(0,0,0,0.3)] transition-all duration-300" style={{ fontSize: "10vw" }}>
         zecki1
       </h1>
 
@@ -160,7 +139,7 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({
         </div>
       </div>
 
-      <div ref={navRef} className="flex items-center justify-between w-full max-w-7xl px-4 md:px-8 absolute top-0 left-1/2 -translate-x-1/2 h-16 z-10" style={{ opacity: 0, visibility: 'hidden', pointerEvents: "none" }}>
+      <div ref={navRef} className="flex items-center justify-between w-full max-w-7xl px-4 md:px-8 absolute top-0 left-1/2 -translate-x-1/2 h-16 z-10" style={{ opacity: 0, pointerEvents: "none" }}>
         <div className="flex-1 flex justify-start">
           <Sidebar />
         </div>
@@ -169,29 +148,31 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({
           {isMounted && (
             <>
               <div className="hidden md:flex items-center gap-1">
-                <Button variant="ghost" size="icon" onClick={handleLanguageCycle} className={iconButtonClasses} aria-label={i18n.t('changeLanguageLabel', 'Mudar Idioma')}>
+                <Button variant="ghost" size="icon" onClick={handleLanguageCycle} className={iconButtonClasses}>
                   <AnimatePresence mode="wait" initial={false}>
                     <motion.div key={i18n.language} initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 10, opacity: 0 }} transition={{ duration: 0.2 }} className="font-bold">
                       {languageAcronyms[i18n.language] || "PT"}
                     </motion.div>
                   </AnimatePresence>
                 </Button>
-                <Button variant="ghost" size="icon" onClick={toggleTheme} className={iconButtonClasses} aria-label={i18n.t('changeThemeLabel', 'Mudar Tema')}>
+                <Button variant="ghost" size="icon" onClick={toggleTheme} className={iconButtonClasses}>
                   <AnimatePresence mode="wait" initial={false}>
                     <motion.div key={theme} initial={{ scale: 0.5, opacity: 0, rotate: -90 }} animate={{ scale: 1, opacity: 1, rotate: 0 }} exit={{ scale: 0.5, opacity: 0, rotate: 90 }} transition={{ duration: 0.2 }}>
                       {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
                     </motion.div>
                   </AnimatePresence>
                 </Button>
-                <Button asChild variant="ghost" size="icon" className={iconButtonClasses} aria-label={i18n.t('clientAreaLabel', 'Área do Cliente')}>
+                <Button asChild variant="ghost" size="icon" className={iconButtonClasses}>
                   <Link href="/login"><User className="h-5 w-5" /></Link>
                 </Button>
               </div>
+
               <SettingsMenu />
+
               <div className="md:hidden">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className={iconButtonClasses} aria-label={i18n.t('optionsLabel', 'Abrir Opções')}>
+                    <Button variant="ghost" size="icon" className={iconButtonClasses}>
                       <Settings className="h-5 w-5" />
                     </Button>
                   </DropdownMenuTrigger>

@@ -1,10 +1,11 @@
-
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+// ✅ CORREÇÃO: A linha de importação foi corrigida para incluir useRef, useState e useEffect.
+import React, { useRef, useState, useEffect } from "react";
 import Link from "next/link";
+import Image, { StaticImageData } from "next/image";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react"; // Importe o hook recomendado para React
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/layout/ThemeProvider";
 import { Button } from "@/components/ui/button";
@@ -31,11 +32,10 @@ const luckiestGuyFont = Luckiest_Guy({
   display: "swap",
 });
 
-gsap.registerPlugin(ScrollTrigger);
-
 interface ScrollSmootherHeaderProps {
   className?: string;
-  backgroundImage?: string;
+  desktopImage: StaticImageData;
+  mobileImage: StaticImageData;
 }
 
 const languageAcronyms: { [key: string]: string } = {
@@ -44,7 +44,11 @@ const languageAcronyms: { [key: string]: string } = {
   es: "ES",
 };
 
-export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ className, backgroundImage }) => {
+export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({
+  className,
+  desktopImage,
+  mobileImage,
+}) => {
   const headerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
@@ -59,42 +63,41 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
     setIsMounted(true);
   }, []);
 
-  useEffect(() => {
+  useGSAP(() => {
     if (!isMounted) return;
 
     const mainContent = document.getElementById("main-content");
-    if (!mainContent) return;
+    if (mainContent) {
+      gsap.set(mainContent, { opacity: 1 });
+    }
 
-    gsap.set(mainContent, { opacity: 1 });
-
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: document.body,
-          start: "top top",
-          end: "+=500px",
-          scrub: 1,
-        },
-      });
-
-      tl.to(backgroundRef.current, { autoAlpha: 0, ease: "power1.inOut" }, 0);
-      tl.to(headerRef.current, { height: "64px", ease: "power1.inOut" }, 0);
-      tl.to(titleRef.current, { top: '50%', yPercent: -50, ease: "power1.inOut" }, 0);
-
-      ScrollTrigger.matchMedia({
-        "(min-width: 769px)": () => tl.to(titleRef.current, { fontSize: "1.5rem", ease: "power1.inOut" }, 0),
-        "(max-width: 768px)": () => tl.to(titleRef.current, { fontSize: "1.25rem", ease: "power1.inOut" }, 0),
-      });
-
-      tl.to(scrollIndicatorRef.current, { autoAlpha: 0, ease: "power1.inOut" }, 0);
-      tl.to(navRef.current, { autoAlpha: 1, pointerEvents: "auto", ease: "power1.inOut" }, 0.3);
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: document.body,
+        start: "top top",
+        end: "+=500px",
+        scrub: 0.3,
+      },
     });
 
-    return () => {
-      ctx.revert();
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
-  }, [isMounted]);
+    tl.to(backgroundRef.current, { autoAlpha: 0, ease: "power1.inOut" }, 0);
+    tl.to(headerRef.current, { height: "64px", ease: "power1.inOut" }, 0);
+    tl.to(titleRef.current, { top: '50%', yPercent: -50, ease: "power1.inOut" }, 0);
+    tl.to(scrollIndicatorRef.current, { autoAlpha: 0, ease: "power1.inOut" }, 0);
+    tl.to(navRef.current, { autoAlpha: 1, pointerEvents: "auto", ease: "power1.inOut" }, 0.3);
+
+    gsap.to(titleRef.current, {
+      scale: 0.2,
+      ease: "power1.inOut",
+      scrollTrigger: {
+        trigger: document.body,
+        start: "top top",
+        end: "+=500px",
+        scrub: 0.3,
+      }
+    });
+
+  }, { dependencies: [isMounted] });
 
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
   const languages = ["ptBR", "en", "es"];
@@ -113,9 +116,9 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
   return (
     <header
       ref={headerRef}
+      data-speed="0.8"
       className={cn(
         "fixed top-0 left-0 w-full z-50 flex flex-col items-center justify-center bg-black backdrop-blur-md border-b-2 animate-border-color",
-        "transition-[height] duration-300 ease-in-out",
         "will-change-height",
         className
       )}
@@ -123,19 +126,36 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
     >
       <div
         ref={backgroundRef}
-        className="absolute inset-0 z-0 bg-cover bg-center"
-        style={{ backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none' }}
-        // @ts-expect-error Property 'fetchpriority' does not exist on type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
-        fetchPriority="high"
-      />
+        data-speed="0.5"
+        className="absolute inset-0 z-0 overflow-hidden"
+      >
+        <Image
+          src={mobileImage}
+          alt="Imagem de fundo para mobile"
+          layout="fill"
+          objectFit="cover"
+          quality={100}
+          priority
+          className="md:hidden"
+        />
+        <Image
+          src={desktopImage}
+          alt="Imagem de fundo para desktop"
+          layout="fill"
+          objectFit="cover"
+          quality={100}
+          priority
+          className="hidden md:block"
+        />
+      </div>
 
       <h1
         ref={titleRef}
         className={cn(
-          "text-center uppercase text-[#00e1ff] font-bold absolute top-1/2 -translate-y-1/2 z-[60] text-shadow-[0_0_2px_rgba(0,0,0,0.3)] transition-all duration-300",
+          "text-center uppercase text-[#00e1ff] font-bold absolute top-1/2 -translate-y-1/2 z-[60] text-shadow-[0_0_2px_rgba(0,0,0,0.3)]",
           luckiestGuyFont.className
         )}
-        style={{ fontSize: "10vw" }}
+        style={{ fontSize: "10vw", transformOrigin: 'center center' }}
       >
         zecki1
       </h1>

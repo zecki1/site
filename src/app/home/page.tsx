@@ -113,7 +113,7 @@ export default function HomeContent() {
             <section ref={servicesSectionRef} className="relative py-24 md:py-32 px-2">
                 <div className="u-container">
                     <div className="text-center max-w-3xl mx-auto mb-16">
-                        <h2 className="text-3xl md:text-5xl font-bold mb-4">
+                        <h2 className="text-3xl md:text-5xl font-bold mb-4 backdrop-blur">
                             <TextTranslator>
                                 {{ ptBR: "Soluções Claras para Sua Presença Digital", en: "Clear Solutions for Your Digital Presence", es: "Soluciones Claras para Tu Presencia Digital" }}
                             </TextTranslator>

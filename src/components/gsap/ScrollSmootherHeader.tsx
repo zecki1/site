@@ -26,10 +26,12 @@ import { IoArrowDownCircleOutline } from "react-icons/io5";
 gsap.registerPlugin(ScrollTrigger);
 
 // ✅ CORREÇÃO: A interface agora espera duas imagens específicas, como strings.
+
 interface ScrollSmootherHeaderProps {
   className?: string;
-  desktopImage: string;
-  mobileImage: string;
+  capaMobile: string;
+  desktopImage: string; 
+
 }
 
 const languageAcronyms: { [key: string]: string } = {
@@ -38,7 +40,7 @@ const languageAcronyms: { [key: string]: string } = {
   es: "ES",
 };
 
-export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ className, desktopImage, mobileImage }) => {
+export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ className, capaMobile, desktopImage }) => {
   const headerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
@@ -112,17 +114,18 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
       )}
       style={{ height: "100vh" }}
     >
-      {/* ✅ CORREÇÃO: Container de fundo que agora suporta imagens responsivas */}
       <div ref={backgroundRef} className="absolute inset-0 z-0">
         <div
           className="absolute inset-0 bg-cover bg-center md:hidden"
-          style={{ backgroundImage: `url(${mobileImage})` }}
+          style={{ backgroundImage: `url(${capaMobile})` }}
         />
         <div
           className="absolute inset-0 bg-cover bg-center hidden md:block"
+          // ✅ CORREÇÃO: Usando a prop correta que foi recebida
           style={{ backgroundImage: `url(${desktopImage})` }}
         />
       </div>
+
 
       <h1 ref={titleRef} className="text-center uppercase text-[#00e1ff] font-bold font-['Luckiest_Guy'] absolute top-1/2 -translate-y-1/2 z-[60] text-shadow-[0_0_2px_rgba(0,0,0,0.3)] transition-all duration-300" style={{ fontSize: "10vw" }}>
         zecki1

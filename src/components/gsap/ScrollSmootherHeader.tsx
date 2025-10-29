@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -25,13 +26,10 @@ import { IoArrowDownCircleOutline } from "react-icons/io5";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// ✅ CORREÇÃO: A interface agora espera duas imagens específicas, como strings.
-
 interface ScrollSmootherHeaderProps {
   className?: string;
   capaMobile: string;
-  desktopImage: string; 
-
+  desktopImage: string;
 }
 
 const languageAcronyms: { [key: string]: string } = {
@@ -47,7 +45,7 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
   const navRef = useRef<HTMLDivElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
   const { theme, setTheme } = useTheme();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -90,7 +88,6 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
     };
   }, [isMounted]);
 
-  // O resto do seu código permanece exatamente o mesmo
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
   const languages = ["ptBR", "en", "es"];
   const handleLanguageCycle = () => {
@@ -121,11 +118,9 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
         />
         <div
           className="absolute inset-0 bg-cover bg-center hidden md:block"
-          // ✅ CORREÇÃO: Usando a prop correta que foi recebida
           style={{ backgroundImage: `url(${desktopImage})` }}
         />
       </div>
-
 
       <h1 ref={titleRef} className="text-center uppercase text-[#00e1ff] font-bold font-['Luckiest_Guy'] absolute top-1/2 -translate-y-1/2 z-[60] text-shadow-[0_0_2px_rgba(0,0,0,0.3)] transition-all duration-300" style={{ fontSize: "10vw" }}>
         zecki1
@@ -151,21 +146,39 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
           {isMounted && (
             <>
               <div className="hidden md:flex items-center gap-1">
-                <Button variant="ghost" size="icon" onClick={handleLanguageCycle} className={iconButtonClasses}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleLanguageCycle}
+                  className={iconButtonClasses}
+                  aria-label={t('changeLanguage')}
+                >
                   <AnimatePresence mode="wait" initial={false}>
                     <motion.div key={i18n.language} initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 10, opacity: 0 }} transition={{ duration: 0.2 }} className="font-bold">
                       {languageAcronyms[i18n.language] || "PT"}
                     </motion.div>
                   </AnimatePresence>
                 </Button>
-                <Button variant="ghost" size="icon" onClick={toggleTheme} className={iconButtonClasses}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={toggleTheme}
+                  className={iconButtonClasses}
+                  aria-label={t('changeTheme')}
+                >
                   <AnimatePresence mode="wait" initial={false}>
                     <motion.div key={theme} initial={{ scale: 0.5, opacity: 0, rotate: -90 }} animate={{ scale: 1, opacity: 1, rotate: 0 }} exit={{ scale: 0.5, opacity: 0, rotate: 90 }} transition={{ duration: 0.2 }}>
                       {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
                     </motion.div>
                   </AnimatePresence>
                 </Button>
-                <Button asChild variant="ghost" size="icon" className={iconButtonClasses}>
+                <Button
+                  asChild
+                  variant="ghost"
+                  size="icon"
+                  className={iconButtonClasses}
+                  aria-label={t('clientArea')}
+                >
                   <Link href="/login"><User className="h-5 w-5" /></Link>
                 </Button>
               </div>
@@ -175,7 +188,12 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
               <div className="md:hidden">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className={iconButtonClasses}>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className={iconButtonClasses}
+                      aria-label={t('openSettings')}
+                    >
                       <Settings className="h-5 w-5" />
                     </Button>
                   </DropdownMenuTrigger>

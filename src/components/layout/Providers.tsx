@@ -7,9 +7,11 @@ import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { CustomCursor } from "@/components/layout/CustomCursor";
 import { GlobalBackgroundEffects } from "@/components/effects/GlobalBackgroundEffects";
+import { useIsDesktop } from '@/lib/hooks/uselsDesktop';
 // import { ScrollSmootherHeader } from "@/components/gsap/ScrollSmootherHeader";
 
 export function Providers({ children }: { children: React.ReactNode }) {
+    const isDesktop = useIsDesktop(); // Hook que nos diz se é desktop.
     const { i18n } = useTranslation();
     const [isMounted, setIsMounted] = useState(false);
 
@@ -34,7 +36,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     }
     return (
         <ThemeProvider>
-            <CustomCursor />
+            {isDesktop && <CustomCursor />}
             <GlobalBackgroundEffects />
             {children}
             <Toaster />

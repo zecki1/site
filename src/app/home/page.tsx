@@ -69,7 +69,7 @@ export default function HomeContent() {
                             }}
                         </TextTranslator>
                     </p>
-                    <h2 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#00e1ff] to-primary mb-8">
+                    <h2 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent  from-primary via-[#00e1ff] to-primary mb-8">
                         <TextTranslator>
                             {{
                                 ptBR: "Bem-vindo ao que seu Site Pode Ser",

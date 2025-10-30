@@ -122,7 +122,7 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
         />
       </div>
 
-      <h1 ref={titleRef} className="text-center uppercase text-[#00e1ff] font-bold font-['Luckiest_Guy'] absolute top-1/2 -translate-y-1/2 z-[60] text-shadow-[0_0_2px_rgba(0,0,0,0.3)] transition-all duration-300" style={{ fontSize: "10vw" }}>
+      <h1 ref={titleRef} className="text-center uppercase text-[#00e1ff] font-bold font-['Luckiest_Guy'] absolute top-1/2 -translate-y-1/2 z-60 text-shadow-[0_0_2px_rgba(0,0,0,0.3)] transition-all duration-300" style={{ fontSize: "10vw" }}>
         zecki1
       </h1>
 

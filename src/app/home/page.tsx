@@ -26,10 +26,9 @@ export default function HomeContent() {
     // Efeitos para animar cada seção quando ela entra na tela
     useEffect(() => {
         const ctx = gsap.context(() => {
-            // CORREÇÃO: Adicionado 'toggleActions' para que a animação rode apenas uma vez ao entrar na tela.
-            // Isso evita re-execuções desnecessárias e melhora a performance.
+          
             const scrollTriggerConfig = {
-                toggleActions: 'play none none none', // play on enter, do nothing on leave, enter back, or leave back
+                toggleActions: 'play none none none', 
             };
 
             gsap.from(introSectionRef.current, { opacity: 0, y: 50, duration: 1, scrollTrigger: { trigger: introSectionRef.current, start: 'top 80%', ...scrollTriggerConfig } });
@@ -69,7 +68,12 @@ export default function HomeContent() {
                             }}
                         </TextTranslator>
                     </p>
-                    <h2 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent  from-primary via-[#00e1ff] to-primary mb-8">
+                    <h2 className="text-4xl md:text-6xl font-bold mb-8
+             bg-linear-to-r 
+             from-blue-400 via-[#00e1ff] to-blue-400
+             bg-clip-text 
+             text-transparent 
+             animate-gradient-loop">
                         <TextTranslator>
                             {{
                                 ptBR: "Bem-vindo ao que seu Site Pode Ser",
@@ -110,10 +114,10 @@ export default function HomeContent() {
             </section>
 
             {/* Seção 3: Serviços (SEM CARD NO TÍTULO) */}
-            <section ref={servicesSectionRef} className="relative py-24 md:py-32 px-2">
-                <div className="u-container">
-                    <div className="text-center max-w-3xl mx-auto mb-16">
-                        <h2 className="text-3xl md:text-5xl font-bold mb-4 backdrop-blur">
+            <section ref={servicesSectionRef} className="relative py-24 md:py-32 px-2 backdrop-blur">
+                <div className="u-container ">
+                    <div className="text-center max-w-3xl mx-auto mb-16 ">
+                        <h2 className="text-3xl md:text-5xl font-bold mb-4 ">
                             <TextTranslator>
                                 {{ ptBR: "Soluções Claras para Sua Presença Digital", en: "Clear Solutions for Your Digital Presence", es: "Soluciones Claras para Tu Presencia Digital" }}
                             </TextTranslator>

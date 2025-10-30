@@ -29,7 +29,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Trash2, PlusCircle, LogOut, Loader2, UploadCloud, Image as ImageIcon, Sun, Moon, Globe, User as UserIcon } from "lucide-react";
 
-// Definições de Tipos (sem alterações)
+// Definições de Tipos
 type LanguageKey = "ptBR" | "en" | "es";
 type MultiLangText = { [key in LanguageKey]: string; };
 type MultiLangArray = { [key in LanguageKey]: string[]; };
@@ -194,7 +194,7 @@ export default function DashboardPage() {
             }
             toast.success("Imagem removida com sucesso!");
         } catch (err) {
-            // ✨ CORREÇÃO: Usamos a variável 'err' para logar o erro no console.
+            
             console.error("Falha na remoção da imagem:", err);
             toast.error("Falha ao remover a imagem do armazenamento.");
             handleInputChange({ target: { value: originalUrl } } as ChangeEvent<HTMLInputElement>, path);

@@ -13,10 +13,6 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import TextTranslator from "@/components/layout/TextTranslator";
 
-// ✨ CORREÇÃO APLICADA AQUI ✨
-// Adicionamos 'as const' ao objeto 'transition'. Isso informa ao TypeScript
-// para tratar 'easeOut' como o tipo literal "easeOut", e não como uma 'string' genérica,
-// resolvendo a incompatibilidade de tipo com a 'framer-motion'.
 const sectionAnimation = {
     initial: { opacity: 0, y: 50 },
     whileInView: { opacity: 1, y: 0 },

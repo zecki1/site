@@ -15,7 +15,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import TextTranslator from "@/components/layout/TextTranslator";
 
-// CORREÇÃO: Adicionadas mensagens de erro específicas e traduzidas.
 const pageTexts = {
     title: { ptBR: "Área do Cliente", en: "Client Area", es: "Área de Cliente" },
     description: { ptBR: "Acesse o painel de gerenciamento do seu site.", en: "Access your website's management panel.", es: "Accede al panel de gestión de tu sitio web." },
@@ -57,7 +56,6 @@ export default function LoginPage() {
         return textObj[lang] || textObj.ptBR || "";
     };
 
-    // CORREÇÃO: A variável 'errorKey' agora é usada para exibir uma mensagem de erro específica.
     const handleAuthError = (err: unknown) => {
         const error = err as FirebaseError;
         let errorKey: keyof typeof pageTexts.toasts.errors = 'unknown';

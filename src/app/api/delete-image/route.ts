@@ -14,7 +14,7 @@ function getPublicIdFromUrl(url: string): string | null {
         const match = url.match(regex);
         return match ? match[1] : null;
     } catch (e) {
-        // ✨ CORREÇÃO: Usamos a variável 'e' para logar o erro no console.
+        // CORREÇÃO: Usamos a variável 'e' para logar o erro no console.
         console.error("Erro ao tentar extrair o public_id da URL:", e);
         return null;
     }

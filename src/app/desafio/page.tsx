@@ -17,7 +17,6 @@ import { Radar, Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend, ArcElement);
 
-// --- Tipagem para a Estrutura do Quiz ---
 type TranslatableText = { ptBR: string; en: string; es: string; };
 
 interface BaseQuestion {
@@ -50,7 +49,6 @@ interface TrueOrFalseQuestion extends BaseQuestion {
 }
 
 type QuizQuestion = UnicChoiceQuestion | DraginDropQuestion | TrueOrFalseQuestion;
-// --- Fim da Tipagem ---
 
 const useWindowSize = () => {
     const [size, setSize] = useState({ width: 0, height: 0 });
@@ -63,10 +61,6 @@ const useWindowSize = () => {
     return size;
 };
 
-// ✨ CORREÇÃO APLICADA AQUI ✨
-// Adicionamos 'as const' ao valor da propriedade 'ease'.
-// Isso informa ao TypeScript para tratar "easeOut" como um tipo literal,
-// resolvendo o erro de incompatibilidade com a tipagem da Framer Motion.
 const sectionAnimation = { initial: { opacity: 0, y: 50 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.8, ease: "easeOut" as const } };
 
 const initialAnswersState: { [key in keyof typeof quizData]: (boolean | null)[] } = {

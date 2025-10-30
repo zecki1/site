@@ -21,14 +21,26 @@ export default {
                 sm: "0 0 2px rgba(0, 0, 0, 0.3)",
             },
             keyframes: {
+                // [ANIMAÇÃO DE BORDA QUE FUNCIONA]
                 borderColorPulse: {
-                    '0%, 100%': { borderColor: '#00e1ff' }, // Cor inicial e final (azul)
-                    '50%': { borderColor: '#7f00ff' },     // Cor do meio (roxo)
+                    '0%, 100%': { borderColor: '#00e1ff' },
+                    '50%': { borderColor: '#7f00ff' },
+                },
+                // [ANIMAÇÃO DE GRADIENTE CORRIGIDA NA APLICAÇÃO]
+                'grad-flow': {
+                    '0%, 100%': {
+                        '--tw-gradient-from': 'theme("colors.blue.400")',
+                        '--tw-gradient-to': '#00e1ff',
+                    },
+                    '50%': {
+                        '--tw-gradient-from': '#7f00ff',
+                        '--tw-gradient-to': 'theme("colors.blue.400")',
+                    },
                 },
             },
-            // E adicione a animação que usa os keyframes
             animation: {
-                'border-pulse': 'borderColorPulse 4s ease-in-out infinite', // 4s de duração, loop infinito
+                'border-pulse': 'borderColorPulse 3s ease-in-out infinite alternate', // Exemplo
+                'gradient-loop': 'grad-flow 4s ease-in-out infinite alternate',
             },
         },
     },

@@ -1,11 +1,10 @@
 import { NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
 
-// Configure o Cloudinary com suas credenciais
 cloudinary.config({
     cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
     api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET, // Guarde este no .env.local
+    api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 export async function POST(request: Request) {
@@ -25,7 +24,6 @@ export async function POST(request: Request) {
         const response = await new Promise((resolve, reject) => {
             const uploadStream = cloudinary.uploader.upload_stream(
                 {
-                    // opcional: defina uma pasta no Cloudinary
                     folder: 'cleriston_portfolio',
                 },
                 (error, result) => {

@@ -6,11 +6,6 @@ import { motion } from 'framer-motion';
 import { History, Target } from 'lucide-react';
 import TextTranslator from '@/components/layout/TextTranslator';
 import { YouTubeBackground } from '@/components/layout/YouTubeBackground';
-
-// ✨ CORREÇÃO APLICADA AQUI ✨
-// Adicionamos 'as const' ao valor da propriedade 'ease'. Isso garante
-// que o TypeScript o interprete como o tipo literal "easeOut", que é
-// compatível com a definição de tipo esperada pela Framer Motion.
 const sectionAnimation = { initial: { opacity: 0, y: 50 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.8, ease: "easeOut" as const } };
 
 export default function AboutPage() {
@@ -40,7 +35,12 @@ export default function AboutPage() {
             <section className="py-24 md:py-32">
                 <div className="max-w-4xl mx-auto p-4 md:p-8 space-y-16 bg-background/70 backdrop-blur u-container rounded-lg">
                     <motion.div {...sectionAnimation}>
-                        <h2 className="flex items-center gap-3 text-3xl font-bold border-b pb-2 mb-4 text-primary ">
+                        <h2 className="text-4xl md:text-6xl font-bold mb-8
+             bg-linear-to-r 
+             from-blue-400 via-[#00e1ff] to-blue-400
+             bg-clip-text 
+             text-transparent 
+             animate-gradient-loop">
                             <Target size={24} />
                             <TextTranslator ignoreCheck={true}>
                                 {{ ptBR: "Resumo", en: "Summary", es: "Resumen" }}
@@ -69,7 +69,12 @@ export default function AboutPage() {
                     </motion.div>
 
                     <motion.div {...sectionAnimation}>
-                        <h2 className="flex items-center gap-3 text-3xl font-bold border-b pb-2 mb-4 text-primary">
+                        <h2 className="text-4xl md:text-6xl font-bold mb-8
+             bg-linear-to-r 
+             from-blue-400 via-[#00e1ff] to-blue-400
+             bg-clip-text 
+             text-transparent 
+             animate-gradient-loop">
                             <History size={24} />
                             <TextTranslator ignoreCheck={true}>
                                 {{ ptBR: "Minha História", en: "My Story", es: "Mi Historia" }}

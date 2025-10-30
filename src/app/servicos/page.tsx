@@ -13,8 +13,6 @@ import {
 import TextTranslator from '@/components/layout/TextTranslator';
 import { ElementType } from 'react';
 
-// --- DEFINIÇÃO DE TIPOS E DADOS DIRETAMENTE NO ARQUIVO ---
-
 type LocalizedText = {
     ptBR: string;
     en: string;
@@ -234,12 +232,6 @@ const servicesData: Service[] = [
     }
 ];
 
-// --- FIM DA DEFINIÇÃO DE DADOS ---
-
-// ✨ CORREÇÃO APLICADA AQUI ✨
-// Adicionamos 'as const' ao valor da propriedade 'ease'. Isso garante
-// que o TypeScript o interprete como o tipo literal "easeOut", compatível
-// com a definição de tipo da Framer Motion.
 const sectionAnimation = { initial: { opacity: 0, y: 50 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.8, ease: "easeOut" as const } };
 
 export default function ServicesPage() {
@@ -253,7 +245,12 @@ export default function ServicesPage() {
                                 {{ ptBR: "Serviços", en: "Services", es: "Servicios" }}
                             </TextTranslator>
                         </h1>
-                        <h2 className="text-2xl md:text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-primary via-[#00e1ff] to-primary mb-6 text-balance">
+                        <h2 className="text-4xl md:text-6xl font-bold mb-8
+             bg-linear-to-r 
+             from-blue-400 via-[#00e1ff] to-blue-400
+             bg-clip-text 
+             text-transparent 
+             animate-gradient-loop">
                             <TextTranslator ignoreCheck={true}>
                                 {{ ptBR: "Soluções Personalizadas para Seu Sucesso Digital", en: "Custom Solutions for Your Digital Success", es: "Soluciones Personalizadas para Tu Éxito Digital" }}
                             </TextTranslator>

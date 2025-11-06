@@ -1,10 +1,9 @@
 .
+|-- .browserslistrc
 |-- .env.local
 |-- .firebaserc
 |-- .gitattributes
 |-- .gitignore
-|-- 1234
-|-- 1234.pub
 |-- README.md
 |-- components.json
 |-- eslint.config.mjs
@@ -17,27 +16,20 @@
 |-- project_structure.txt
 |-- public
 |   |-- 404.html
+|   |-- favicons
+|   |   `-- favicon-16x16.png
 |   |-- fonts
 |   |   |-- OpenDyslexic-Regular.woff
 |   |   `-- OpenDyslexic-Regular.woff2
 |   |-- img
+|   |   |-- capa-m.jpg
+|   |   |-- capa.jpg
 |   |   `-- projects
-|   |       |-- agendamento-salao.png
-|   |       |-- calendario.png
-|   |       |-- cleriston-ilustrador.png
-|   |       |-- dashboard-zecki.png
-|   |       `-- gesso-porto-seguro.png
-|   |-- index.html
-|   |-- locales
-|   |-- lottie
-|   |   `-- bakcground.json
-|   `-- models
-|       |-- Game-controller.glb
-|       |-- Lowpoly_tree_sample.fbx
-|       |-- Lowpoly_tree_sample.mtl
-|       |-- Lowpoly_tree_sample.obj
-|       |-- Razer_Kraken.glb
-|       `-- room.obj
+|   |       |-- agendamento.png
+|   |       |-- cleriston.png
+|   |       |-- dashboard.png
+|   |       `-- nickgomes.png
+|   `-- index.html
 |-- src
 |   |-- app
 |   |   |-- admin
@@ -52,23 +44,22 @@
 |   |   |   `-- page.tsx
 |   |   |-- curriculo
 |   |   |   `-- page.tsx
+|   |   |-- desafio
+|   |   |   `-- page.tsx
 |   |   |-- favicon.ico
 |   |   |-- globals.css
 |   |   |-- home
+|   |   |   |-- page copy.tsx
 |   |   |   `-- page.tsx
 |   |   |-- layout.tsx
 |   |   |-- login
 |   |   |   `-- page.tsx
 |   |   |-- page.tsx
-|   |   |-- recursos
+|   |   |-- servicos
 |   |   |   `-- page.tsx
-|   |   `-- servicos
+|   |   `-- sobre
 |   |       `-- page.tsx
-|   |-- assets
-|   |   `-- img
-|   |       `-- capa.jpg
 |   |-- components
-|   |   |-- components.tsx
 |   |   |-- effects
 |   |   |   |-- CanvasParticles.tsx
 |   |   |   |-- ElectricLines.tsx
@@ -88,8 +79,9 @@
 |   |   |   `-- StaggeredText.tsx
 |   |   |-- layout
 |   |   |   |-- AccessibilityProvider.tsx
+|   |   |   |-- AppLayout.tsx
 |   |   |   |-- BentoCard.tsx
-|   |   |   |-- ClientLayout.tsx
+|   |   |   |-- ColorChangingMarquee.tsx
 |   |   |   |-- ColorSwitcher.tsx
 |   |   |   |-- Container.tsx
 |   |   |   |-- Cover.tsx
@@ -111,8 +103,6 @@
 |   |   |   |-- Topic.tsx
 |   |   |   |-- VlibrasWidget.tsx
 |   |   |   `-- YouTubeBackground.tsx
-|   |   |-- three
-|   |   |   `-- InteractiveScene.tsx
 |   |   `-- ui
 |   |       |-- accordion.tsx
 |   |       |-- alert-dialog.tsx
@@ -133,6 +123,7 @@
 |   |       |-- dialog.tsx
 |   |       |-- drawer.tsx
 |   |       |-- dropdown-menu.tsx
+|   |       |-- exerciciosdePassagem.tsx
 |   |       |-- form.tsx
 |   |       |-- hover-card.tsx
 |   |       |-- input-otp.tsx
@@ -163,10 +154,12 @@
 |   |-- lib
 |   |   |-- firebase.ts
 |   |   |-- hooks
-|   |   |   `-- use-mobile.ts
+|   |   |   |-- use-mobile.ts
+|   |   |   `-- uselsDesktop.ts
 |   |   |-- i18n.ts
+|   |   |-- images.ts
 |   |   |-- navSections.ts
-|   |   |-- parallaxImages.ts
+|   |   |-- quizData.ts
 |   |   |-- servicesData.ts
 |   |   `-- utils.ts
 |   `-- types
@@ -174,4 +167,4 @@
 |-- tailwind.config.ts
 `-- tsconfig.json
 
-31 directories, 143 files
+27 directories, 140 files

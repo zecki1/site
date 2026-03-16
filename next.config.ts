@@ -4,11 +4,11 @@ const nextConfig = {
     return [
       {
         source: "/dashboard",
-        destination: "https://dashboard-zecki.vercel.app",
+        destination: "https://dashboard-zecki.vercel.app/dashboard",
       },
       {
         source: "/dashboard/:path*",
-        destination: "https://dashboard-zecki.vercel.app/:path*",
+        destination: "https://dashboard-zecki.vercel.app/dashboard/:path*",
       },
     ];
   },
@@ -22,10 +22,6 @@ const nextConfig = {
         hostname: "*.public.blob.vercel-storage.com",
         pathname: "/avatars/**",
       },
-    ],
-  },
-  images: {
-    remotePatterns: [
       {
         protocol: 'https',
         hostname: 'res.cloudinary.com',
@@ -39,7 +35,6 @@ const nextConfig = {
         pathname: '/**',
       },
       {
-
         protocol: 'https',
         hostname: 'zecki1.com.br',
         port: '',

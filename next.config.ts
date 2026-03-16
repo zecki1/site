@@ -1,22 +1,46 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: "/dashboard",
+        destination: "https://dashboard-zecki.vercel.app",
+      },
+      {
+        source: "/dashboard/:path*",
+        destination: "https://dashboard-zecki.vercel.app/:path*",
+      },
+    ];
+  },
+  typescript: {
+    ignoreBuildErrors: process.env.NEXT_IGNORE_TYPE_ERRORS === "1",
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "*.public.blob.vercel-storage.com",
+        pathname: "/avatars/**",
+      },
+    ],
+  },
   images: {
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'res.cloudinary.com',
         port: '',
-        pathname: '/**', 
+        pathname: '/**',
       },
       {
-         protocol: 'https',
+        protocol: 'https',
         hostname: 'firebasestorage.googleapis.com',
         port: '',
         pathname: '/**',
       },
       {
-        
-        protocol: 'https', 
+
+        protocol: 'https',
         hostname: 'zecki1.com.br',
         port: '',
         pathname: '/**',

@@ -156,12 +156,7 @@ export default function ResumePage() {
                                 <div>
                                     <h4 className="font-semibold text-lg">Dashboard Zecki</h4>
                                     <p className="text-muted-foreground text-sm mb-1">Aplicação SPA (Single Page Application) desenvolvida com <strong>Next.js</strong> e <strong>TypeScript</strong>. Evidencia o uso de autenticação, manipulação de estado e um design system modular com <strong>ShadCN/UI</strong>. A integração com <strong>Firebase/Firestore</strong> serve como backend (BaaS) para persistência de dados em tempo real, demonstrando arquitetura serverless.</p>
-                                    <a href="https://dashboard-zecki.vercel.app" target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline">dashboard-zecki.vercel.app</a>
-                                </div>
-                                <div>
-                                    <h4 className="font-semibold text-lg">Calendário de Agendamento</h4>
-                                    <p className="text-muted-foreground text-sm mb-1">Ferramenta interativa que demonstra a aplicação prática de <strong>React</strong> para criar UIs complexas. Utiliza manipulação de estado para gerenciar datas e horários, integrando-se com <strong>Firebase</strong> para salvar os agendamentos e demonstrar a capacidade de criar soluções full-stack com um backend serverless (BaaS) via <strong>Vercel</strong>.</p>
-                                    <a href="https://agendamento-salao.vercel.app" target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline">agendamento-salao.vercel.app</a>
+                                    <a href="https://zecki1.com.br/dashboard" target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline">zecki1.com.br/dashboard</a>
                                 </div>
                                 <div>
                                     <h4 className="font-semibold text-lg">Nick Gomes</h4>

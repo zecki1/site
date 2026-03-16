@@ -44,12 +44,7 @@ const projects = [
     {
         name: "Dashboard Zecki",
         img: "/img/projects/dashboard.png",
-        url: "https://dashboard-zecki.vercel.app",
-    },
-    {
-        name: "Agendamento Salão",
-        img: "/img/projects/agendamento.png",
-        url: "https://agendamento-salao.vercel.app",
+        url: "https://zecki1.com.br/dashboard",
     },
     {
         name: "Nick Gomes",
@@ -475,8 +470,9 @@ export default function HomeContent() {
                             <Image
                                 src={project.img}
                                 alt={project.name}
-                                layout="fill"
-                                objectFit="cover"
+                                fill
+                                style={{ objectFit: 'cover' }}
+                                sizes="(max-width: 768px) 100vw, 60vw"
                                 className="transition-transform duration-500 group-hover:scale-105"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>

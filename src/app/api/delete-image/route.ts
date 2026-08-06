@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
+import { verifyFirebaseToken } from '@/lib/firebaseAdmin';
 
 cloudinary.config({
     cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -7,20 +8,26 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Função para extrair o public_id da URL da imagem
 function getPublicIdFromUrl(url: string): string | null {
     try {
         const regex = /\/v\d+\/(.+)\.\w+$/;
         const match = url.match(regex);
         return match ? match[1] : null;
     } catch (e) {
-        // CORREÇÃO: Usamos a variável 'e' para logar o erro no console.
         console.error("Erro ao tentar extrair o public_id da URL:", e);
         return null;
     }
 }
 
 export async function POST(request: Request) {
+    const authHeader = request.headers.get('authorization') || '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+    try {
+        await verifyFirebaseToken(token);
+    } catch {
+        return NextResponse.json({ error: 'Não autorizado.' }, { status: 401 });
+    }
+
     const { imageUrl } = await request.json();
 
     if (!imageUrl) {

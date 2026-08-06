@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
@@ -16,6 +16,9 @@ import {
     Code,
     Brush,
     Users,
+    Award,
+    Clock,
+    CheckCircle2,
 } from "lucide-react";
 
 import { FaReact } from "react-icons/fa";
@@ -42,15 +45,72 @@ const projects = [
         url: "https://www.cleristonribeiro.com.br",
     },
     {
+        name: "Nick Gomes Tattoo",
+        img: "/img/projects/nickgomes.png",
+        url: "https://nicolasgomestattoo.com.br",
+    },
+    {
+        name: "Painel CMS Multi-Site",
+        img: "/img/projects/cms-login.png",
+        url: "https://zecki1.com.br/login",
+    },
+    {
         name: "Dashboard Zecki",
         img: "/img/projects/dashboard.png",
         url: "https://zecki1.com.br/dashboard",
     },
+];
+
+const stats = [
     {
-        name: "Nick Gomes",
-        img: "/img/projects/nickgomes.jpg",
-        url: "https://www.nickgomes.com.br",
+        value: "+8",
+        label: {
+            ptBR: "Anos de Experiência",
+            en: "Years of Experience",
+            es: "Años de Experiencia",
+        },
     },
+    {
+        value: "+25",
+        label: {
+            ptBR: "Projetos Entregues",
+            en: "Projects Delivered",
+            es: "Proyectos Entregados",
+        },
+    },
+    {
+        value: "100%",
+        label: {
+            ptBR: "Foco Mobile-First",
+            en: "Mobile-First Focus",
+            es: "Enfoque Mobile-First",
+        },
+    },
+    {
+        value: "WCAG",
+        label: {
+            ptBR: "Acessibilidade Digital",
+            en: "Digital Accessibility",
+            es: "Accesibilidad Digital",
+        },
+    },
+];
+
+const skills = [
+    "React",
+    "Next.js",
+    "TypeScript",
+    "Node.js",
+    "Laravel",
+    "PHP",
+    "MySQL",
+    "Firebase",
+    "Docker",
+    "Git",
+    "Figma",
+    "SEO",
+    "UX/UI",
+    "WCAG",
 ];
 
 const techStack = [
@@ -77,6 +137,16 @@ export default function HomeContent() {
     const horizontalScrollRef = useRef<HTMLDivElement>(null);
     const projectsContainerRef = useRef<HTMLDivElement>(null);
     const techSectionRef = useRef<HTMLDivElement>(null);
+    const [isDesktop, setIsDesktop] = useState(() =>
+        typeof window !== "undefined" ? window.matchMedia("(min-width: 768px)").matches : true
+    );
+
+    useEffect(() => {
+        const mql = window.matchMedia("(min-width: 768px)");
+        const onChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+        mql.addEventListener("change", onChange);
+        return () => mql.removeEventListener("change", onChange);
+    }, []);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -157,7 +227,7 @@ export default function HomeContent() {
         });
 
             const projectsGallery = projectsContainerRef.current;
-            if (projectsGallery && horizontalScrollRef.current) {
+            if (projectsGallery && horizontalScrollRef.current && window.matchMedia("(min-width: 768px)").matches) {
                 const totalWidth = projectsGallery.scrollWidth;
                 const amountToScroll = totalWidth - window.innerWidth;
                 gsap.to(projectsGallery, {
@@ -310,7 +380,134 @@ export default function HomeContent() {
                 </div>
             </section>
 
-            {/* Seção 4: Serviços */}
+            {/* Seção 4: Sobre mim */}
+            <section
+                id="sobre"
+                className="relative py-24 md:py-32 px-2"
+            >
+                <div className="u-container">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                        <div>
+                            <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-3">
+                                <TextTranslator>
+                                    {{
+                                        ptBR: "Sobre Mim",
+                                        en: "About Me",
+                                        es: "Sobre Mí",
+                                    }}
+                                </TextTranslator>
+                            </p>
+                            <h2 className="text-3xl md:text-5xl font-bold mb-6">
+                                <TextTranslator>
+                                    {{
+                                        ptBR: "Transformo problemas em soluções digitais que geram resultado.",
+                                        en: "I turn problems into digital solutions that deliver results.",
+                                        es: "Convierto problemas en soluciones digitales que generan resultados.",
+                                    }}
+                                </TextTranslator>
+                            </h2>
+                            <p className="text-lg text-muted-foreground mb-6">
+                                <TextTranslator>
+                                    {{
+                                        ptBR: "Sou desenvolvedor full-stack com mais de 8 anos de experiência, especializado em construir sites e aplicações rápidas, acessíveis e otimizadas para conversão. Trabalho lado a lado com cada cliente para entender o negócio e entregar muito além de um site bonito: entrego uma ferramenta que cresce com você.",
+                                        en: "I'm a full-stack developer with over 8 years of experience, specialized in building fast, accessible, conversion-optimized websites and applications. I work side by side with each client to understand the business and deliver far beyond a pretty site: I deliver a tool that grows with you.",
+                                        es: "Soy desarrollador full-stack con más de 8 años de experiencia, especializado en construir sitios y aplicaciones rápidos, accesibles y optimizados para la conversión. Trabajo codo a codo con cada cliente para entender el negocio y entregar mucho más que un sitio bonito: entrego una herramienta que crece contigo.",
+                                    }}
+                                </TextTranslator>
+                            </p>
+                            <div className="flex flex-wrap gap-2 mb-8">
+                                {skills.map((skill) => (
+                                    <span
+                                        key={skill}
+                                        className="inline-flex items-center rounded-full border bg-background px-4 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+                                    >
+                                        {skill}
+                                    </span>
+                                ))}
+                            </div>
+                            <Button
+                                asChild
+                                size="lg"
+                                className="rounded-full text-lg px-8 py-6"
+                            >
+                                <Link href="/sobre">
+                                    <span>
+                                        <TextTranslator>
+                                            {{
+                                                ptBR: "Conheça Minha História",
+                                                en: "Know My Story",
+                                                es: "Conoce Mi Historia",
+                                            }}
+                                        </TextTranslator>
+                                    </span>
+                                    <ArrowRight className="ml-2 h-5 w-5" />
+                                </Link>
+                            </Button>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-6">
+                            {[
+                                {
+                                    icon: Award,
+                                    stat: stats[0],
+                                },
+                                {
+                                    icon: CheckCircle2,
+                                    stat: stats[1],
+                                },
+                                {
+                                    icon: Smartphone,
+                                    stat: stats[2],
+                                },
+                                {
+                                    icon: Accessibility,
+                                    stat: stats[3],
+                                },
+                            ].map(({ icon: StatIcon, stat }, index) => (
+                                <div
+                                    key={index}
+                                    className="p-8 bg-muted/30 rounded-2xl text-center flex flex-col items-center justify-center gap-3 border border-border/50"
+                                >
+                                    <div className="p-3 bg-primary/10 rounded-xl text-primary">
+                                        <StatIcon className="h-8 w-8" />
+                                    </div>
+                                    <span className="text-4xl font-black text-primary">{stat.value}</span>
+                                    <span className="text-sm text-muted-foreground font-medium">
+                                        <TextTranslator>{stat.label}</TextTranslator>
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="mt-20 flex flex-col items-center justify-center gap-4 rounded-2xl border bg-muted/30 p-8 text-center md:flex-row md:gap-8 md:text-left">
+                        <Clock className="h-10 w-10 text-primary flex-shrink-0" />
+                        <p className="text-lg text-muted-foreground">
+                            <TextTranslator>
+                                {{
+                                    ptBR: "Disponível para novos projetos. Vamos criar algo incrível juntos?",
+                                    en: "Available for new projects. Let's build something amazing together?",
+                                    es: "Disponible para nuevos proyectos. ¿Construyamos algo increíble juntos?",
+                                }}
+                            </TextTranslator>
+                        </p>
+                        <Button asChild size="lg" variant="outline" className="rounded-full flex-shrink-0">
+                            <Link href="/contato">
+                                <TextTranslator>
+                                    {{
+                                        ptBR: "Entrar em Contato",
+                                        en: "Get in Touch",
+                                        es: "Contactar",
+                                    }}
+                                </TextTranslator>
+                                <ArrowRight className="ml-2 h-5 w-5" />
+                            </Link>
+                        </Button>
+                    </div>
+                </div>
+            </section>
+
+            {/* Seção 5: Serviços */}
             <section
                 ref={servicesSectionRef}
                 className="relative py-24 md:py-32 px-2 backdrop-blur"
@@ -436,7 +633,8 @@ export default function HomeContent() {
                 </div>
             </section>
 
-            {/* Seção 5: Projetos em Destaque */}
+            {/* Seção 6: Projetos em Destaque */}
+            {isDesktop ? (
             <section
                 ref={horizontalScrollRef}
                 className="relative h-screen w-full overflow-hidden backdrop-blur"
@@ -529,8 +727,90 @@ export default function HomeContent() {
                     </div>
                 </div>
             </section>
+            ) : (
+            <section className="relative py-24 md:py-32 px-2 backdrop-blur">
+                <div className="u-container">
+                    <div className="text-center max-w-3xl mx-auto mb-12">
+                        <h2 className="text-3xl md:text-5xl font-bold mb-4">
+                            <TextTranslator>
+                                {{
+                                    ptBR: "Projetos em Destaque",
+                                    en: "Featured Projects",
+                                    es: "Proyectos Destacados",
+                                }}
+                            </TextTranslator>
+                        </h2>
+                        <p className="text-lg text-muted-foreground">
+                            <TextTranslator>
+                                {{
+                                    ptBR: "Aqui estão alguns projetos que demonstram a aplicação prática de soluções robustas, criativas e centradas no usuário.",
+                                    en: "Here are some projects that demonstrate the practical application of robust, creative, and user-centered solutions.",
+                                    es: "Aquí hay algunos proyectos que demuestran la aplicación práctica de soluciones robustas, creativas y centradas en el usuario.",
+                                }}
+                            </TextTranslator>
+                        </p>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        {projects.map((project, i) => (
+                            <div
+                                key={i}
+                                className="relative h-64 rounded-2xl overflow-hidden group shadow-xl"
+                            >
+                                <Image
+                                    src={project.img}
+                                    alt={project.name}
+                                    fill
+                                    style={{ objectFit: 'cover' }}
+                                    sizes="(max-width: 640px) 100vw, 50vw"
+                                    className="transition-transform duration-500 group-hover:scale-105"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                <div className="absolute bottom-0 left-0 p-5 text-white">
+                                    <h3 className="text-2xl font-bold">{project.name}</h3>
+                                    <Link
+                                        href={project.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-primary-foreground/80 hover:text-primary-foreground inline-flex items-center mt-1 hover:underline"
+                                    >
+                                        <TextTranslator>
+                                            {{
+                                                ptBR: "Visitar Projeto",
+                                                en: "Visit Project",
+                                                es: "Visitar Proyecto",
+                                            }}
+                                        </TextTranslator>
+                                        <ArrowRight className="ml-2 h-4 w-4" />
+                                    </Link>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="mt-12 text-center">
+                        <Button
+                            asChild
+                            size="lg"
+                            className="rounded-full text-lg px-10 py-7 bg-primary hover:bg-primary/90 shadow-lg hover:shadow-primary/50 transition-all duration-300"
+                        >
+                            <Link href="/contato">
+                                <span>
+                                    <TextTranslator>
+                                        {{
+                                            ptBR: "Vamos Conversar",
+                                            en: "Let's Talk",
+                                            es: "Hablemos",
+                                        }}
+                                    </TextTranslator>
+                                </span>
+                                <ArrowRight className="ml-2 h-5 w-5" />
+                            </Link>
+                        </Button>
+                    </div>
+                </div>
+            </section>
+            )}
 
-            {/* SEÇÃO 6: Tecnologias */}
+            {/* SEÇÃO 8: Tecnologias */}
             <section
                 ref={techSectionRef}
                 className="relative py-24 md:py-48 container mx-auto"
@@ -562,7 +842,7 @@ export default function HomeContent() {
                 </div>
             </section>
 
-            {/* Seção 7: Processo */}
+            {/* Seção 9: Processo */}
             <section
                 ref={processSectionRef}
                 className="relative py-24 md:py-32 bg-muted/30 px-2"
@@ -642,7 +922,7 @@ export default function HomeContent() {
                 </div>
             </section>
 
-            {/* Seção 8: Contato Final */}
+            {/* Seção 10: Contato Final */}
             <section className="py-32 md:py-48 relative text-center text-white overflow-hidden">
                 <YouTubeBackground videoId="3mRQVJwqvrQ" />
                 <div className="absolute inset-0 bg-black/60 z-10 pointer-events-none"></div>

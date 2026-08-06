@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
+import { verifyFirebaseToken } from '@/lib/firebaseAdmin';
 
 cloudinary.config({
     cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -7,24 +8,39 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+async function getAuthenticatedUid(request: Request): Promise<string> {
+    const authHeader = request.headers.get('authorization') || '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+    return verifyFirebaseToken(token);
+}
+
 export async function POST(request: Request) {
+    let uid: string;
+    try {
+        uid = await getAuthenticatedUid(request);
+    } catch {
+        return NextResponse.json({ error: 'Não autorizado.' }, { status: 401 });
+    }
+
     const formData = await request.formData();
     const file = formData.get('file') as File;
+    const folder = (formData.get('folder') as string) || 'clients_portfolio';
+
+    const safeFolder = folder.replace(/[^a-zA-Z0-9_\-/]/g, '').replace(/\.\./g, '').replace(/^\/+/, '');
 
     if (!file) {
         return NextResponse.json({ error: 'Nenhum arquivo enviado.' }, { status: 400 });
     }
 
     try {
-        // Converte o arquivo para um buffer
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
 
-        // Usa um stream para fazer o upload para o Cloudinary
         const response = await new Promise((resolve, reject) => {
             const uploadStream = cloudinary.uploader.upload_stream(
                 {
-                    folder: 'cleriston_portfolio',
+                    folder: safeFolder,
+                    public_id: `${uid}_${Date.now()}`,
                 },
                 (error, result) => {
                     if (error) {

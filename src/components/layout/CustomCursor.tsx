@@ -32,14 +32,40 @@ export const CustomCursor = () => {
         const dotColor = isLightTheme ? 'black' : 'white';
         const outlineColor = isLightTheme ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)';
 
+        // Cores para seções com fundo escuro (ex.: vídeo de fundo)
+        const darkSectionDotColor = 'white';
+        const darkSectionOutlineColor = 'rgba(255, 255, 255, 0.7)';
+
         // 5. Pega a cor primária do tema para a animação de hover
         const themeColor = getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim();
+
+        let inDarkSection = false;
+        let isHovering = false;
+
+        // Aplica a cor correta do cursor de acordo com o estado atual
+        const applyColors = (animate = false) => {
+            const duration = animate ? 0.3 : 0;
+            const dotColorToUse = inDarkSection ? darkSectionDotColor : dotColor;
+            const outlineColorToUse = inDarkSection ? darkSectionOutlineColor : outlineColor;
+
+            gsap.to(dot, {
+                backgroundColor: dotColorToUse,
+                duration,
+                ease: 'power2.out',
+                overwrite: 'auto',
+            });
+            gsap.to(outline, {
+                borderColor: outlineColorToUse,
+                duration,
+                ease: 'power2.out',
+                overwrite: 'auto',
+            });
+        };
 
         // 6. Use gsap.set() para aplicar as cores corretas imediatamente
         // Isso garante que o cursor tenha a cor certa ao carregar a página e ao trocar de tema.
         gsap.set(dot, { backgroundColor: dotColor });
         gsap.set(outline, { borderColor: outlineColor });
-
 
         const moveCursor = (e: MouseEvent) => {
             const { clientX, clientY } = e;
@@ -47,8 +73,22 @@ export const CustomCursor = () => {
             gsap.to(outline, { x: clientX, y: clientY, duration: 0.3, ease: 'power1.out' });
         };
 
+        const handleDarkSectionEnter = () => {
+            inDarkSection = true;
+            if (!isHovering) applyColors(true);
+        };
+
+        const handleDarkSectionLeave = () => {
+            inDarkSection = false;
+            if (!isHovering) applyColors(true);
+        };
+
         const handleMouseEnter = () => {
+            isHovering = true;
             if (hoverAnimationRef.current) return;
+
+            // Em seções escuras o hover também usa branco para não sumir
+            const hoverColor = inDarkSection ? darkSectionDotColor : themeColor;
 
             hoverAnimationRef.current = gsap.timeline({
                 repeat: -1,
@@ -56,35 +96,32 @@ export const CustomCursor = () => {
             })
                 .to(outline, {
                     scale: 2.5,
-                    borderColor: themeColor,
+                    borderColor: hoverColor,
                     duration: 0.5,
                     ease: 'power2.inOut',
                 })
                 .to(dot, {
-                    backgroundColor: themeColor,
+                    backgroundColor: hoverColor,
                     duration: 0.5,
                     ease: 'power2.inOut',
                 }, "<");
         };
 
         const handleMouseLeave = () => {
+            isHovering = false;
             if (hoverAnimationRef.current) {
                 hoverAnimationRef.current.kill();
                 hoverAnimationRef.current = null;
             }
 
-            // 7. Ao sair do hover, retorne para as cores base corretas do tema
             gsap.to(outline, {
                 scale: 1,
-                borderColor: outlineColor, // Usa a variável de cor dinâmica
                 duration: 0.3,
                 ease: 'power2.out',
             });
-            gsap.to(dot, {
-                backgroundColor: dotColor, // Usa a variável de cor dinâmica
-                duration: 0.3,
-                ease: 'power2.out',
-            });
+
+            // 7. Ao sair do hover, retorne para as cores base corretas do tema/seção
+            applyColors(true);
         };
 
         window.addEventListener('mousemove', moveCursor);
@@ -98,12 +135,22 @@ export const CustomCursor = () => {
             el.addEventListener('mouseleave', handleMouseLeave);
         });
 
+        const darkSections = document.querySelectorAll('[data-cursor="dark"]');
+        darkSections.forEach((el) => {
+            el.addEventListener('mouseenter', handleDarkSectionEnter);
+            el.addEventListener('mouseleave', handleDarkSectionLeave);
+        });
+
         return () => {
             document.documentElement.classList.remove('cursor-active');
             window.removeEventListener('mousemove', moveCursor);
             hoverTargets.forEach((el) => {
                 el.removeEventListener('mouseenter', handleMouseEnter);
                 el.removeEventListener('mouseleave', handleMouseLeave);
+            });
+            darkSections.forEach((el) => {
+                el.removeEventListener('mouseenter', handleDarkSectionEnter);
+                el.removeEventListener('mouseleave', handleDarkSectionLeave);
             });
             // Garante que a animação pare se o componente for desmontado durante o hover
             if (hoverAnimationRef.current) {

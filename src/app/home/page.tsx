@@ -312,8 +312,8 @@ export default function HomeContent() {
                 ref={introSectionRef}
                 className="relative flex items-center justify-center min-h-screen py-24 md:py-32"
             >
-                <div className="u-container text-center max-w-4xl mx-auto py-10">
-                    <p className="text-xl md:text-2xl text-muted-foreground mb-8">
+                <div className="u-container text-center max-w-4xl mx-auto py-10 text-glass-light rounded-2xl px-6 md:px-10">
+                    <p className="text-xl md:text-2xl text-white/90 dark:text-muted-foreground mb-8">
                         <TextTranslator>
                             {{
                                 ptBR: "Cansado de templates genéricos que não convertem? A maioria é confusa, não otimizada para SEO e ignora a experiência do usuário.",
@@ -331,7 +331,7 @@ export default function HomeContent() {
                             }}
                         </TextTranslator>
                     </h2>
-                    <p className="text-lg md:text-xl text-muted-foreground">
+                    <p className="text-lg md:text-xl text-white/90 dark:text-muted-foreground">
                         <TextTranslator>
                             {{
                                 ptBR: "Seu projeto não vive isolado. Por isso, conecto suas regras de negócio, requisitos e fluxos de trabalho em um processo de desenvolvimento claro e eficiente — projetado para criar sites rápidos, acessíveis, bem ranqueados no Google e otimizados para mobile-first.",
@@ -387,8 +387,8 @@ export default function HomeContent() {
             >
                 <div className="u-container">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-                        <div>
-                            <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-3">
+                        <div className="text-glass-light rounded-2xl p-6 md:p-10">
+                            <p className="text-sm font-semibold uppercase tracking-widest text-white dark:text-primary mb-3">
                                 <TextTranslator>
                                     {{
                                         ptBR: "Sobre Mim",
@@ -397,7 +397,7 @@ export default function HomeContent() {
                                     }}
                                 </TextTranslator>
                             </p>
-                            <h2 className="text-3xl md:text-5xl font-bold mb-6">
+                            <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white dark:text-foreground">
                                 <TextTranslator>
                                     {{
                                         ptBR: "Transformo problemas em soluções digitais que geram resultado.",
@@ -406,7 +406,7 @@ export default function HomeContent() {
                                     }}
                                 </TextTranslator>
                             </h2>
-                            <p className="text-lg text-muted-foreground mb-6">
+                            <p className="text-lg text-white/90 dark:text-muted-foreground mb-6">
                                 <TextTranslator>
                                     {{
                                         ptBR: "Sou desenvolvedor full-stack com mais de 8 anos de experiência, especializado em construir sites e aplicações rápidas, acessíveis e otimizadas para conversão. Trabalho lado a lado com cada cliente para entender o negócio e entregar muito além de um site bonito: entrego uma ferramenta que cresce com você.",
@@ -466,13 +466,13 @@ export default function HomeContent() {
                             ].map(({ icon: StatIcon, stat }, index) => (
                                 <div
                                     key={index}
-                                    className="p-8 bg-muted/30 rounded-2xl text-center flex flex-col items-center justify-center gap-3 border border-border/50"
+                                    className="p-8 text-glass-light rounded-2xl text-center flex flex-col items-center justify-center gap-3 border border-white/10 dark:border-border/50"
                                 >
-                                    <div className="p-3 bg-primary/10 rounded-xl text-primary">
+                                    <div className="p-3 bg-white/10 dark:bg-primary/10 rounded-xl text-white dark:text-primary">
                                         <StatIcon className="h-8 w-8" />
                                     </div>
-                                    <span className="text-4xl font-black text-primary">{stat.value}</span>
-                                    <span className="text-sm text-muted-foreground font-medium">
+                                    <span className="text-4xl font-black text-white dark:text-primary">{stat.value}</span>
+                                    <span className="text-sm text-white/80 dark:text-muted-foreground font-medium">
                                         <TextTranslator>{stat.label}</TextTranslator>
                                     </span>
                                 </div>
@@ -480,9 +480,9 @@ export default function HomeContent() {
                         </div>
                     </div>
 
-                    <div className="mt-20 flex flex-col items-center justify-center gap-4 rounded-2xl border bg-muted/30 p-8 text-center md:flex-row md:gap-8 md:text-left">
-                        <Clock className="h-10 w-10 text-primary flex-shrink-0" />
-                        <p className="text-lg text-muted-foreground">
+                    <div className="mt-20 flex flex-col items-center justify-center gap-4 rounded-2xl border text-glass-light p-8 text-center md:flex-row md:gap-8 md:text-left border-white/10 dark:border-border/50">
+                        <Clock className="h-10 w-10 text-white dark:text-primary flex-shrink-0" />
+                        <p className="text-lg text-white/90 dark:text-muted-foreground">
                             <TextTranslator>
                                 {{
                                     ptBR: "Disponível para novos projetos. Vamos criar algo incrível juntos?",
@@ -491,7 +491,7 @@ export default function HomeContent() {
                                 }}
                             </TextTranslator>
                         </p>
-                        <Button asChild size="lg" variant="outline" className="rounded-full flex-shrink-0">
+                        <Button asChild size="lg" variant="outline" className="rounded-full flex-shrink-0 text-white border-white/40 hover:bg-white/10 hover:text-white dark:text-foreground dark:border-input dark:hover:bg-accent dark:hover:text-accent-foreground">
                             <Link href="/contato">
                                 <TextTranslator>
                                     {{
@@ -513,8 +513,8 @@ export default function HomeContent() {
                 className="relative py-24 md:py-32 px-2 backdrop-blur"
             >
                 <div className="u-container">
-                    <div className="text-center max-w-3xl mx-auto mb-16">
-                        <h2 className="text-3xl md:text-5xl font-bold mb-4">
+                    <div className="text-center max-w-3xl mx-auto mb-16 text-glass-light rounded-2xl p-6 md:p-8">
+                        <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white dark:text-foreground">
                             <TextTranslator>
                                 {{
                                     ptBR: "Soluções Claras para Sua Presença Digital",
@@ -523,7 +523,7 @@ export default function HomeContent() {
                                 }}
                             </TextTranslator>
                         </h2>
-                        <p className="text-lg text-muted-foreground">
+                        <p className="text-lg text-white/90 dark:text-muted-foreground">
                             <TextTranslator>
                                 {{
                                     ptBR: "Jornadas desenhadas para você. Informadas por expertise em front-end, usabilidade, acessibilidade e SEO.",
@@ -616,15 +616,15 @@ export default function HomeContent() {
                         ].map((service, index) => (
                           <div
                               key={index}
-                              className="service-card p-8 bg-muted/30 rounded-xl flex flex-col items-start gap-4"
+                              className="service-card p-8 text-glass-light rounded-xl flex flex-col items-start gap-4 border border-white/10 dark:border-transparent"
                           >
-                              <div className="p-3 bg-primary/10 rounded-lg text-primary">
+                              <div className="p-3 bg-white/10 dark:bg-primary/10 rounded-lg text-white dark:text-primary">
                                   <service.icon className="h-8 w-8" />
                               </div>
-                              <h3 className="text-xl font-bold">
+                              <h3 className="text-xl font-bold text-white dark:text-foreground">
                                   <TextTranslator>{service.title}</TextTranslator>
                               </h3>
-                              <p className="text-muted-foreground">
+                              <p className="text-white/90 dark:text-muted-foreground">
                                   <TextTranslator>{service.description}</TextTranslator>
                               </p>
                           </div>
@@ -640,8 +640,8 @@ export default function HomeContent() {
                 className="relative h-screen w-full overflow-hidden backdrop-blur"
             >
                 <div ref={projectsContainerRef} className="flex h-full items-center">
-                    <div className="flex-shrink-0 w-screen h-full flex flex-col items-center justify-center px-8 text-center">
-                        <h2 className="text-3xl md:text-5xl font-bold mb-4">
+                    <div className="flex-shrink-0 w-screen h-full flex flex-col items-center justify-center px-8 text-center text-glass-light">
+                        <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white dark:text-foreground">
                             <TextTranslator>
                                 {{
                                     ptBR: "Projetos em Destaque",
@@ -650,7 +650,7 @@ export default function HomeContent() {
                                 }}
                             </TextTranslator>
                         </h2>
-                        <p className="text-lg text-muted-foreground max-w-2xl">
+                        <p className="text-lg text-white/90 dark:text-muted-foreground max-w-2xl">
                             <TextTranslator>
                                 {{
                                     ptBR: "Aqui estão alguns projetos que demonstram a aplicação prática de soluções robustas, criativas e centradas no usuário.",
@@ -694,9 +694,9 @@ export default function HomeContent() {
                             </div>
                         </div>
                     ))}
-                    <div className="flex-shrink-0 w-screen h-full flex items-center justify-center px-8">
+                    <div className="flex-shrink-0 w-screen h-full flex items-center justify-center px-8 text-glass-light">
                         <div className="text-center">
-                            <h2 className="text-3xl md:text-5xl font-bold mb-8">
+                            <h2 className="text-3xl md:text-5xl font-bold mb-8 text-white dark:text-foreground">
                                 <TextTranslator>
                                     {{
                                         ptBR: "Pronto para o Próximo Nível?",
@@ -730,8 +730,8 @@ export default function HomeContent() {
             ) : (
             <section className="relative py-24 md:py-32 px-2 backdrop-blur">
                 <div className="u-container">
-                    <div className="text-center max-w-3xl mx-auto mb-12">
-                        <h2 className="text-3xl md:text-5xl font-bold mb-4">
+                    <div className="text-center max-w-3xl mx-auto mb-12 text-glass-light rounded-2xl p-6 md:p-8">
+                        <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white dark:text-foreground">
                             <TextTranslator>
                                 {{
                                     ptBR: "Projetos em Destaque",
@@ -740,7 +740,7 @@ export default function HomeContent() {
                                 }}
                             </TextTranslator>
                         </h2>
-                        <p className="text-lg text-muted-foreground">
+                        <p className="text-lg text-white/90 dark:text-muted-foreground">
                             <TextTranslator>
                                 {{
                                     ptBR: "Aqui estão alguns projetos que demonstram a aplicação prática de soluções robustas, criativas e centradas no usuário.",
@@ -816,8 +816,8 @@ export default function HomeContent() {
                 className="relative py-24 md:py-48 container mx-auto"
             >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center bg-background  backdrop-blur ">
-                    <div className="text-content px-2">
-                        <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                    <div className="text-content px-2 text-glass-light rounded-2xl p-6 md:p-10">
+                        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white dark:text-foreground">
                             <TextTranslator>
                                 {{
                                     ptBR: "Tecnologias que Impulsionam Resultados",
@@ -826,7 +826,7 @@ export default function HomeContent() {
                                 }}
                             </TextTranslator>
                         </h2>
-                        <p className="text-lg text-muted-foreground">
+                        <p className="text-lg text-white/90 dark:text-muted-foreground">
                             <TextTranslator>
                                 {{
                                     ptBR: "Utilizo um ecossistema de ferramentas modernas e robustas para arquitetar soluções de alta performance. Da prototipação no Figma à implementação com React e Next.js, e do back-end com Laravel/Node.js à orquestração com Docker, cada tecnologia é escolhida para garantir escalabilidade, segurança e uma experiência de usuário impecável.",
@@ -848,8 +848,8 @@ export default function HomeContent() {
                 className="relative py-24 md:py-32 bg-muted/30 px-2"
             >
                 <div className="u-container">
-                    <div className="text-center max-w-3xl mx-auto mb-16">
-                        <h2 className="text-3xl md:text-5xl font-bold mb-4">
+                    <div className="text-center max-w-3xl mx-auto mb-16 text-glass-light rounded-2xl p-6 md:p-8">
+                        <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white dark:text-foreground">
                             <TextTranslator>
                                 {{
                                     ptBR: "Como Transformar Sua Ideia em um Site",
@@ -923,7 +923,7 @@ export default function HomeContent() {
             </section>
 
             {/* Seção 10: Contato Final */}
-            <section className="py-32 md:py-48 relative text-center text-white overflow-hidden">
+            <section data-cursor="dark" className="py-32 md:py-48 relative text-center text-white overflow-hidden">
                 <YouTubeBackground videoId="3mRQVJwqvrQ" />
                 <div className="absolute inset-0 bg-black/60 z-10 pointer-events-none"></div>
                 <div className="u-container relative z-20 flex flex-col items-center">

@@ -135,6 +135,19 @@
 
 @layer utilities {
 
+  /* Vidro escuro para melhorar a legibilidade do texto no tema claro */
+  .text-glass-light {
+    background-color: rgba(0, 0, 0, 0.795);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+
+  .dark .text-glass-light {
+    background-color: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
   /* Animação da bolinha */
   .animate-scroll {
     animation: scroll 1.5s infinite;

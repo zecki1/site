@@ -118,7 +118,14 @@ function setNestedValue(obj: unknown, path: string, value: string | string[]): v
 type ImageUploadHandler = (e: ChangeEvent<HTMLInputElement>, path: string, folder?: string) => Promise<void>;
 type ImageRemoveHandler = (path: string, currentUrl: string) => Promise<void>;
 
-const ImageUploader = ({ imageUrl, onImageUpload, onImageRemove, path, label, folder }: { imageUrl: string; onImageUpload: ImageUploadHandler; onImageRemove: ImageRemoveHandler; path: string; label: string; folder?: string; }) => {
+// Imagens salvas como caminho relativo (ex.: /assets/img/...) pertencem ao site do cliente.
+const resolveImageUrl = (url: string, siteUrl?: string): string => {
+    if (!url) return url;
+    if (/^(https?:|data:)/.test(url)) return url;
+    return `${(siteUrl || '').replace(/\/+$/, '')}${url}`;
+};
+
+const ImageUploader = ({ imageUrl, onImageUpload, onImageRemove, path, label, folder, siteUrl }: { imageUrl: string; onImageUpload: ImageUploadHandler; onImageRemove: ImageRemoveHandler; path: string; label: string; folder?: string; siteUrl?: string; }) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const [isUploading, setIsUploading] = useState(false);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -136,7 +143,7 @@ const ImageUploader = ({ imageUrl, onImageUpload, onImageRemove, path, label, fo
         setPreviewUrl(null);
     };
 
-    const displayUrl = previewUrl || imageUrl;
+    const displayUrl = previewUrl || resolveImageUrl(imageUrl, siteUrl);
 
     return (
         <div>
@@ -439,7 +446,7 @@ export default function DashboardPage() {
                         <AccordionContent className="px-6 pb-6 pt-2">
                             <Separator className="mb-6" />
                             <div className="space-y-6">
-                                <ImageUploader label="Imagem de Fundo" imageUrl={siteData.hero.backgroundImage} onImageUpload={handleImageUpload} onImageRemove={onImageRemove} path="hero.backgroundImage" folder={uploadFolder} />
+                                <ImageUploader label="Imagem de Fundo" imageUrl={siteData.hero.backgroundImage} onImageUpload={handleImageUpload} onImageRemove={onImageRemove} path="hero.backgroundImage" folder={uploadFolder} siteUrl={siteUrl} />
                                 <LanguageTabs>
                                     {(lang) => (
                                         <div>
@@ -460,7 +467,7 @@ export default function DashboardPage() {
                         <AccordionContent className="px-6 pb-6 pt-2">
                             <Separator className="mb-6" />
                             <div className="space-y-6">
-                                <ImageUploader label="Imagem de Perfil" imageUrl={siteData.sobre.imagemPerfilUrl} onImageUpload={handleImageUpload} onImageRemove={onImageRemove} path="sobre.imagemPerfilUrl" folder={uploadFolder} />
+                                <ImageUploader label="Imagem de Perfil" imageUrl={siteData.sobre.imagemPerfilUrl} onImageUpload={handleImageUpload} onImageRemove={onImageRemove} path="sobre.imagemPerfilUrl" folder={uploadFolder} siteUrl={siteUrl} />
                                 <LanguageTabs>
                                     {(lang) => (
                                         <>
@@ -531,7 +538,7 @@ export default function DashboardPage() {
                                                 </div>
 
                                                 {(item.tipo === 'imagem' || item.tipo === 'video') && (
-                                                    <ImageUploader label={item.tipo === 'video' ? "Capa/Thumbnail do Vídeo" : "Imagem"} imageUrl={item.imagemUrl} onImageUpload={handleImageUpload} onImageRemove={onImageRemove} path={`portfolio.items.${index}.imagemUrl`} folder={uploadFolder} />
+                                                    <ImageUploader label={item.tipo === 'video' ? "Capa/Thumbnail do Vídeo" : "Imagem"} imageUrl={item.imagemUrl} onImageUpload={handleImageUpload} onImageRemove={onImageRemove} path={`portfolio.items.${index}.imagemUrl`} folder={uploadFolder} siteUrl={siteUrl} />
                                                 )}
 
                                                 {item.tipo === 'video' && (
@@ -548,7 +555,7 @@ export default function DashboardPage() {
                                                             <Input className="mt-1.5" value={item.youtubeUrl || ''} onChange={(e) => handleInputChange(e, `portfolio.items.${index}.youtubeUrl`)} placeholder="https://www.youtube.com/watch?v=..." />
                                                             <p className="text-xs text-muted-foreground mt-1">O vídeo será exibido como reel 9:16.</p>
                                                         </div>
-                                                        <ImageUploader label="Thumbnail personalizada (opcional)" imageUrl={item.imagemUrl} onImageUpload={handleImageUpload} onImageRemove={onImageRemove} path={`portfolio.items.${index}.imagemUrl`} folder={uploadFolder} />
+                                                        <ImageUploader label="Thumbnail personalizada (opcional)" imageUrl={item.imagemUrl} onImageUpload={handleImageUpload} onImageRemove={onImageRemove} path={`portfolio.items.${index}.imagemUrl`} folder={uploadFolder} siteUrl={siteUrl} />
                                                     </>
                                                 )}
 

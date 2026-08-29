@@ -10,6 +10,14 @@ const nextConfig = {
         source: "/dashboard/:path*",
         destination: "https://dashboard-zecki.vercel.app/dashboard/:path*",
       },
+      {
+        source: "/teleprompt",
+        destination: "https://teleprompt-dun.vercel.app",
+      },
+      {
+        source: "/teleprompt/:path*",
+        destination: "https://teleprompt-dun.vercel.app/:path*",
+      },
     ];
   },
   typescript: {
@@ -37,6 +45,30 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'zecki1.com.br',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'nickgomes.com.br',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'nicolas-gomes-site.vercel.app',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cleriston-site.vercel.app',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cleristonribeiro.com.br',
         port: '',
         pathname: '/**',
       },

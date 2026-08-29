@@ -50,9 +50,9 @@ export default function AboutPage() {
                             <p>
                                 <TextTranslator ignoreCheck={true}>
                                     {{
-                                        ptBR: "Com mais de 17 anos de experiência em design e desenvolvimento, sou um desenvolvedor full-stack apaixonado por criar soluções digitais que unem estética, funcionalidade e acessibilidade.",
-                                        en: "With over 17 years of experience in design and development, I am a full-stack developer passionate about creating digital solutions that blend aesthetics, functionality, and accessibility.",
-                                        es: "Con más de 17 años de experiencia en diseño y desarrollo, soy un desarrollador full-stack apasionado por crear soluciones digitales que combinan estética, funcionalidad y accesibilidad."
+                                        ptBR: "Com mais de 13 anos de experiência em design e desenvolvimento, sou um desenvolvedor full-stack apaixonado por criar soluções digitais que unem estética, funcionalidade e acessibilidade.",
+                                        en: "With over 13 years of experience in design and development, I am a full-stack developer passionate about creating digital solutions that blend aesthetics, functionality, and accessibility.",
+                                        es: "Con más de 13 años de experiencia en diseño y desarrollo, soy un desarrollador full-stack apasionado por crear soluciones digitales que combinan estética, funcionalidad y accesibilidad."
                                     }}
                                 </TextTranslator>
                             </p>

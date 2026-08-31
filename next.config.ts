@@ -12,7 +12,7 @@ const nextConfig = {
       },
       {
         source: "/teleprompt",
-        destination: "https://teleprompt-dun.vercel.app",
+        destination: "https://teleprompt-dun.vercel.app/teleprompt",
       },
       {
         source: "/teleprompt/:path*",

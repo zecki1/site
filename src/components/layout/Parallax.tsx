@@ -67,8 +67,22 @@ export const Parallax: React.FC<ParallaxProps> = ({
             }
         }
 
+        // Escopado: mata APENAS os triggers criados por ESTE parallax. Antes
+        // chamava ScrollTrigger.getAll()...kill() — kill global que, em QUALQUER
+        // remontagem (idioma/tema/rota), matava também os reveals dos cards do
+        // HomeFX, travando-os sem opacidade (bug dos cards "invisíveis").
         return () => {
-            ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+            const triggers = ScrollTrigger.getAll()
+                .filter((trigger) => {
+                    const target = trigger.trigger as Element | undefined
+                    return (
+                        target &&
+                        (target === parallaxRef.current ||
+                            (parallaxRef.current &&
+                                parallaxRef.current.contains(target)))
+                    )
+                })
+            triggers.forEach((trigger) => trigger.kill())
         }
     }, [backgroundImage, videoSrc])
 

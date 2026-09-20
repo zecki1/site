@@ -92,21 +92,21 @@ export default function ContactPage() {
                         <div className="flex items-start gap-4">
                             <div className="bg-primary/10 text-primary p-3 rounded-full mt-1"><MapPin /></div>
                             <div>
-                                <h3 className="font-semibold text-lg"><TextTranslator ignoreCheck={true}>{pageTexts.location}</TextTranslator></h3>
+                                <h2 className="font-semibold text-lg text-foreground"><TextTranslator ignoreCheck={true}>{pageTexts.location}</TextTranslator></h2>
                                 <p className="text-muted-foreground">São Paulo - SP, Brasil</p>
                             </div>
                         </div>
                         <div className="flex items-start gap-4">
                             <div className="bg-primary/10 text-primary p-3 rounded-full mt-1"><Mail /></div>
                             <div>
-                                <h3 className="font-semibold text-lg"><TextTranslator ignoreCheck={true}>{pageTexts.email}</TextTranslator></h3>
+                                <h2 className="font-semibold text-lg text-foreground"><TextTranslator ignoreCheck={true}>{pageTexts.email}</TextTranslator></h2>
                                 <a href="mailto:zecki1@hotmail.com" className="text-muted-foreground hover:text-primary transition-colors">zecki1@hotmail.com</a>
                             </div>
                         </div>
                         <div className="flex items-start gap-4">
                             <div className="bg-primary/10 text-primary p-3 rounded-full mt-1"><Phone /></div>
                             <div>
-                                <h3 className="font-semibold text-lg"><TextTranslator ignoreCheck={true}>{pageTexts.phone}</TextTranslator></h3>
+                                <h2 className="font-semibold text-lg text-foreground"><TextTranslator ignoreCheck={true}>{pageTexts.phone}</TextTranslator></h2>
                                 <a href="https://wa.me/5511982101630" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">+55 (11) 9 8210-1630</a>
                             </div>
                         </div>

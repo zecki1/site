@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Sun, Moon, Globe, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import TextTranslator from "./TextTranslator";
+import { setLanguage } from "@/lib/setLanguage";
 import { Sidebar } from "@/components/layout/Sidebar";
 import {
     DropdownMenu,
@@ -99,7 +100,6 @@ export function Header() {
         window.addEventListener("resize", updateAnimation);
         return () => {
             window.removeEventListener("resize", updateAnimation);
-            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
         };
     }, []);
 
@@ -110,7 +110,7 @@ export function Header() {
     };
 
     const changeLanguage = (lang: string) => {
-        i18n.changeLanguage(lang);
+        setLanguage(lang);
     };
 
     const clearCacheAndStorage = async () => {

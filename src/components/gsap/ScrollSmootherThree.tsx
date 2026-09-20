@@ -53,7 +53,7 @@ export const ScrollSmootherThree: React.FC<ScrollSmootherThreeProps> = ({ classN
     window.addEventListener("resize", handleResize);
 
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      // (kill global removido: matava reveals alheios — ctx.revert() ja limpa o proprio ctx)
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }

@@ -1,7 +1,5 @@
 // src/components/layout/SkillsMarquee.tsx
 
-"use client";
-
 import React from 'react';
 
 // NOVO: Definindo as propriedades que o componente espera
@@ -13,8 +11,8 @@ interface SkillsMarqueeProps {
 
 // Componente para um único item do marquee
 const SkillTag: React.FC<{ skill: string; skillClassName?: string; textClassName?: string; }> = ({ skill, skillClassName, textClassName }) => (
-    <div className={`flex items-center gap-3 px-4 py-2 border border-[#353739] rounded-full bg-black/20 whitespace-nowrap ${skillClassName}`}>
-        <span className={`font-sans text-sm text-[#f2f2f2] ${textClassName}`}>{skill}</span>
+    <div className={`flex items-center gap-3 px-4 py-2 border border-border/60 dark:border-[#353739] rounded-full bg-background/60 dark:bg-black/20 whitespace-nowrap ${skillClassName}`}>
+        <span className={`font-sans text-sm text-foreground dark:text-[#f2f2f2] ${textClassName}`}>{skill}</span>
     </div>
 );
 

@@ -44,7 +44,7 @@ export const SmoothScrollyImages: React.FC<SmoothScrollyImagesProps> = ({ images
 
     return () => {
       window.removeEventListener("resize", updateScroll);
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      // (kill global removido: matava reveals alheios — ctx.revert() ja limpa o proprio ctx)
       if (ctx) ctx.revert();
     };
   }, [images]);

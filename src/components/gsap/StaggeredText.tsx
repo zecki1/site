@@ -31,7 +31,7 @@ export const StaggeredText: React.FC<StaggeredTextProps> = ({ text, className })
     }
 
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      // (kill global removido: matava reveals alheios — ctx.revert() ja limpa o proprio ctx)
     };
   }, [text]);
 

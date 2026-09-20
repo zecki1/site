@@ -5,6 +5,7 @@ import "../app/globals.css";
 import { Providers } from '@/components/layout/Providers';
 import { VlibrasWidget } from '@/components/layout/VlibrasWidget';
 import { AppLayout } from '@/components/layout/AppLayout'; // Importe o novo componente
+import { images } from '@/lib/images';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://zecki1.com.br'),
@@ -32,16 +33,23 @@ export const metadata: Metadata = {
     images: ["/og-image.png"],
   },
   icons: {
-    icon: '/favicons/favicon-16x16.png',
-    shortcut: '/favicons/favicon-16x16.png',
-    apple: '/favicons/favicon-16x16.png',
+    icon: [
+      { url: '/favicons/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicons/favicon-48x48.png', sizes: '48x48', type: 'image/png' },
+    ],
+    shortcut: '/favicons/favicon-32x32.png',
+    apple: [{ url: '/favicons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
   },
+  manifest: '/favicons/site.webmanifest',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <head>
+        <link rel="preload" as="image" href={images.capaMobile} media="(max-width: 767px)" fetchPriority="high" />
+        <link rel="preload" as="image" href={images.capaDesktop} media="(min-width: 768px)" fetchPriority="high" />
         <script
           dangerouslySetInnerHTML={{
             __html: `

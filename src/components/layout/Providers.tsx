@@ -2,13 +2,24 @@
 
 import "@/lib/i18n";
 import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
-import { Toaster } from "@/components/ui/sonner";
-import { CustomCursor } from "@/components/layout/CustomCursor";
-import { GlobalBackgroundEffects } from "@/components/effects/GlobalBackgroundEffects";
+import { LenisSmoothScroll } from "@/components/layout/LenisSmoothScroll";
 import { useIsDesktop } from '@/lib/hooks/uselsDesktop';
 // import { ScrollSmootherHeader } from "@/components/gsap/ScrollSmootherHeader";
+
+// Cursor customizado (gsap) só baixa em desktop — fora do caminho crítico.
+const CustomCursor = dynamic(
+    () => import("@/components/layout/CustomCursor").then((m) => m.CustomCursor),
+    { ssr: false, loading: () => null }
+);
+
+// Toaster (sonner) só é necessário após uma interação — fora do caminho crítico.
+const Toaster = dynamic(
+    () => import("@/components/ui/sonner").then((m) => m.Toaster),
+    { ssr: false, loading: () => null }
+);
 
 export function Providers({ children }: { children: React.ReactNode }) {
     const isDesktop = useIsDesktop(); // Hook que nos diz se é desktop.
@@ -37,7 +48,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     return (
         <ThemeProvider>
             {isDesktop && <CustomCursor />}
-            <GlobalBackgroundEffects />
+            <LenisSmoothScroll />
             {children}
             <Toaster />
         </ThemeProvider>

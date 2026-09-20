@@ -25,23 +25,32 @@ export const NavigationScrollTrigger: React.FC<NavigationScrollTriggerProps> = (
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
 
+    // Escopado: coletamos as triggers criadas por ESTE componente e, no
+    // cleanup, matamos APENAS elas. Antes usava ScrollTrigger.getAll()...
+    // kill() — kill GLOBAL que, em qualquer remontagem do nav (troca de
+    // idioma/tema/rota), matava os reveals dos cards do HomeFX, deixando-os
+    // travados em opacity:0 (cards "sem opacidade", só o título carregava).
+    const created: ScrollTrigger[] = []
+
     sections.forEach((section) => {
       const link = navRef.current?.querySelector(`[data-section="${section.id}"]`)
       if (link) {
-        ScrollTrigger.create({
-          trigger: `#${section.id}`,
-          start: "top center",
-          end: "bottom center",
-          onEnter: () => link.classList.add("active"),
-          onLeave: () => link.classList.remove("active"),
-          onEnterBack: () => link.classList.add("active"),
-          onLeaveBack: () => link.classList.remove("active"),
-        })
+        created.push(
+          ScrollTrigger.create({
+            trigger: `#${section.id}`,
+            start: "top center",
+            end: "bottom center",
+            onEnter: () => link.classList.add("active"),
+            onLeave: () => link.classList.remove("active"),
+            onEnterBack: () => link.classList.add("active"),
+            onLeaveBack: () => link.classList.remove("active"),
+          })
+        )
       }
     })
 
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+      created.forEach((trigger) => trigger.kill())
     }
   }, [sections])
 
@@ -49,8 +58,8 @@ export const NavigationScrollTrigger: React.FC<NavigationScrollTriggerProps> = (
     <nav
       ref={navRef}
       className={cn(
-        "fixed top-0 z-50 w-full bg-white shadow-md p-4 flex items-center justify-center gap-6",
-        "border-b border-gray-200 backdrop-blur-md bg-opacity-90",
+        "fixed top-0 z-50 w-full bg-background/90 shadow-md p-4 flex items-center justify-center gap-6",
+        "border-b border-border backdrop-blur-md",
         className
       )}
     >
@@ -63,7 +72,7 @@ export const NavigationScrollTrigger: React.FC<NavigationScrollTriggerProps> = (
             key={section.id}
             href={`#${section.id}`}
             data-section={section.id} // Atributo para identificar a seção
-            className="text-gray-700 hover:text-blue-500 transition-colors duration-200 active:text-blue-600 active:font-semibold"
+            className="text-muted-foreground hover:text-[#00e1ff] transition-colors duration-200 active:text-[#00e1ff] active:font-semibold"
           >
             {section.title.ptBR} {/* Pode usar TextTranslator aqui se preferir */}
           </a>

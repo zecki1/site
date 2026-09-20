@@ -1,5 +1,5 @@
-import capaDesktopSrc from '/public/img/capa.jpg';
-import capaMobileSrc from '/public/img/capa-m.jpg';
+import capaDesktopSrc from '/public/img/capa.webp';
+import capaMobileSrc from '/public/img/capa-m.webp';
 
 export const images = {
     capaDesktop: capaDesktopSrc.src,

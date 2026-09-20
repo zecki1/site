@@ -4,7 +4,8 @@
 @import 'aos/dist/aos.css';
 
 html {
-  scroll-behavior: smooth;
+  /* O Lenis (smooth scroll) gerencia a rolagem. Usamos 'auto' para evitar conflito. */
+  scroll-behavior: auto;
 }
 
 @theme inline {
@@ -354,4 +355,48 @@ main {
 
 .animate-icon-color {
   animation: iconColorPulse 6s ease-in-out infinite;
+}
+
+/* Troca de ícone/texto (idioma/tema) sem framer-motion */
+@keyframes iconSwap {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.icon-swap {
+  animation: iconSwap 0.25s ease;
+}
+/* Revelação do hero via CSS (sem depender de JS no carregamento — PageSpeed).
+   O texto SSR fica visível assim que o CSS chega; o gsap no HomeFX só cuida
+   de interações posteriores (magnetic, scroll FX, três.js). */
+.hero-anim,
+.hero-cta {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-anim,
+  .hero-cta {
+    animation: heroIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--hero-delay, 0.15s);
+  }
+}
+
+@keyframes heroIn {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

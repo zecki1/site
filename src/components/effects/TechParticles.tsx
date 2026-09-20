@@ -2,17 +2,32 @@
 
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import { IconType } from 'react-icons';
+import { FaReact } from "react-icons/fa";
+import { TbBrandNextjs } from "react-icons/tb";
+import { BiLogoNodejs, BiLogoTypescript, BiLogoPhp } from "react-icons/bi";
+import { SiLaravel, SiMysql, SiFigma, SiDocker, SiDotnet } from "react-icons/si";
+import { DiHtml5, DiCss3 } from "react-icons/di";
+import { BsGit } from "react-icons/bs";
 
-// Tipos e Constantes
-interface TechStackItem {
-    name: string;
-    Icon: IconType;
-}
+// Os ícones (react-icons) ficam neste chunk: o TechParticles é carregado só
+// com `dynamic()` quando a seção #habilidades se aproxima (desktop) — assim a
+// home mobile não baixa react-icons (PageSpeed).
 
-interface TechParticlesProps {
-    techStack: TechStackItem[];
-}
+const techStack = [
+    { name: "React", Icon: FaReact },
+    { name: "Next.js", Icon: TbBrandNextjs },
+    { name: "Node.js", Icon: BiLogoNodejs },
+    { name: "TypeScript", Icon: BiLogoTypescript },
+    { name: ".NET", Icon: SiDotnet },
+    { name: "PHP", Icon: BiLogoPhp },
+    { name: "Laravel", Icon: SiLaravel },
+    { name: "MySQL", Icon: SiMysql },
+    { name: "Figma", Icon: SiFigma },
+    { name: "Git", Icon: BsGit },
+    { name: "Docker", Icon: SiDocker },
+    { name: "HTML5", Icon: DiHtml5 },
+    { name: "CSS3", Icon: DiCss3 },
+];
 
 interface Particle {
     ref: HTMLDivElement;
@@ -26,9 +41,9 @@ interface Particle {
 
 const twoColors = ["#38bdf8", "#9ca3af"];
 const PARTICLE_RADIUS = 40;
-const HOVER_COLOR = "#ffffff";
+const HOVER_COLOR = "#00e1ff";
 
-const TechParticles = ({ techStack }: TechParticlesProps) => {
+const TechParticles = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const particles = useRef<Particle[]>([]);
 
@@ -109,11 +124,12 @@ const TechParticles = ({ techStack }: TechParticlesProps) => {
                 const particle = particles.current[index];
                 const onMouseEnter = () => {
                     particle.colorTween?.pause();
-                    gsap.to(ref, { scale: 1.3, color: HOVER_COLOR, duration: 0.3, ease: "power2.out" });
+                    gsap.to(ref, { scale: 1.3, color: HOVER_COLOR, opacity: 1, duration: 0.3, ease: "power2.out" });
                 };
                 const onMouseLeave = () => {
                     gsap.to(ref, {
                         scale: 1,
+                        opacity: 0.6,
                         color: gsap.getProperty(ref, "color") as string,
                         duration: 0.5,
                         ease: "power2.out",
@@ -139,17 +155,13 @@ const TechParticles = ({ techStack }: TechParticlesProps) => {
 
         }, containerRef);
         return () => ctx.revert();
-    }, [techStack]);
+    }, []);
 
     return (
-        <div ref={containerRef} className="relative w-full h-full overflow-hidden hidden md:block">
-            {techStack.map(({ Icon, name }, index) => (
-                <div
-                    key={`${name}-${index}`}
-                    className="absolute cursor-pointer"
-                    title={name}
-                >
-                    <Icon className="h-10 w-10 md:h-12 md:w-12 opacity-50" />
+        <div ref={containerRef} className="relative w-full h-full overflow-hidden">
+            {techStack.map(({ name, Icon }) => (
+                <div key={name} className="absolute cursor-pointer" title={name}>
+                    <Icon className="h-10 w-10 md:h-12 md:w-12 opacity-60" title={name} />
                 </div>
             ))}
         </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { setLanguage } from "@/lib/setLanguage";
 
 export const BrazilFlag: React.FC<{ className?: string }> = ({ className }) => (
     <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -53,8 +54,7 @@ export const Flags: React.FC = () => {
     const { i18n } = useTranslation();
 
     const changeLanguage = (lng: string) => {
-        i18n.changeLanguage(lng);
-        localStorage.setItem("i18nLng", lng);
+        setLanguage(lng);
     };
 
     return (

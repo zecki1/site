@@ -1,12 +1,11 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
 import {
     Mail,
     Phone,
     Github,
     Linkedin,
-    Send,
     Globe,
     Briefcase,
     Shield,
@@ -17,39 +16,37 @@ import {
     BadgeCheck,
     Languages,
     MapPin,
+    Download,
+    FlaskConical,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import TextTranslator from "@/components/layout/TextTranslator";
 
-const sectionAnimation = { initial: { opacity: 0, y: 50 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.8, ease: "easeOut" as const } };
-const staggerContainer = { whileInView: { transition: { staggerChildren: 0.08 } } };
-const staggerItem = { initial: { opacity: 0, x: -20 }, whileInView: { opacity: 1, x: 0 }, viewport: { once: true } };
+type GsapContextType = ReturnType<typeof import("gsap").default["context"]>;
 
 const experience = [
     {
-        role: "Tech Lead / Engenheiro Front-End",
+        role: "Desenvolvedor Fullstack",
         company: "SENAI São Paulo",
-        period: "abr/2023 - Atual",
+        period: "2023 - Presente",
         bullets: [
-            "Arquitetura e desenvolvimento de plataformas transacionais com Angular 15+ e TypeScript — componentes reutilizáveis, lazy loading e gerenciamento de estado.",
-            "Back-end e integrações: APIs RESTful, autenticação JWT, interceptors HTTP, tratamento de erros e políticas de segurança (CSP).",
-            "Motores de vídeo (Vanilla JS) com protocolos HLS/DASH integrados ao Azure Media Services, com entrega resiliente em larga escala.",
-            "Arquitetura de sincronização de progresso via API SCORM em LMS (Moodle, Blackboard), resiliente a redes instáveis.",
-            "Automação de testes unitários com Jest (cobertura mínima de 80%) e E2E com Cypress, incluindo fluxos críticos e cenários de borda.",
-            "Exposição das aplicações na AWS (S3, CloudFront, Lambda, API Gateway) com caching, code splitting, minificação e lazy loading; observabilidade com Datadog.",
-            "Design System no Figma (design tokens + componentes) — redução de 40% no tempo de desenvolvimento do time.",
-            "Acessibilidade WCAG 2.1 (AA/AAA) com ARIA e VLibras, atuando como multiplicador interno.",
-            "Liderança técnica: fluxo de demandas, code review, refatoração e mentoria; iniciativas com IA Autônoma (Claude Code, MCP, Spec Driven Development).",
+            "Desenvolvimento fullstack de aplicações web em React, Next.js e Angular (incluindo Teleprompt) que atendem internamente o ecossistema EAD do SENAI.",
+            "Construção de APIs RESTful (Java/Spring Boot, Node.js) com autenticação JWT, isolamento por workspace e tratamento de erros.",
+            "Implementação de microsserviços com Docker, pipelines CI/CD (GitHub Actions) e deploy automatizado (Vercel / cloud).",
+            "Cloud: infraestrutura corporativa Microsoft Azure (Azure Media Services — streaming HLS/DASH) e Google Cloud Platform (VM e2-micro com Docker Compose + nginx para hosting de APIs .NET, certbot HTTPS).",
+            "Criação de Design System no Figma com design tokens e componentes reutilizáveis — redução de 40% no tempo de desenvolvimento.",
+            "Testes unitários (Jest, 80% cobertura) e E2E (Cypress); acessibilidade WCAG 2.1 (AA/AAA); performance (SSR, lazy loading, Core Web Vitals).",
+            "Monitoramento com Datadog e Dynatrace; code review, refatoração e mentoria; iniciativas com IA Autônoma (Spec Driven Development).",
         ],
     },
     {
-        role: "Web Designer Gráfico",
+        role: "Desenvolvedor Web",
         company: "SENAI São Paulo",
-        period: "out/2020 - abr/2023",
-        extra: "Promovido internamente.",
+        period: "2019 - 2023",
+        extra: "Admitido out/2019 (parceria Real Parceria) — efetivado ago/2020; promovido a Desenvolvedor Fullstack em 2023.",
         bullets: [
-            "Interfaces responsivas mobile-first (React, Angular, TypeScript) integradas a APIs REST.",
-            "Templates e componentes reutilizáveis que se tornaram a base dos produtos internos.",
-            "Boas práticas de acessibilidade (semântica, contraste, navegação por teclado) e otimização de performance (assets, lazy loading).",
+            "Interfaces web com HTML5, CSS3/SCSS, JavaScript, TypeScript, React, Next.js e Angular; componentes reutilizáveis, responsividade e abordagem mobile-first.",
+            "Integração com APIs REST, versionamento com Git em ambiente colaborativo; acessibilidade (semântica, contraste, teclado) e performance (lazy loading).",
         ],
     },
     {
@@ -57,261 +54,395 @@ const experience = [
         company: "GALL / Cia Sex",
         period: "2017 - 2020",
         bullets: [
-            "Desenvolvimento full stack com Laravel, PHP, Python e Node.js, com integração a bancos SQL.",
-            "Atuação em Java Spring na construção de APIs e fluxos de integração.",
-            "Interfaces web, artes gráficas, SEO técnico e CRO para landing pages de alta conversão.",
-        ],
-    },
-    {
-        role: "Analista de E-commerce",
-        company: "Elogin",
-        period: "jul/2018 - nov/2019",
-        bullets: [
-            "Funções front-end (chat, integração WhatsApp, marketplaces) e criação de arte para redes sociais, blog, catálogo e site.",
-        ],
-    },
-    {
-        role: "Suporte de Sistema",
-        company: "Wortsmann Associados",
-        period: "jan/2019 - nov/2019",
-        bullets: [
-            "Desenvolvimento de interfaces web responsivas e integração com APIs.",
-        ],
-    },
-    {
-        role: "Administração de Marketing",
-        company: "Diem",
-        period: "ago/2017 - nov/2019",
-        bullets: [
-            "Desenvolvimento de arte para Google Ads e plataformas de anúncio.",
+            "Full stack com Laravel, PHP, Python, Node.js e bancos SQL; Java Spring para APIs e integrações.",
+            "Interfaces web, SEO técnico, CRO para landing pages de alta conversão.",
         ],
     },
 ];
 
 const skillGroups = [
     {
-        title: "Frontend & Interfaces",
-        items: "Angular 15+, React 19, Next.js, TypeScript, HTML5, SCSS, Tailwind CSS, Radix UI, Shadcn UI; Acessibilidade (WCAG 2.1 AA/AAA), ARIA, responsividade, VLibras; animações com Framer Motion, GSAP e Three.js; Design Systems (Figma) e prototipação de alta fidelidade.",
+        title: "Frontend",
+        items: "Angular 15+, React 19, Next.js, TypeScript, HTML5, SCSS, Tailwind CSS, Radix UI / Shadcn UI, Design Systems (Figma), WCAG 2.1 AA/AAA, responsividade",
     },
     {
-        title: "Back-End & Dados",
-        items: "Node.js, PHP (Laravel), Python, Java Spring Boot; APIs RESTful e microsserviços; bancos SQL (SQL Server, MySQL, PostgreSQL) e NoSQL em tempo real (Firebase/Firestore).",
+        title: "Backend",
+        items: "Java 17+, Spring Boot, Node.js, APIs RESTful, Microsserviços, JWT, SQL",
     },
     {
-        title: "Testes, Build & Performance",
-        items: "Jest, Vitest e Cypress (E2E) com cobertura mínima de 80%; Webpack, Rollup, Vite e Turbopack; SSR/SSG/ISR, code splitting, minificação e lazy loading; Core Web Vitals.",
+        title: "Cloud & Infra",
+        items: "Azure (Media Services), AWS (S3, CloudFront, Lambda, API Gateway), Google Cloud Platform (VM e2-micro, Docker Compose, nginx, certbot), Docker, Kubernetes, IaC",
     },
     {
-        title: "Cloud & DevOps",
-        items: "AWS (S3, CloudFront, Lambda, API Gateway), Azure Media Services, Vercel e Docker; Git, GitHub Actions, pipelines CI/CD e deploy automatizado; observabilidade com Datadog.",
+        title: "Testes & Build",
+        items: "Jest, Vitest, Jasmine, Karma, Cypress (E2E), 80% cobertura mínima, Webpack, Vite, Turbopack, code splitting, lazy loading, SSR/SSG/ISR, Core Web Vitals",
     },
     {
-        title: "Arquitetura & Integrações",
-        items: "Sistemas multi-tenant, arquitetura modular Angular (módulos, services, guards) e Clean Architecture; autenticação JWT e políticas de segurança (CSP); integrações SCORM/LMS (Moodle, Blackboard) e HLS/DASH (Azure Media Services).",
+        title: "CI/CD & Observabilidade",
+        items: "Git, GitHub Actions, Vercel, pipelines automatizados, Datadog, Grafana, Dynatrace, Microsoft Clarity",
     },
     {
-        title: "Inteligência Artificial",
-        items: "Claude Code, Model Context Protocol (MCP), Agent Skills e Google Vertex AI; IA Autônoma com Spec Driven Development e agentes — usada só na parte repetitiva, com decisão e revisão humanas.",
+        title: "IA Aplicada",
+        items: "Claude Code, Model Context Protocol (MCP), Spec Driven Development — certificado Anthropic",
     },
 ];
 
 const education = [
-    { degree: "Pós-Graduação Lato Sensu, Desenvolvimento Full Stack", institution: "Descomplica", period: "nov/2025 - mar/2026" },
-    { degree: "Bacharelado, Engenharia de Computação", institution: "UNIVESP", period: "2017 - 2022" },
-    { degree: "Bacharelado, Design Gráfico", institution: "Universidade Paulista - UNIP", period: "2019 - 2021" },
-    { degree: "Técnico, Web Design", institution: "Microcamp", period: "2012" },
+    { degree: "Pós-Graduação — Desenvolvimento Full Stack", institution: "Descomplica", period: "out/2025 - mar/2026" },
+    { degree: "Bacharelado em Engenharia de Computação", institution: "UNIVESP", period: "2017 - 2022" },
+    { degree: "Graduação em Design Gráfico", institution: "UNIP", period: "2019 - 2021" },
+    { degree: "Técnico em Web Design — 324 horas", institution: "Microcamp", period: "2012 - 2015" },
+];
+
+const certifications = [
+    "Claude 101",
+    "Building with the Claude API",
+    "Claude Code in Action",
+    "AI Fluency Framework & Foundations",
+    "Introduction to Model Context Protocol (MCP)",
+    "MCP: Advanced Topics",
+    "Introduction to Agent Skills",
 ];
 
 const projectsPersonal = [
     {
         name: "Zecki Dashboard",
-        desc: "SaaS de produtividade com dashboard de tarefas e métricas em tempo real, gráficos (Recharts), animações (Framer Motion), autenticação e banco em tempo real (Firebase). Desenvolvido em 3 versões — Angular, React e Next.js — com a versão final em Next.js usando ISR por escalabilidade.",
+        desc: "SaaS de produtividade: tarefas, métricas em tempo real, gráficos (Recharts), autenticação. 3 versões: Angular 15 (piloto) → React → Next.js com ISR.",
         url: "https://zecki1.com.br/dashboard",
         linkLabel: "zecki1.com.br/dashboard",
     },
     {
-        name: "Teleprompt",
-        desc: "Sistema de gestão de roteiros multi-tenant com workspaces que isolam os dados por empresa, editor estruturado por cenas, teleprompter ao vivo e controle remoto. Stack: Next.js, Angular, .NET, SQL.",
+        name: "Teleprompt B2B",
+        desc: "Plataforma de roteiros e teleprompter (multi-tenant). 3 frontends (Next.js SSR + 2 Angulares SPA em 2 versões) consomem API única .NET (Clean Architecture) com JWT, isolamento por workspace, SignalR (tempo real) e Docker/GCP.",
         url: "https://zecki1.com.br/teleprompt",
         linkLabel: "zecki1.com.br/teleprompt",
     },
     {
         name: "CMS Multi-Site Headless",
-        desc: "Arquitetura front-end centralizada com ISR, experiência de edição em tempo real e um painel que gerencia conteúdo (hero, sobre, portfólio e contato) de vários sites em um só lugar. Stack: Next.js, ISR, Tailwind, Firebase.",
+        desc: "ISR, edição em tempo real, design system compartilhado entre múltiplos sites.",
         url: "https://zecki1.com.br/login",
         linkLabel: "zecki1.com.br/login",
     },
-    {
-        name: "Cleriston Ilustrações / Nick Gomes",
-        desc: "Sites institucionais com design system próprio, animações e SEO. Stack: Next.js, Tailwind, Framer Motion.",
-        url: "https://www.cleristonribeiro.com.br",
-        linkLabel: "cleristonribeiro.com.br",
-    },
 ];
 
-const practices = [
-    "Componentização, gerenciamento de estado e arquitetura modular em Angular (módulos, services, guards).",
-    "Estratégias de testes (Jest, Cypress), cobertura mínima de 80% e pipelines de CI/CD com qualidade.",
-    "Boas práticas de segurança (JWT, CSP), acessibilidade (WCAG) e performance de aplicações.",
-    "Colaboração em times com Git, code review e metodologias ágeis.",
+const unitTestAnalysis = [
+    "Testes unitários (Jest, Vitest, Jasmine + Karma) como ferramenta de análise de qualidade: cada teste é uma especificação executável do comportamento esperado do sistema.",
+    "Cobertura mínima de 80% (linhas e branches) integrada ao pipeline de CI — merge bloqueado sem atingir o limite, tornando a análise contínua e não pontual.",
+    "Detecção de regressões antes de chegar a produção: alterações em regras de negócio passam pela análise dos testes afetados antes do deploy.",
+    "Refatoração segura: a suíte de testes funciona como rede de segurança para reestruturar código legado ou novo, validando comportamento em vez de implementação.",
+    "Testes como documentação: cenários nomeados descrevem o que o sistema deve fazer, facilitando a análise de requisitos e o on-boarding do time.",
+    "E2E (Cypress) nos fluxos críticos, complementando a análise unitária com a perspectiva do usuário final.",
+    "IA Autônoma usada apenas na geração e padronização da massa de testes (lado máquina); a definição dos cenários, a análise de cobertura e a revisão das entregas são curadoria humana.",
+];
+
+const headerContact = [
+    { icon: MapPin, label: "São Paulo - SP · Dispo.: Imediata · Home Office" },
+    { icon: Phone, href: "tel:+5511982101630", label: "+55 11 98210-1630" },
+    { icon: Mail, href: "mailto:zecki1@hotmail.com", label: "zecki1@hotmail.com" },
+    { icon: Linkedin, href: "https://linkedin.com/in/zecki1", external: true, label: "linkedin.com/in/zecki1" },
+    { icon: Github, href: "https://github.com/zecki1", external: true, label: "github.com/zecki1" },
+    { icon: Globe, href: "https://zecki1.com.br", external: true, label: "zecki1.com.br" },
 ];
 
 export default function ResumePage() {
+    const pageRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        let ctx: GsapContextType | null = null;
+        let cancelled = false;
+
+        const run = () => {
+            if (cancelled) return;
+            void Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(([gsapMod, scrollMod]) => {
+                if (cancelled) return;
+                const gsap = (gsapMod.default ?? gsapMod) as unknown as typeof import("gsap").default;
+                const { ScrollTrigger } = scrollMod as typeof import("gsap/ScrollTrigger");
+                gsap.registerPlugin(ScrollTrigger);
+
+                ctx = gsap.context(() => {
+                    gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
+                        gsap.fromTo(
+                            el,
+                            { opacity: 0, y: 32 },
+                            {
+                                opacity: 1,
+                                y: 0,
+                                duration: 0.7,
+                                ease: "power3.out",
+                                scrollTrigger: {
+                                    trigger: el,
+                                    start: "top 88%",
+                                    toggleActions: "play none none none",
+                                },
+                            }
+                        );
+                    });
+
+                    gsap.fromTo(
+                        "[data-reveal-item]",
+                        { opacity: 0, x: -18 },
+                        {
+                            opacity: 1,
+                            x: 0,
+                            duration: 0.5,
+                            stagger: 0.05,
+                            ease: "power3.out",
+                            scrollTrigger: {
+                                start: "top 88%",
+                                toggleActions: "play none none none",
+                            },
+                        }
+                    );
+                }, pageRef);
+            });
+        };
+
+        const w = window as Window & { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number };
+        let timeoutId: number | undefined;
+        let idleId: number | undefined;
+        if (w.requestIdleCallback) {
+            idleId = w.requestIdleCallback(run, { timeout: 2000 });
+        } else {
+            timeoutId = window.setTimeout(run, 300);
+        }
+
+        return () => {
+            cancelled = true;
+            if (idleId !== undefined && w.cancelIdleCallback) w.cancelIdleCallback(idleId);
+            if (timeoutId !== undefined) window.clearTimeout(timeoutId);
+            ctx?.revert();
+        };
+    }, []);
+
+    const SectionTitle = ({
+        icon: Icon,
+        title,
+    }: {
+        icon: React.ComponentType<{ className?: string; size?: number }>;
+        title: string;
+    }) => (
+        <h3 className="mb-4 flex items-center gap-3 border-b pb-2 text-2xl font-bold md:text-3xl">
+            <Icon size={24} className="text-primary" />
+            {title}
+        </h3>
+    );
+
     return (
-        <>
-            {/* Seção 1: Cabeçalho */}
-            <section className="py-24 md:py-32">
-                <div className="u-container">
-                    <motion.header {...sectionAnimation} className="text-center bg-background/70 backdrop-blur py-8 rounded-lg px-4">
-                        <h1 className="text-4xl md:text-5xl font-bold tracking-tighter">Ezequiel Regino Monção</h1>
-                        <h3 className="text-2xl md:text-4xl font-bold mb-6 mt-4 bg-linear-to-r from-blue-400 via-[#00e1ff] to-blue-400 bg-clip-text text-transparent animate-gradient-loop">
+        <div ref={pageRef}>
+            {/* Cabeçalho */}
+            <section className="px-4 py-20 md:py-28">
+                <div className="mx-auto max-w-6xl">
+                    <div data-reveal className="rounded-lg bg-background/70 px-4 py-8 text-center backdrop-blur md:px-8">
+                        <h1 className="text-4xl font-bold tracking-tighter md:text-5xl">Ezequiel Regino Monção</h1>
+                        <h2 className="mt-4 mb-6 bg-linear-to-r from-blue-400 via-[#00e1ff] to-blue-400 bg-clip-text text-2xl font-bold text-transparent md:text-3xl">
+                            Desenvolvedor Fullstack Sênior | Angular, React, Next.js, Node.js, Java/Spring, AWS & Azure
+                        </h2>
+                        <ul className="mb-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
+                            {headerContact.map((c, i) => (
+                                <li key={i} className="inline-flex items-center gap-1.5">
+                                    <c.icon size={14} className="text-primary" />
+                                    {c.href ? (
+                                        <a
+                                            href={c.href}
+                                            target={c.external ? "_blank" : undefined}
+                                            rel={c.external ? "noopener noreferrer" : undefined}
+                                            className="hover:text-primary"
+                                        >
+                                            {c.label}
+                                        </a>
+                                    ) : (
+                                        <span>{c.label}</span>
+                                    )}
+                                    {i < headerContact.length - 1 && <span className="mx-1 text-border">|</span>}
+                                </li>
+                            ))}
+                        </ul>
+                        <p className="mx-auto max-w-4xl text-left text-muted-foreground md:text-center">
                             <TextTranslator ignoreCheck={true}>
                                 {{
-                                    ptBR: "Desenvolvedor Full Stack | TypeScript, React, Next.js, Node.js, AWS",
-                                    en: "Desenvolvedor Full Stack | TypeScript, React, Next.js, Node.js, AWS",
-                                    es: "Desenvolvedor Full Stack | TypeScript, React, Next.js, Node.js, AWS",
-                                }}
-                            </TextTranslator>
-                        </h3>
-                        <p className="mb-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
-                            <span className="inline-flex items-center gap-1"><MapPin size={14} /> São Paulo - SP (CEP 02286-000)</span>
-                            <span>|</span> <a href="tel:+5511982101630" className="hover:text-primary">+55 11 98210-1630</a>
-                            <span>|</span> <a href="mailto:zecki1@hotmail.com" className="hover:text-primary">zecki1@hotmail.com</a>
-                            <span>|</span> <a href="https://linkedin.com/in/zecki1" target="_blank" rel="noopener noreferrer" className="hover:text-primary">linkedin.com/in/zecki1</a>
-                            <span>|</span> <a href="https://github.com/zecki1" target="_blank" rel="noopener noreferrer" className="hover:text-primary">github.com/zecki1</a>
-                            <span>|</span> <a href="https://zecki1.com.br" target="_blank" rel="noopener noreferrer" className="hover:text-primary">zecki1.com.br</a>
-                        </p>
-                        <p className="mt-4 max-w-3xl mx-auto text-muted-foreground text-left md:text-center">
-                            <TextTranslator ignoreCheck={true}>
-                                {{
-                                    ptBR: "Desenvolvedor Full Stack com 13+ anos construindo aplicações web completas — do front-end ao back-end, infraestrutura e deploy. Especialista em Angular, React, Next.js e TypeScript, Node.js, PHP (Laravel) e Java Spring, bancos SQL e Firebase/Firestore. APIs RESTful seguras (JWT/CSP), testes Jest/Cypress com cobertura mínima de 80%, pipelines CI/CD e cloud AWS/Azure. Construo sistemas multi-tenant com IA generativa (Google Vertex AI) e mantenho SaaS próprios em produção. Uso IA Autônoma (Claude Code, MCP, Spec Driven Development) apenas na parte repetitiva — decisão e revisão humanas.",
-                                    en: "Desenvolvedor Full Stack com 13+ anos construindo aplicações web completas — do front-end ao back-end, infraestrutura e deploy. Especialista em Angular, React, Next.js e TypeScript, Node.js, PHP (Laravel) e Java Spring, bancos SQL e Firebase/Firestore. APIs RESTful seguras (JWT/CSP), testes Jest/Cypress com cobertura mínima de 80%, pipelines CI/CD e cloud AWS/Azure. Construo sistemas multi-tenant com IA generativa (Google Vertex AI) e mantenho SaaS próprios em produção. Uso IA Autônoma (Claude Code, MCP, Spec Driven Development) apenas na parte repetitiva — decisão e revisão humanas.",
-                                    es: "Desenvolvedor Full Stack com 13+ anos construindo aplicações web completas — do front-end ao back-end, infraestrutura e deploy. Especialista em Angular, React, Next.js e TypeScript, Node.js, PHP (Laravel) e Java Spring, bancos SQL e Firebase/Firestore. APIs RESTful seguras (JWT/CSP), testes Jest/Cypress com cobertura mínima de 80%, pipelines CI/CD e cloud AWS/Azure. Construo sistemas multi-tenant com IA generativa (Google Vertex AI) e mantenho SaaS próprios em produção. Uso IA Autônoma (Claude Code, MCP, Spec Driven Development) apenas na parte repetitiva — decisão e revisão humanas.",
+                                    ptBR: "Desenvolvedor Fullstack Sênior com 13+ anos de experiência em produtos digitais de alta performance, acessíveis e escaláveis. Especialista em Angular 15+, React 19 e Next.js no front-end, com atuação sólida em back-end (Java 17+/Spring Boot, Node.js) e experiência prática com microsserviços, Docker/Kubernetes, Azure, AWS e Google Cloud Platform (GCP). Formação em Engenharia da Computação e Design Gráfico. Lidero tecnicamente o time no SENAI, onde criei um Design System que reduziu em 40% o tempo de desenvolvimento e desenvolvi aplicações fullstack (React, Next.js, Angular) que atendem o ecossistema EAD internamente. Testes (Jest, Cypress), CI/CD (GitHub Actions, Vercel) e IA Autônoma (certificado Anthropic). Busco oportunidade em modelo home office.",
+                                    en: "Desenvolvedor Fullstack Sênior com 13+ anos de experiência em produtos digitais de alta performance, acessíveis e escaláveis. Especialista em Angular 15+, React 19 e Next.js no front-end, com atuação sólida em back-end (Java 17+/Spring Boot, Node.js) e experiência prática com microsserviços, Docker/Kubernetes, Azure, AWS e Google Cloud Platform (GCP). Formação em Engenharia da Computação e Design Gráfico. Lidero tecnicamente o time no SENAI, onde criei um Design System que reduziu em 40% o tempo de desenvolvimento e desenvolvi aplicações fullstack (React, Next.js, Angular) que atendem o ecossistema EAD internamente. Testes (Jest, Cypress), CI/CD (GitHub Actions, Vercel) e IA Autônoma (certificado Anthropic). Busco oportunidade em modelo home office.",
+                                    es: "Desenvolvedor Fullstack Sênior com 13+ anos de experiência em produtos digitais de alta performance, acessíveis e escaláveis. Especialista em Angular 15+, React 19 e Next.js no front-end, com atuação sólida em back-end (Java 17+/Spring Boot, Node.js) e experiência prática com microsserviços, Docker/Kubernetes, Azure, AWS e Google Cloud Platform (GCP). Formação em Engenharia da Computação e Design Gráfico. Lidero tecnicamente o time no SENAI, onde criei um Design System que reduziu em 40% o tempo de desenvolvimento e desenvolvi aplicações fullstack (React, Next.js, Angular) que atendem o ecossistema EAD internamente. Testes (Jest, Cypress), CI/CD (GitHub Actions, Vercel) e IA Autônoma (certificado Anthropic). Busco oportunidade em modelo home office.",
                                 }}
                             </TextTranslator>
                         </p>
-                    </motion.header>
-                </div>
-            </section>
-
-            {/* Seção 2: Conteúdo */}
-            <section className="pb-24 md:pb-32 bg-background/70 backdrop-blur container mx-auto">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 u-container py-16">
-                    <motion.aside {...sectionAnimation} className="lg:col-span-1 flex flex-col gap-12 mx-10">
-                        <div>
-                            <h3 className="flex items-center gap-3 text-2xl font-bold border-b pb-2 mb-4"><Mail size={20} /> <TextTranslator ignoreCheck={true}>{{ ptBR: "CONTATO", en: "CONTATO", es: "CONTATO" }}</TextTranslator></h3>
-                            <ul className="space-y-3 text-muted-foreground text-sm">
-                                <li className="flex items-center gap-3"><MapPin size={16} /> São Paulo - SP, Brasil</li>
-                                <li className="flex items-center gap-3"><Send size={16} /> <a href="mailto:zecki1@hotmail.com" className="hover:text-primary">zecki1@hotmail.com</a></li>
-                                <li className="flex items-center gap-3"><Phone size={16} /> <a href="tel:+5511982101630" className="hover:text-primary">+55 11 98210-1630</a></li>
-                                <li className="flex items-center gap-3"><Globe size={16} /> <a href="https://zecki1.com.br" target="_blank" rel="noopener noreferrer" className="hover:text-primary">zecki1.com.br</a></li>
-                                <li className="flex items-center gap-3"><Github size={16} /> <a href="https://github.com/zecki1" target="_blank" rel="noopener noreferrer" className="hover:text-primary">github.com/zecki1</a></li>
-                                <li className="flex items-center gap-3"><Linkedin size={16} /> <a href="https://linkedin.com/in/zecki1" target="_blank" rel="noopener noreferrer" className="hover:text-primary">linkedin.com/in/zecki1</a></li>
-                            </ul>
-                        </div>
-
-                        <div>
-                            <h3 className="flex items-center gap-3 text-2xl font-bold border-b pb-2 mb-4"><GraduationCap size={20} /> <TextTranslator ignoreCheck={true}>{{ ptBR: "FORMAÇÃO", en: "FORMAÇÃO", es: "FORMAÇÃO" }}</TextTranslator></h3>
-                            <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" viewport={{ once: true }} className="space-y-4">
-                                {education.map((item, i) => (
-                                    <motion.div key={i} variants={staggerItem}>
-                                        <p className="font-semibold text-sm">{item.degree}</p>
-                                        <p className="text-sm text-muted-foreground">{item.institution} | {item.period}</p>
-                                    </motion.div>
-                                ))}
-                            </motion.div>
-                        </div>
-
-                        <div>
-                            <h3 className="flex items-center gap-3 text-2xl font-bold border-b pb-2 mb-4"><BadgeCheck size={20} /> <TextTranslator ignoreCheck={true}>{{ ptBR: "CERTIFICAÇÕES", en: "CERTIFICAÇÕES", es: "CERTIFICAÇÕES" }}</TextTranslator></h3>
-                            <p className="text-sm text-muted-foreground">Anthropic (mai/2026):</p>
-                            <ul className="list-disc list-inside space-y-1.5 text-muted-foreground text-sm">
-                                <li>Claude 101</li>
-                                <li>Building with the Claude API</li>
-                                <li>Claude Code in Action</li>
-                                <li>AI Fluency Framework & Foundations</li>
-                                <li>Introduction to Model Context Protocol (MCP)</li>
-                                <li>MCP: Advanced Topics</li>
-                                <li>Introduction to Agent Skills</li>
-                            </ul>
-                        </div>
-
-                        <div>
-                            <h3 className="flex items-center gap-3 text-2xl font-bold border-b pb-2 mb-4"><Languages size={20} /> <TextTranslator ignoreCheck={true}>{{ ptBR: "IDIOMAS", en: "IDIOMAS", es: "IDIOMAS" }}</TextTranslator></h3>
-                            <ul className="space-y-2 text-muted-foreground text-sm">
-                                <li><strong>Português:</strong> Nativo</li>
-                                <li><strong>Inglês:</strong> Proficiência profissional (técnico)</li>
-                            </ul>
-                        </div>
-                    </motion.aside>
-
-                    <div className="lg:col-span-2 flex flex-col gap-12">
-                        <motion.section {...sectionAnimation}>
-                            <h3 className="flex items-center gap-3 text-3xl font-bold border-b pb-2 mb-4 mx-8"><Shield size={24} /> <TextTranslator ignoreCheck={true}>{{ ptBR: "COMPETÊNCIAS TÉCNICAS", en: "COMPETÊNCIAS TÉCNICAS", es: "COMPETÊNCIAS TÉCNICAS" }}</TextTranslator></h3>
-                            <div className="space-y-4 mx-8">
-                                {skillGroups.map((group, i) => (
-                                    <div key={i}>
-                                        <h4 className="font-semibold text-lg mb-1">{group.title}:</h4>
-                                        <p className="text-muted-foreground text-sm">{group.items}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </motion.section>
-
-                        <motion.section {...sectionAnimation}>
-                            <h3 className="flex items-center gap-3 text-3xl font-bold border-b pb-2 mb-4 mx-8"><Briefcase size={24} /> <TextTranslator ignoreCheck={true}>{{ ptBR: "EXPERIÊNCIA PROFISSIONAL", en: "EXPERIÊNCIA PROFISSIONAL", es: "EXPERIÊNCIA PROFISSIONAL" }}</TextTranslator></h3>
-                            <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" viewport={{ once: true }} className="space-y-8 mx-8">
-                                {experience.map((job, i) => (
-                                    <motion.div key={i} variants={staggerItem}>
-                                        <div className="flex flex-col sm:flex-row justify-between sm:items-baseline">
-                                            <h4 className="text-xl font-semibold">{job.role}</h4>
-                                            <p className="text-sm text-muted-foreground">{job.period}</p>
-                                        </div>
-                                        <p className="text-primary mb-2">
-                                            {job.company}
-                                            {job.extra ? <span className="text-muted-foreground"> · {job.extra}</span> : null}
-                                        </p>
-                                        <ul className="list-disc list-inside space-y-1.5 text-muted-foreground text-sm">
-                                            {job.bullets.map((b, j) => (
-                                                <li key={j}>{b}</li>
-                                            ))}
-                                        </ul>
-                                    </motion.div>
-                                ))}
-                            </motion.div>
-                        </motion.section>
-
-                        <motion.section {...sectionAnimation}>
-                            <h3 className="flex items-center gap-3 text-3xl font-bold border-b pb-2 mb-4 mx-8"><Rocket size={24} /> <TextTranslator ignoreCheck={true}>{{ ptBR: "PROJETOS PESSOAIS / MICRO SAAS", en: "PROJETOS PESSOAIS / MICRO SAAS", es: "PROJETOS PESSOAIS / MICRO SAAS" }}</TextTranslator></h3>
-                            <div className="space-y-6 mx-8">
-                                {projectsPersonal.map((p, i) => (
-                                    <div key={i}>
-                                        <h4 className="font-semibold text-lg">{p.name}</h4>
-                                        <p className="text-muted-foreground text-sm mb-1">{p.desc}</p>
-                                        <a href={p.url} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline">{p.linkLabel}</a>
-                                    </div>
-                                ))}
-                            </div>
-                        </motion.section>
-
-                        <motion.section {...sectionAnimation}>
-                            <h3 className="flex items-center gap-3 text-3xl font-bold border-b pb-2 mb-4 mx-8"><Bot size={24} /> <TextTranslator ignoreCheck={true}>{{ ptBR: "INTELIGÊNCIA ARTIFICIAL — APLICAÇÃO PRÁTICA", en: "INTELIGÊNCIA ARTIFICIAL — APLICAÇÃO PRÁTICA", es: "INTELIGÊNCIA ARTIFICIAL — APLICAÇÃO PRÁTICA" }}</TextTranslator></h3>
-                            <p className="text-muted-foreground text-sm mx-8 leading-relaxed">
-                                Uso diário de IA (Claude/Anthropic) para otimizar meu hub de sistemas (gerenciador de tarefas, sistema financeiro e teleprompt), com ganho de performance e qualidade. Iniciativas com IA Autônoma (Spec Driven Development, agentes) para evolução tecnológica dos produtos. A IA é utilizada apenas na parte repetitiva do processo (lado máquina): métricas, análise inicial de código, padronização e geração de testes unitários. A tomada de decisão, a definição de padrões e melhorias e o desenvolvimento das funcionalidades são feitos por mim, com curadoria e revisão pessoal de cada entrega.
-                            </p>
-                        </motion.section>
-
-                        <motion.section {...sectionAnimation}>
-                            <h3 className="flex items-center gap-3 text-3xl font-bold border-b pb-2 mb-4 mx-8"><Award size={24} /> <TextTranslator ignoreCheck={true}>{{ ptBR: "CONHECIMENTOS / PRÁTICAS", en: "CONHECIMENTOS / PRÁTICAS", es: "CONHECIMENTOS / PRÁTICAS" }}</TextTranslator></h3>
-                            <ul className="list-disc list-inside space-y-2 text-muted-foreground text-sm mx-8">
-                                {practices.map((item, i) => (
-                                    <li key={i}>{item}</li>
-                                ))}
-                            </ul>
-                        </motion.section>
+                        <Button
+                            asChild
+                            size="lg"
+                            variant="outline"
+                            className="mt-8 rounded-full transition-[color,background-color,border-color] duration-300"
+                        >
+                            <a href="/Ezequiel_Fullstack.pdf" download rel="noopener noreferrer">
+                                <Download className="mr-2 h-5 w-5" />
+                                Baixar currículo (PDF)
+                            </a>
+                        </Button>
                     </div>
                 </div>
             </section>
-        </>
+
+            {/* Conteúdo */}
+            <section className="px-4 pb-24 md:pb-32">
+                <div className="mx-auto max-w-6xl">
+                    <div className="grid grid-cols-1 gap-16 lg:grid-cols-3">
+                        <aside className="flex flex-col gap-12 lg:col-span-1">
+                            <div data-reveal>
+                                <SectionTitle icon={Mail} title="CONTATO" />
+                                <ul className="space-y-3 text-sm text-muted-foreground">
+                                    {headerContact.map((c, i) => (
+                                        <li key={i} className="flex items-center gap-3">
+                                            <c.icon size={16} className="text-primary" />
+                                            {c.href ? (
+                                                <a
+                                                    href={c.href}
+                                                    target={c.external ? "_blank" : undefined}
+                                                    rel={c.external ? "noopener noreferrer" : undefined}
+                                                    className="hover:text-primary"
+                                                >
+                                                    {c.label}
+                                                </a>
+                                            ) : (
+                                                <span>{c.label}</span>
+                                            )}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            <div data-reveal>
+                                <SectionTitle icon={GraduationCap} title="FORMAÇÃO" />
+                                <div className="space-y-4">
+                                    {education.map((item, i) => (
+                                        <div key={i} data-reveal-item>
+                                            <p className="text-sm font-semibold">{item.degree}</p>
+                                            <p className="text-sm text-muted-foreground">
+                                                {item.institution} | {item.period}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div data-reveal>
+                                <SectionTitle icon={BadgeCheck} title="CERTIFICAÇÕES" />
+                                <p className="text-sm text-muted-foreground">Anthropic (mai/2026):</p>
+                                <ul className="mt-2 list-inside list-disc space-y-1.5 text-sm text-muted-foreground">
+                                    {certifications.map((c, i) => (
+                                        <li key={i}>{c}</li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            <div data-reveal>
+                                <SectionTitle icon={Languages} title="IDIOMAS" />
+                                <ul className="space-y-2 text-sm text-muted-foreground">
+                                    <li>
+                                        <strong>Português:</strong> Nativo
+                                    </li>
+                                    <li>
+                                        <strong>Inglês:</strong> Proficiência profissional (técnico)
+                                    </li>
+                                </ul>
+                            </div>
+                        </aside>
+
+                        <div className="flex flex-col gap-12 lg:col-span-2">
+                            <section data-reveal>
+                                <SectionTitle icon={Shield} title="COMPETÊNCIAS TÉCNICAS" />
+                                <div className="space-y-4">
+                                    {skillGroups.map((group, i) => (
+                                        <div key={i} data-reveal-item>
+                                            <h4 className="mb-1 text-lg font-semibold">{group.title}:</h4>
+                                            <p className="text-sm text-muted-foreground">{group.items}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+
+                            <section data-reveal>
+                                <SectionTitle icon={FlaskConical} title="ANÁLISE ATRAVÉS DE TESTES UNITÁRIOS" />
+                                <ul className="list-inside list-disc space-y-2 text-sm text-muted-foreground">
+                                    {unitTestAnalysis.map((item, i) => (
+                                        <li key={i}>{item}</li>
+                                    ))}
+                                </ul>
+                            </section>
+
+                            <section data-reveal>
+                                <SectionTitle icon={Briefcase} title="EXPERIÊNCIA PROFISSIONAL" />
+                                <div className="space-y-8">
+                                    {experience.map((job, i) => (
+                                        <div key={i} data-reveal-item>
+                                            <div className="flex flex-col justify-between sm:flex-row sm:items-baseline">
+                                                <h4 className="text-xl font-semibold">{job.role}</h4>
+                                                <p className="text-sm text-muted-foreground">{job.period}</p>
+                                            </div>
+                                            <p className="mb-2 text-primary">
+                                                {job.company}
+                                                {job.extra ? (
+                                                    <span className="text-muted-foreground"> · {job.extra}</span>
+                                                ) : null}
+                                            </p>
+                                            <ul className="list-inside list-disc space-y-1.5 text-sm text-muted-foreground">
+                                                {job.bullets.map((b, j) => (
+                                                    <li key={j}>{b}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+
+                            <section data-reveal>
+                                <SectionTitle icon={Rocket} title="PROJETOS PESSOAIS" />
+                                <div className="space-y-6">
+                                    {projectsPersonal.map((p, i) => (
+                                        <div key={i} data-reveal-item>
+                                            <h4 className="text-lg font-semibold">{p.name}</h4>
+                                            <p className="mb-1 text-sm text-muted-foreground">{p.desc}</p>
+                                            <a
+                                                href={p.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-sm text-primary hover:underline"
+                                            >
+                                                {p.linkLabel}
+                                            </a>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+
+                            <section data-reveal>
+                                <SectionTitle icon={Bot} title="INTELIGÊNCIA ARTIFICIAL — APLICAÇÃO PRÁTICA" />
+                                <p className="text-sm leading-relaxed text-muted-foreground">
+                                    Uso diário de IA (Claude/Anthropic) para otimizar meu hub de sistemas (gerenciador de
+                                    tarefas, sistema financeiro e teleprompt), com ganho de performance e qualidade.
+                                    Iniciativas com IA Autônoma (Spec Driven Development, agentes) para evolução tecnológica
+                                    dos produtos. A IA é utilizada apenas na parte repetitiva do processo (lado máquina):
+                                    métricas, análise inicial de código, padronização e geração de testes unitários. A tomada
+                                    de decisão, a definição de padrões e melhorias e o desenvolvimento das funcionalidades
+                                    são feitos por mim, com curadoria e revisão pessoal de cada entrega.
+                                </p>
+                            </section>
+
+                            <section data-reveal>
+                                <SectionTitle icon={Award} title="CONHECIMENTOS / PRÁTICAS" />
+                                <ul className="list-inside list-disc space-y-2 text-sm text-muted-foreground">
+                                    {[
+                                        "Componentização, gerenciamento de estado e arquitetura modular em Angular (módulos, services, guards).",
+                                        "Estratégias de testes (Jest, Cypress), cobertura mínima de 80% e pipelines de CI/CD com qualidade.",
+                                        "Boas práticas de segurança (JWT, CSP), acessibilidade (WCAG) e performance de aplicações.",
+                                        "Colaboração em times com Git, code review e metodologias ágeis.",
+                                    ].map((item, i) => (
+                                        <li key={i}>{item}</li>
+                                    ))}
+                                </ul>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
     );
 }

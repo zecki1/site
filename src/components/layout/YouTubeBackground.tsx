@@ -63,9 +63,7 @@ export const YouTubeBackground: React.FC<YouTubeBackgroundProps> = ({
         <div
             ref={containerRef}
             className={cn("absolute inset-0 overflow-hidden z-0 bg-black", className)}
-            onClick={handleInteraction}
         >
-            {/* O iframe só será renderizado quando o usuário clicar E o componente estiver na tela */}
             {isIntersecting && loadVideo ? (
                 <iframe
                     src={videoSrc}
@@ -76,22 +74,28 @@ export const YouTubeBackground: React.FC<YouTubeBackgroundProps> = ({
                     className="absolute top-1/2 left-1/2 w-full h-full min-w-[177.77vh] min-h-[56.25vw] object-cover -translate-x-1/2 -translate-y-1/2"
                 />
             ) : (
-                // Enquanto isso, exibe a thumbnail com um ícone de play
-                <div
-                    className="absolute inset-0 bg-cover bg-center cursor-pointer group"
-                    style={{ backgroundImage: `url(${thumbnailUrl})` }}
-                    // aria-label="Vídeo do youtube"
-                >
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center transition-all duration-300 group-hover:bg-black/40">
-                        <svg
-                            className="w-16 h-16 md:w-20 md:h-20 text-white opacity-70 group-hover:opacity-100 transition-opacity transform group-hover:scale-110"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                        >
-                            <path d="M8 5v14l11-7z" />
-                        </svg>
-                    </div>
-                </div>
+                /* O thumbnail só é buscado quando a seção se aproxima da viewport —
+                   evita baixar/decodificar do YouTube no carregamento inicial. */
+                isIntersecting && (
+                    <button
+                        type="button"
+                        onClick={handleInteraction}
+                        aria-label="Reproduzir vídeo de fundo do YouTube"
+                        className="absolute inset-0 bg-cover bg-center cursor-pointer group p-0 border-0"
+                        style={{ backgroundImage: `url(${thumbnailUrl})` }}
+                    >
+                        <span className="absolute inset-0 bg-black/50 flex items-center justify-center transition-all duration-300 group-hover:bg-black/40">
+                            <svg
+                                className="w-16 h-16 md:w-20 md:h-20 text-white opacity-70 group-hover:opacity-100 transition-opacity transform group-hover:scale-110"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                                aria-hidden="true"
+                            >
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                        </span>
+                    </button>
+                )
             )}
         </div>
     );

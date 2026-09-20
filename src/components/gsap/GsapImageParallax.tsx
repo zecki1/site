@@ -36,7 +36,7 @@ export const GsapImageParallax: React.FC<GsapImageParallaxProps> = ({ images, cl
             });
         }
         return () => {
-            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+            // (kill global removido: matava reveals alheios — ctx.revert() ja limpa o proprio ctx)
         };
     }, [images]);
 

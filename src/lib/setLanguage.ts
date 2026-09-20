@@ -8,6 +8,9 @@ export function setLanguage(lng: string) {
     } catch {
         /* localStorage indisponível (SSR) */
     }
+    // Sincroniza o atributo `lang` do documento (a11y / leitores de tela).
+    const htmlLang = ({ ptBR: "pt-BR", en: "en", es: "es" } as Record<string, string>)[lng];
+    if (htmlLang) document.documentElement.setAttribute("lang", htmlLang);
     document.cookie = `lang=${lng}; path=/; samesite=lax; max-age=31536000`;
     window.location.reload();
 }

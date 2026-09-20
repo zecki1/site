@@ -18,12 +18,17 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 import TextTranslator from "@/components/layout/TextTranslator";
+import { useTranslation } from "react-i18next";
 import { Accessibility, Text } from "lucide-react";
 
 type AccessibilityMode = "monocromatic" | "protanopia" | "deuteranopia" | "tritanopia" | "deuteranomaly" | "protanomaly" | "none";
 
 export const SettingsMenu = () => {
     const { accessibilityMode, setAccessibilityMode, fontSize, setFontSize, fontFamily, setFontFamily } = useTheme();
+    const { i18n } = useTranslation();
+    const fontSizeLabel = ({ ptBR: "Tamanho da fonte", en: "Font size", es: "Tamaño de fuente" } as Record<string, string>)[
+        i18n.language
+    ] ?? "Tamanho da fonte";
 
     const resetSettings = () => {
         setAccessibilityMode("none");
@@ -34,7 +39,7 @@ export const SettingsMenu = () => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon" className="h-8 w-8 md:h-10 md:w-10 border-color1">
+                <Button variant="outline" size="icon" className="h-10 w-10 border-color1">
                     <Accessibility className="h-4 w-4 md:h-5 md:w-5 text-color1" />
                     <span className="sr-only">
                         <TextTranslator>{{ ptBR: "Acessibilidade", en: "Accessibility", es: "Accesibilidad" }}</TextTranslator>
@@ -94,7 +99,19 @@ export const SettingsMenu = () => {
                         <TextTranslator>{{ ptBR: "Tamanho da fonte", en: "Font size", es: "Tamaño de fuente" }}</TextTranslator>
                     </div>
                     <div className="p-2 pt-1">
-                        <Slider value={[fontSize]} onValueChange={(value) => setFontSize(value[0])} min={12} max={22} step={1} />
+                        <Slider
+                            value={[fontSize]}
+                            onValueChange={(value) => setFontSize(value[0])}
+                            min={12}
+                            max={22}
+                            step={1}
+                            aria-label={fontSizeLabel}
+                            aria-valuetext={`${fontSize}px`}
+                        />
+                    </div>
+                    <div className="flex items-center justify-between px-2 pb-2">
+                        <span className="text-xs text-muted-foreground">{fontSizeLabel}</span>
+                        <span className="text-xs font-semibold text-foreground">{fontSize}px</span>
                     </div>
                     <div className="flex items-center justify-between p-2">
                         <label htmlFor="dyslexic-font-switch" className="text-sm font-medium pr-2">

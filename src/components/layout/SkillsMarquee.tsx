@@ -29,11 +29,12 @@ export const SkillsMarquee: React.FC<SkillsMarqueeProps> = ({ skills, skillClass
             <div className="absolute top-0 left-0 bottom-0 w-8 bg-gradient-to-r from-background to-transparent pointer-events-none z-10" />
             <div className="absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-background to-transparent pointer-events-none z-10" />
 
-            <div className="flex gap-4 animate-scroll w-max">
+            <ul aria-hidden="true" className="flex gap-4 animate-scroll w-max">
                 {/* Renderiza a lista duas vezes para o efeito de loop infinito */}
                 {skills.map((skill, index) => <SkillTag key={`a-${index}`} skill={skill} skillClassName={skillClassName} textClassName={textClassName} />)}
                 {skills.map((skill, index) => <SkillTag key={`b-${index}`} skill={skill} skillClassName={skillClassName} textClassName={textClassName} />)}
-            </div>
+            </ul>
+            <p className="sr-only">{skills.join(", ")}</p>
         </div>
     );
 };

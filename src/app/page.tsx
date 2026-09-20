@@ -18,8 +18,6 @@ import {
     Linkedin,
     ChevronDown,
     Briefcase,
-    Blocks,
-    PlugZap,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -29,6 +27,8 @@ import { SkillsMarquee } from "@/components/layout/SkillsMarquee";
 import { ProductImage } from "@/components/layout/ProductImage";
 import { LazyJourney } from "@/components/layout/LazyJourney";
 import { HomeFX } from "@/components/effects/HomeFX";
+import { GameNav } from "@/components/gsap/GameNav";
+import { CodeShowcase } from "@/components/layout/CodeShowcase";
 import { getLang, pick, type Locale } from "@/lib/locale";
 
 // Componentes servidor: todo o texto é SSR (lido via cookie `lang`).
@@ -586,7 +586,7 @@ export default async function HomeContent() {
     const lang = await getLang();
 
     return (
-        <main id="home-page">
+        <div id="home-page">
             {/* HERO */}
             <section
                 id="inicio"
@@ -696,20 +696,18 @@ export default async function HomeContent() {
                 />
             </div>
 
-            {/* NAVEGAÇÃO RÁPIDA */}
-            <nav className="relative z-10 flex justify-center px-4 py-8">
-                <div className="flex flex-wrap items-center justify-center gap-2 rounded-full border border-primary/30 bg-background/80 px-4 py-3 backdrop-blur-md shadow-lg">
-                    {navSections.map((item) => (
-                        <a
-                            key={item.href}
-                            href={item.href}
-                            className="inline-flex min-h-10 items-center justify-center rounded-full px-4 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary"
-                        >
-                            {pick(lang, item.label)}
-                        </a>
-                    ))}
-                </div>
-            </nav>
+            {/* NAVEGAÇÃO EM NÍVEIS (estilo game) — oculta no mobile (hambúrguer) */}
+            <GameNav
+                label={pick(lang, {
+                    ptBR: "Navegação por níveis do site",
+                    en: "Site level navigation",
+                    es: "Navegación por niveles del sitio",
+                })}
+                items={navSections.map((item) => ({
+                    href: item.href,
+                    label: pick(lang, item.label),
+                }))}
+            />
 
             {/* TRABALHOS E APLICAÇÕES */}
             <section
@@ -926,115 +924,7 @@ export default async function HomeContent() {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-                        <Link
-                            href="/codigo"
-                            className="reveal group flex flex-col rounded-2xl border border-white/10 bg-background p-8 transition-colors hover:border-[#00e1ff]/50"
-                        >
-                            <div className="p-3 rounded-lg bg-[#00e1ff]/10 text-[#00e1ff] w-fit mb-5">
-                                <Accessibility className="h-7 w-7" />
-                            </div>
-                            <h3 className="text-xl font-bold">
-                                {pick(lang, {
-                                    ptBR: "Acessibilidade",
-                                    en: "Accessibility",
-                                    es: "Accesibilidad",
-                                })}
-                            </h3>
-                            <p className="mt-3 flex-1 text-muted-foreground">
-                                {pick(lang, {
-                                    ptBR: "VLibras carregado sob demanda, prefers-reduced-motion e contraste — sem sacrificar a performance.",
-                                    en: "VLibras loaded on demand, prefers-reduced-motion, and contrast — without sacrificing performance.",
-                                    es: "VLibras cargado bajo demanda, prefers-reduced-motion y contraste, sin sacrificar el rendimiento.",
-                                })}
-                            </p>
-                            <span className="mt-6 inline-flex items-center gap-2 font-semibold text-[#00e1ff]">
-                                {pick(lang, {
-                                    ptBR: "Ver código",
-                                    en: "See code",
-                                    es: "Ver código",
-                                })}
-                                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                            </span>
-                        </Link>
-
-                        <Link
-                            href="/codigo"
-                            className="reveal group flex flex-col rounded-2xl border border-white/10 bg-background p-8 transition-colors hover:border-[#00e1ff]/50"
-                        >
-                            <div className="p-3 rounded-lg bg-[#00e1ff]/10 text-[#00e1ff] w-fit mb-5">
-                                <Blocks className="h-7 w-7" />
-                            </div>
-                            <h3 className="text-xl font-bold">
-                                {pick(lang, {
-                                    ptBR: "GSAP & Motion",
-                                    en: "GSAP & Motion",
-                                    es: "GSAP y Motion",
-                                })}
-                            </h3>
-                            <p className="mt-3 flex-1 text-muted-foreground">
-                                {pick(lang, {
-                                    ptBR: "Reveals sob ScrollTrigger que nunca travam o conteúdo invisível — com immediateRender e fallback.",
-                                    en: "ScrollTrigger reveals that never leave content stuck invisible — with immediateRender and a safety fallback.",
-                                    es: "Reveals con ScrollTrigger que nunca dejan el contenido invisible, con immediateRender y respaldo.",
-                                })}
-                            </p>
-                            <span className="mt-6 inline-flex items-center gap-2 font-semibold text-[#00e1ff]">
-                                {pick(lang, {
-                                    ptBR: "Ver código",
-                                    en: "See code",
-                                    es: "Ver código",
-                                })}
-                                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                            </span>
-                        </Link>
-
-                        <Link
-                            href="/codigo"
-                            className="reveal group flex flex-col rounded-2xl border border-white/10 bg-background p-8 transition-colors hover:border-[#00e1ff]/50"
-                        >
-                            <div className="p-3 rounded-lg bg-[#00e1ff]/10 text-[#00e1ff] w-fit mb-5">
-                                <PlugZap className="h-7 w-7" />
-                            </div>
-                            <h3 className="text-xl font-bold">
-                                {pick(lang, {
-                                    ptBR: "Integrações",
-                                    en: "Integrations",
-                                    es: "Integraciones",
-                                })}
-                            </h3>
-                            <p className="mt-3 flex-1 text-muted-foreground">
-                                {pick(lang, {
-                                    ptBR: "Upload autenticado no servidor: Firebase valida o token e o buffer vai em stream para o Cloudinary.",
-                                    en: "Authenticated server-side upload: Firebase validates the token and the buffer streams to Cloudinary.",
-                                    es: "Subida autenticada en el servidor: Firebase valida el token y el buffer va en stream a Cloudinary.",
-                                })}
-                            </p>
-                            <span className="mt-6 inline-flex items-center gap-2 font-semibold text-[#00e1ff]">
-                                {pick(lang, {
-                                    ptBR: "Ver código",
-                                    en: "See code",
-                                    es: "Ver código",
-                                })}
-                                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                            </span>
-                        </Link>
-                    </div>
-
-                    <div className="reveal mt-12 flex justify-center">
-                        <Button asChild variant="outline" size="lg" className="rounded-full">
-                            <Link href="/codigo">
-                                <span>
-                                    {pick(lang, {
-                                        ptBR: "Ver todos os trechos",
-                                        en: "View all snippets",
-                                        es: "Ver todos los fragmentos",
-                                    })}
-                                </span>
-                                <ArrowRight className="ml-2 h-5 w-5" />
-                            </Link>
-                        </Button>
-                    </div>
+                    <CodeShowcase lang={lang} />
                 </div>
             </section>
 
@@ -1238,6 +1128,6 @@ export default async function HomeContent() {
                     </Button>
                 </div>
             </section>
-        </main>
+        </div>
     );
 }

@@ -16,7 +16,6 @@ import TextTranslator from "@/components/layout/TextTranslator";
 
 const pages = [
     { slug: "home", title: { ptBR: "Início", en: "Home", es: "Inicio" } },
-    { slug: "codigo", title: { ptBR: "Código", en: "Code", es: "Código" } },
     { slug: "sobre", title: { ptBR: "Sobre", en: "About", es: "Sobre mí" } },
     { slug: "servicos", title: { ptBR: "Serviços", en: "Services", es: "Servicios" } },
     { slug: "curriculo", title: { ptBR: "Currículo", en: "Resume", es: "Currículum" } },

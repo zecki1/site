@@ -95,7 +95,10 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
 
             tl.to(backgroundRef.current, { opacity: 0, ease: "power1.inOut" }, 0);
             tl.to(headerRef.current, { height: "64px", ease: "power1.inOut" }, 0);
-            tl.to(titleRef.current, { top: '50%', yPercent: -50, ease: "power1.inOut" }, 0);
+            // Centralização do logo fica 100% no CSS (`top-1/2 -translate-y-1/2`).
+            // Não animar `top`/`yPercent` aqui: o Tailwind v4 usa a propriedade
+            // independente `translate`, que somaria com o `transform` do GSAP e
+            // deslocaria o "zecki1" o dobro para cima no mobile.
             ScrollTrigger.matchMedia({
               "(min-width: 769px)": () => tl.to(titleRef.current, { fontSize: "1.5rem", ease: "power1.inOut" }, 0),
               "(max-width: 768px)": () => tl.to(titleRef.current, { fontSize: "1.25rem", ease: "power1.inOut" }, 0),
@@ -146,7 +149,7 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
         "fixed top-0 left-0 w-full z-50 flex flex-col items-center justify-center bg-black border-b-2 animate-border-color",
         className
       )}
-      style={{ height: "100vh" }}
+      style={{ height: "100dvh" }}
     >
       <div ref={backgroundRef} className="absolute inset-0 z-0">
         <div
@@ -159,9 +162,15 @@ export const ScrollSmootherHeader: React.FC<ScrollSmootherHeaderProps> = ({ clas
         />
       </div>
 
-      <h1 ref={titleRef} className="text-center uppercase text-[#00e1ff] font-bold font-['Luckiest_Guy'] absolute top-1/2 -translate-y-1/2 z-60 text-shadow-[0_0_2px_rgba(0,0,0,0.3)]" style={{ fontSize: "10vw" }}>
+      {/* Logo decorativa da capa — o <h1> da página é o do conteúdo (Lighthouse) */}
+      <div
+        aria-hidden="true"
+        ref={titleRef}
+        className="text-center uppercase text-[#00e1ff] font-bold font-['Luckiest_Guy'] absolute top-1/2 left-0 right-0 -translate-y-1/2 z-[60] text-shadow-[0_0_2px_rgba(0,0,0,0.3)]"
+        style={{ fontSize: "10vw" }}
+      >
         zecki1
-      </h1>
+      </div>
 
       <div ref={scrollIndicatorRef} className="absolute bottom-10 z-10 animate-bounce">
         <div className="flex flex-col items-center gap-2 text-[#00e1ff]">

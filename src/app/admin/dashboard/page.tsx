@@ -393,7 +393,7 @@ export default function DashboardPage() {
     return (
         <div className="min-h-screen bg-muted/40">
             <DashboardHeader user={user} onSave={handleSave} onLogout={handleLogout} isSaving={isSaving} />
-            <main className="container mx-auto p-4 md:p-8">
+            <div className="container mx-auto p-4 md:p-8">
                 {/* Barra de status / publicação */}
                 <div className="mb-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
                     <Card className="lg:col-span-2 bg-card">
@@ -615,7 +615,7 @@ export default function DashboardPage() {
                     <Sparkles className="h-3.5 w-3.5" />
                     <TextTranslator>{{ ptBR: "Suas alterações são publicadas automaticamente no seu site.", en: "Your changes are published automatically on your site.", es: "Tus cambios se publican automáticamente en tu sitio." }}</TextTranslator>
                 </div>
-            </main>
+            </div>
         </div>
     );
 }

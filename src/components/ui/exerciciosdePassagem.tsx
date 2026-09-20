@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { FaRegTimesCircle, FaRegCheckCircle } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 
 // ============================================
 // Tipos e Interfaces Comuns
@@ -104,10 +103,16 @@ export const UnicChoice: React.FC<UnicChoiceProps> = ({ question, options, corre
                             optionStateClasses = "border-primary ring-2 ring-primary/50";
                         }
                         return (
-                            <div key={index} className={`border ${optionStateClasses} rounded-lg p-3 transition-all ${!isCompleted ? 'cursor-pointer' : ''}`} onClick={() => handleOptionClick(index)}>
+                            <button
+                                type="button"
+                                key={index}
+                                disabled={isCompleted}
+                                onClick={() => handleOptionClick(index)}
+                                className={`block w-full rounded-lg border p-3 text-left transition-all ${optionStateClasses}`}
+                            >
                                 <span>{getOptionLabel(index)} </span>
                                 {option.text[selectedLanguage]}
-                            </div>
+                            </button>
                         );
                     })}
                 </div>
@@ -223,9 +228,14 @@ export const DraginDrop: React.FC<DraginDropProps> = ({ question, sentences, wor
                         <React.Fragment key={i}>
                             {part}
                             {i < sentences[0].wordsPerSentence && (
-                                <span onClick={() => handleClearWord(i)} className={`inline-block bg-muted text-muted-foreground min-w-[100px] h-8 p-1 mx-1 border-b-2 border-dashed text-center ${!isCompleted ? 'cursor-pointer' : 'cursor-not-allowed'}`}>
+                                <button
+                                    type="button"
+                                    onClick={() => handleClearWord(i)}
+                                    disabled={isCompleted}
+                                    className={`inline-block bg-muted text-muted-foreground min-w-[100px] h-8 p-1 mx-1 border-b-2 border-dashed text-center ${!isCompleted ? '' : 'cursor-not-allowed'}`}
+                                >
                                     {selectedWords[i] !== null ? words.find(w => w.id === selectedWords[i])?.text[selectedLanguage] : '...'}
-                                </span>
+                                </button>
                             )}
                         </React.Fragment>
                     ))}
@@ -330,9 +340,15 @@ export const TrueOrFalse: React.FC<TrueOrFalseProps> = ({ question, correctAnswe
                             else optionStateClasses = "border-muted-foreground/20 cursor-not-allowed opacity-50";
                         }
                         return (
-                            <Card key={String(value)} onClick={() => handleOptionClick(value)} className={`w-full border p-4 text-center transition-all ${!isCompleted ? 'cursor-pointer' : ''} ${optionStateClasses}`}>
-                                <CardContent className="p-0">{optionText}</CardContent>
-                            </Card>
+                            <button
+                                key={String(value)}
+                                type="button"
+                                disabled={isCompleted}
+                                onClick={() => handleOptionClick(value)}
+                                className={`w-full rounded-xl border p-4 text-center transition-all ${optionStateClasses}`}
+                            >
+                                {optionText}
+                            </button>
                         )
                     })}
                 </div>

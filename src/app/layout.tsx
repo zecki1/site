@@ -6,6 +6,7 @@ import { Providers } from '@/components/layout/Providers';
 import { VlibrasWidget } from '@/components/layout/VlibrasWidget';
 import { AppLayout } from '@/components/layout/AppLayout'; // Importe o novo componente
 import { images } from '@/lib/images';
+import { getLang } from '@/lib/locale';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://zecki1.com.br'),
@@ -44,9 +45,11 @@ export const metadata: Metadata = {
   manifest: '/favicons/site.webmanifest',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const lang = await getLang();
+  const htmlLang = ({ ptBR: "pt-BR", en: "en", es: "es" } as const)[lang] ?? "pt-BR";
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
+    <html lang={htmlLang} suppressHydrationWarning>
       <head>
         <link rel="preload" as="image" href={images.capaMobile} media="(max-width: 767px)" fetchPriority="high" />
         <link rel="preload" as="image" href={images.capaDesktop} media="(min-width: 768px)" fetchPriority="high" />

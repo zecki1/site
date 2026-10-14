@@ -1,0 +1,26 @@
+{
+  "generatedAt": "2026-10-14T00:25:34.098Z",
+  "routes": {
+    "/": {
+      "violations": []
+    },
+    "/sobre": {
+      "violations": []
+    },
+    "/servicos": {
+      "violations": []
+    },
+    "/curriculo": {
+      "violations": []
+    },
+    "/desafio": {
+      "violations": []
+    },
+    "/contato": {
+      "violations": []
+    },
+    "/login": {
+      "violations": []
+    }
+  }
+}

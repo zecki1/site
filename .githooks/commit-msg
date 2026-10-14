@@ -1,0 +1,43 @@
+#!/bin/sh
+# Valida a mensagem de commit no padrão do workspace (Conventional Commits).
+# Ative com: git config core.hooksPath .githooks
+#
+# Formatos aceitos:
+#   feat: adiciona X
+#   fix(header): corrige clique dos botões
+#   test: cobre o ThemeProvider
+#   docs: padroniza o README
+#   design: refina a home
+#   ops / backend / chore / refactor / perf / style / ci / build: ...
+#
+# Merge/Revert/fixup/squash passam direto (gerados pelo git).
+
+msg_file="$1"
+subject=$(head -n1 "$msg_file")
+
+# Commits gerados pelo git não seguem o padrão.
+case "$subject" in
+  Merge*|Revert*|"fixup!"*|"squash!"*) exit 0 ;;
+esac
+
+pattern='^(feat|fix|test|docs|design|ops|backend|chore|refactor|perf|style|ci|build)(\([a-z0-9._-]+\))?!?: .+'
+
+if printf '%s' "$subject" | grep -Eq "$pattern"; then
+  exit 0
+fi
+
+echo ""
+echo "✖ Mensagem de commit fora do padrão."
+echo "  Recebido: $subject"
+echo ""
+echo "  Use: <tipo>(<escopo>)?: <descrição>"
+echo "  Tipos: feat | fix | test | docs | design | ops | backend |"
+echo "         chore | refactor | perf | style | ci | build"
+echo ""
+echo "  Exemplos:"
+echo "    feat(header): adiciona troca de idioma"
+echo "    fix: corrige o overlay que bloqueava os botões do header"
+echo "    test: cobre o TextTranslator"
+echo "    docs: padroniza o README"
+echo ""
+exit 1

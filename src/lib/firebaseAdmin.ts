@@ -1,20 +1,18 @@
-import admin from "firebase-admin";
+import { getApps, initializeApp, cert, getApp } from "firebase-admin/app";
+import { getAuth } from "firebase-admin/auth";
 import { readFileSync } from "fs";
 import { resolve } from "path";
 
-let initialized = false;
-
 function getAdminApp() {
-    if (initialized) return admin.app();
+    if (getApps().length > 0) return getApp();
 
     const envCreds = process.env.FIREBASE_SERVICE_ACCOUNT;
     if (envCreds) {
         try {
-            admin.initializeApp({
-                credential: admin.credential.cert(JSON.parse(envCreds)),
+            initializeApp({
+                credential: cert(JSON.parse(envCreds)),
             });
-            initialized = true;
-            return admin.app();
+            return getApp();
         } catch (error) {
             console.error("FIREBASE_SERVICE_ACCOUNT inválido:", error);
         }
@@ -24,11 +22,10 @@ function getAdminApp() {
         const serviceAccount = JSON.parse(
             readFileSync(resolve(process.cwd(), "serviceAccountKey.json"), "utf8")
         );
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
+        initializeApp({
+            credential: cert(serviceAccount),
         });
-        initialized = true;
-        return admin.app();
+        return getApp();
     } catch (error) {
         console.error("Não foi possível inicializar firebase-admin:", error);
         throw new Error("Firebase Admin não configurado no servidor.");
@@ -38,11 +35,9 @@ function getAdminApp() {
 export async function verifyFirebaseToken(token: string): Promise<string> {
     if (!token) throw new Error("Token ausente.");
     try {
-        const decoded = await getAdminApp().auth().verifyIdToken(token);
+        const decoded = await getAuth(getAdminApp()).verifyIdToken(token);
         return decoded.uid;
     } catch {
         throw new Error("Token inválido ou expirado.");
     }
 }
-
-export default getAdminApp;

@@ -58,9 +58,9 @@ describe("quizData", () => {
         if (question.type === "UnicChoice" || question.type === "TrueOrFalse") {
           expect(question.correctAnswer).toBeDefined();
         }
-        if (question.type === "DraginDrop") {
-          expect(Array.isArray(question.words)).toBe(true);
-          expect(Array.isArray(question.sentences)).toBe(true);
+        if ((question as any).type === "DraginDrop") {
+          expect(Array.isArray((question as any).words)).toBe(true);
+          expect(Array.isArray((question as any).sentences)).toBe(true);
         }
       });
   });

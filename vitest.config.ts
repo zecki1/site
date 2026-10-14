@@ -24,9 +24,6 @@ export default defineConfig({
     css: false,
     coverage: {
       provider: "v8",
-      // Só mede os arquivos que os testes importam (evita diluir o número com
-      // a biblioteca shadcn/ui inteira e as páginas não testadas unitariamente).
-      all: false,
       reporter: ["text", "json-summary"],
       exclude: ["**/*.test.*", "**/*.d.ts", "src/app/**", "src/components/ui/**"],
     },

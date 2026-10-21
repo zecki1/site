@@ -40,6 +40,14 @@ const nextConfig = {
         destination: "https://dashboard-zecki.vercel.app/dashboard/:path*",
       },
       {
+        source: "/AVA",
+        destination: "https://ambientez.vercel.app/AVA",
+      },
+      {
+        source: "/AVA/:path*",
+        destination: "https://ambientez.vercel.app/AVA/:path*",
+      },
+      {
         source: "/teleprompt",
         destination: "https://teleprompt-dun.vercel.app/teleprompt",
       },
